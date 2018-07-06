@@ -1,0 +1,53 @@
+.rich-dropdown-menu {
+    .selectpicker-content {
+        min-height: 50px;
+
+        .content {
+            overflow: hidden;
+            background: transparent;
+            padding-left: 50px;
+            min-width: 300px;
+        }
+
+        .content .title {
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .content .subtitle {
+            color: #999;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .identification {
+            position: absolute;
+            top: 10px;
+        }
+
+        .identification img {
+            height: 36px; 
+            width: 36px;
+        }
+
+        .link {
+            color: #436ba7;
+            cursor: pointer;
+        }
+    }
+
+}
+
+.dialog-export-preview {
+    .modal-dialog {
+        @include min-screen(768px) {
+            width: 80%;
+        }
+    }
+}
+
+.icon-date {
+    background-position: -3px -217px;
+    width: 17px;
+    height: 17px;
+}

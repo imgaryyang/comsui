@@ -1,0 +1,65 @@
+import Vue from 'vue';
+import {
+    Button,
+    // Select,
+    // Option,
+    Tag,
+    Input,
+    Row,
+    Col,
+    Form,
+    FormItem,
+    RadioGroup,
+    Radio,
+    Checkbox,
+    CheckboxGroup,
+    Table,
+    TableColumn,
+    Loading,
+    Tooltip,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
+    Popover,
+    Autocomplete,
+    Upload,
+    Badge,
+    Tree,
+    DatePicker,
+    TimePicker,
+} from 'element-ui';
+
+Loading.install(Vue);
+
+var components =  {
+    [Button.name]: Button,
+    [Input.name]: Input,
+    [Tag.name]: Tag,
+    [Tooltip.name]: Tooltip,
+    // [Select.name]: Select,
+    // [Option.name]: Option,
+    [Row.name]: Row,
+    [Col.name]: Col,
+    [Form.name]: Form,
+    [FormItem.name]: FormItem,
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio,
+    [Checkbox.name]: Checkbox,
+    [CheckboxGroup.name]: CheckboxGroup,
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    [Dropdown.name]: Dropdown,
+    [DropdownMenu.name]: DropdownMenu,
+    [DropdownItem.name]: DropdownItem,
+    [Popover.name]: Popover,
+    [Autocomplete.name]: Autocomplete,
+    [Upload.name]: Upload,
+    [Badge.name]: Badge,
+    [Tree.name]: Tree,
+    [DatePicker.name]: DatePicker,
+    [TimePicker.name]: TimePicker,
+};
+
+Object.keys(components).forEach(function(name) {
+    Vue.component(name, components[name]);
+});

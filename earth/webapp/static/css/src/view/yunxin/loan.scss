@@ -1,0 +1,82 @@
+.icon-bankcard {
+    margin-left: 10px;
+    width: 16px;
+    height: 14px;
+    background-position: -247px -286px;
+
+    &.active {
+        background-position: -228px -286px;
+    }
+}
+
+.icon-up-down {
+    margin-left: 5px;
+    width: 11px;
+    height: 12px;
+    background-position: -158px -273px;
+
+    &.active {
+        background-position: -142px -273px;
+    }
+}
+
+.drawer-prve{
+    position: relative;
+    right: -47px;
+}
+.drawer{
+    margin-left: 70px
+}
+
+.vertical-line {
+    width: 2px;
+    height: 23px;
+    border-left:2px #cacaca dotted; 
+}
+
+.dropdown-export-excel {
+    &.open, 
+    &:hover {
+        .dropdown-toggle .btn-text:before {
+            background-position: -190px -273px;
+        }
+    }
+
+    &:hover > .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-toggle {
+        display: inline-block;
+
+        .btn-text {
+            &:before {
+                display: inline-block;
+                content: "";
+                width: 14px;
+                height: 12px;
+                margin-right: 5px;
+                background-image: url(../../images/icons.png);
+                background-repeat: no-repeat;
+                vertical-align: middle;
+                background-position: -172px -273px;
+            }
+        }
+    }
+
+    .dropdown-menu {
+        min-width: 130px;
+        left: 0;
+        right: auto;
+        margin: 0;
+        li {
+            a {
+                padding-left:10px;
+                &:hover {
+                    background-color: #436ba7;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

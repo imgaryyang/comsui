@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="reportWrapper1"> 
+   <![CDATA[ 
+    	SELECT tmpc.*,
+		       ca.payer_name AS payerName,
+		       ca.id_card_num AS idCardNum,
+		       ca.bank AS bank,
+		       ca.province AS province,
+		       ca.city AS city,
+		       ca.pay_ac_no AS payAcNo,
+		       (SELECT max(asst.asset_recycle_date)
+		        FROM asset_set asst
+				    WHERE (active_status = 0 or executing_status IN (3,4,5))
+					   AND contract_id = tmpc.cid) AS dueDate,
+		       (SELECT
+		       		sum(asst.asset_interest_value)
+				FROM asset_set asst
+				WHERE active_status = 0
+					AND contract_id = tmpc.cid
+				) AS totalInterest,
+				(SELECT
+					CONCAT_WS(",", sum(asst.asset_principal_value), sum(asst.asset_interest_value))
+				FROM asset_set asst
+				WHERE active_status = 0
+					AND asset_status = 0
+					AND contract_id = tmpc.cid
+				) AS restFeeArray
+				<#if exportTags==true>
+					,
+					(
+						SELECT
+					        group_concat(tag.name)
+						FROM t_tag_identity_map map
+						LEFT JOIN t_tag tag ON map.tag_uuid = tag.uuid
+						WHERE map.outer_identifier = tmpc.uniqueId
+					) AS tags
+			    </#if>
+		FROM
+			(SELECT c.id AS cid,
+					c.unique_id AS uniqueId,
+					c.contract_no AS contractNo,
+					c.begin_date AS beginDate,
+					c.total_amount AS totalPrincipal,
+					c.periods AS periods,
+					c.repayment_way AS repaymentWay,
+					c.interest_rate AS interestRate,
+					c.penalty_interest AS penaltyInterest,
+					c.financial_contract_uuid
+			FROM contract c
+			WHERE c.financial_contract_uuid IN (:financialContractUuids)
+				<#if stateAdaptaterList?? && (stateAdaptaterList?size>0) > 
+				 AND (
+					<#list stateAdaptaterList as stateAdaptater>
+						<#switch stateAdaptater>
+							<#case 0> c.state = 0
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 1> c.state = 1
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 2> c.state = 2
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 3> c.state = 3
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 4> c.state = 4
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 5> c.state = 5
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 6> c.state = 6
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 7> (c.state = 7 and c.completion_status = 0) 
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 8> (c.state = 7 and c.completion_status = 1)
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#case 9> (c.state = 7 and c.completion_status = 2)
+								<#if stateAdaptater_has_next> OR </#if><#break>
+							<#default>
+						</#switch>
+					</#list>
+				)
+				</#if>
+				<#if uniqueId??> AND c.unique_id = :uniqueId </#if>
+				<#if contractNo??> AND c.contract_no = :contractNo </#if>
+				<#if startDate??> AND c.begin_date >= :startDate </#if>
+				<#if endDate??> AND c.begin_date <= :endDate </#if>
+			) AS tmpc
+		LEFT JOIN contract_account ca ON tmpc.cid = ca.contract_id
+				AND ca.contract_account_type = 0
+				AND ca.thru_date = '2900-01-01 00:00:00'
+		<#if customerName??> WHERE ca.payer_name = :customerName </#if>
+   ]]>
+</sqltemplate> 
+</sql>

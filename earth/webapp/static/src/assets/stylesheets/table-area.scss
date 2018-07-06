@@ -1,0 +1,73 @@
+.table-area {
+    .el-table {
+        .el-table__body td {
+            border-bottom: none;
+        }
+    }
+}
+
+.el-table {
+    font-size: 12px;
+
+    td, th {
+        height: auto;
+    }
+
+    th > .cell {
+        padding: 8px 0 8px 20px;
+        color: #999;
+        line-height: 1.428;
+        font-weight: normal;
+    }
+
+    td > .cell {
+        padding: 10px 0 10px 20px;
+        line-height: 1.428;
+    }
+
+    // .el-table__body td {
+    //     border-bottom: none;
+    // }
+
+    .el-table__body tr.hover-row td {
+        background-color: #fffcc7;
+    }
+
+    .caret-wrapper {
+        height: 20px;
+    }
+
+    .sort-caret.ascending {
+        top: 4px;
+    }
+
+    .sort-caret.descending {
+        bottom: 4px;
+    }
+}
+
+.el-table.no-table-bottom-border {
+    &:before {
+        display: none;
+    }
+}
+
+.el-table.no-th-border {
+    th {
+        border-right: none;
+    }
+}
+
+//  默认8px 0 8px 20px;
+.el-table.th-8-15-padding {
+    th > .cell {
+        padding: 8px 15px;
+    }
+}
+
+//  默认10px 0 10px 20px;
+.el-table.td-15-padding {
+    td > .cell {
+        padding: 15px;
+    }
+}

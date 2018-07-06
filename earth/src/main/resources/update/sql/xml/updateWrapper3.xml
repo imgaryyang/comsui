@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+    <sqltemplate id="updateWrapper1">
+
+
+        <template id="params">
+            <![CDATA[
+           {"singleLoanContractNo": "还款编号","valueAndFees":"集合：利息,贷款服务费,技术服务费,其他费用（用逗号隔开）"}
+    	]]>
+        </template>
+
+        <!--select sql  -->
+
+        <template id="assetSet">
+            <![CDATA[
+                                                 SELECT
+                          asset_uuid,
+                            `asset_recycle_date` AS defaultDate,
+                            `single_loan_contract_no` AS relatedLv1AssetOuterIdenity,
+                            contract_id AS contractId,
+                            contract_uuid AS contractUuid,
+                            asset_uuid AS relatedLv1AssetUuid,
+                            customer_uuid AS customerUuid
+                        FROM
+                            asset_set
+                        WHERE
+                            <#if singleLoanContractNo??>single_loan_contract_no IN (:singleLoanContractNo);</#if>
+
+
+
+							]]>
+        </template>
+
+        <template id="ledgerBookShelf">
+            <![CDATA[
+                SELECT ledger_book_no  AS ledgerBookNo, ledger_book_owner_id AS ledgerBookOwnerId,first_party_id AS firstPartyId
+                FROM ledger_book_shelf
+                WHERE
+                <#if assetUuid??> `related_lv_1_asset_uuid` IN (:assetUuid); </#if>
+			]]>
+        </template>
+
+
+        <!--update or insert sql  -->
+
+
+        <template id="updateAssetSet1">
+            <![CDATA[
+
+                update asset_set
+                set asset_interest_value=
+                <#if assetInterestValue??>${assetInterestValue}<#else>NULL</#if>
+                where single_loan_contract_no IN (
+                <#if singleLoanContractNo??>${singleLoanContractNo}<#else>NULL</#if>
+                  );
+
+					]]>
+        </template>
+
+
+        <template id="updateAssetSet2">
+            <![CDATA[
+
+                update asset_set set
+                asset_initial_value=asset_principal_value,
+                asset_fair_value=
+                <#if assetFairValue??>${assetFairValue}<#else>NULL </#if>
+                where
+                asset_uuid = 
+                <#if assetUuid??>'${assetUuid}'<#else>NULL</#if>;
+
+								]]>
+        </template>
+
+
+
+        <template id="updateAssetSetExtraCharge">
+            <![CDATA[
+                update asset_set_extra_charge set account_amount=
+                <#if accountAmount??>${accountAmount}<#else>NULL </#if>
+                where
+                second_account_name=
+                <#if secondAccountName??>'${secondAccountName}' <#else>NULL </#if>
+                and
+                asset_set_uuid IN(
+                <#if assetUuid??>'${assetUuid}' <#else>NULL </#if>
+                 );
+
+								]]>
+        </template>
+
+        <template id="insertLedgerBookShelf">
+            <![CDATA[
+            
+        INSERT INTO `ledger_book_shelf` (`ledger_uuid`, `debit_balance`, `credit_balance`, `first_account_name`,
+       `first_account_uuid`, `account_side`, `second_account_name`, `second_account_uuid`, 
+        `third_account_name`, `third_account_uuid`, `first_party_id`, `second_party_id`, 
+        `third_party_id`, `forward_ledger_uuid`, `backward_ledger_uuid`, `batch_serial_uuid`,
+        `amortized_date`, `book_in_date`, `business_voucher_uuid`, `carried_over_date`, 
+        `contract_id`, `contract_uuid`, `default_date`, `journal_voucher_uuid`, 
+        `ledger_book_no`, `ledger_book_owner_id`, `life_cycle`, `related_lv_1_asset_outer_idenity`,
+        `related_lv_1_asset_uuid`, `related_lv_2_asset_outer_idenity`, `related_lv_2_asset_uuid`, `related_lv_3_asset_outer_idenity`,
+        `related_lv_3_asset_uuid`, `source_document_uuid`)
+        VALUES
+        (
+        <#if ledgerUuid??>'${ledgerUuid}' <#else>NULL </#if>,
+        <#if debitBalance??>${debitBalance} <#else>NULL </#if>,
+        <#if creditBalance??>${creditBalance} <#else>NULL </#if>,
+        <#if firstAccountName??>'${firstAccountName}' <#else>NULL </#if>,
+        <#if firstAccountUuid??>'${firstAccountUuid}' <#else>NULL </#if>,
+        <#if accountSide??>${accountSide} <#else>NULL </#if>,
+        <#if secondAccountName??>'${secondAccountName}' <#else>NULL </#if>,
+        <#if secondAccountUuid??>'${secondAccountUuid}' <#else>NULL </#if>,
+        <#if thirdAccountName??>'${thirdAccountName}' <#else>NULL </#if>,
+        <#if thirdAccountUuid??>'${thirdAccountUuid}' <#else>NULL </#if>,
+        <#if firstPartyId??>'${firstPartyId}' <#else>NULL </#if>,
+        <#if secondPartyId??>'${secondPartyId}' <#else>NULL </#if>,
+         <#if thirdPartyId??>'${thirdPartyId}' <#else>NULL </#if>,
+         <#if forwardLedgerUuid??>'${forwardLedgerUuid}' <#else>NULL </#if>,
+         <#if backwardLedgerUuid??>'${backwardLedgerUuid}' <#else>NULL </#if>,
+        <#if batchSerialUuid??>'${batchSerialUuid}' <#else>NULL </#if>,
+        <#if amortizedDate??>'${amortizedDate}' <#else>NULL </#if>,
+        <#if bookInDate??>'${bookInDate}' <#else>NULL </#if>,
+         <#if businessVoucherUuid??>'${businessVoucherUuid}' <#else>NULL </#if>,
+        <#if carriedOverDate??>'${carriedOverDate}' <#else>NULL </#if>,
+        <#if contractId??>${contractId} <#else>NULL </#if>,
+        <#if contractUuid??>'${contractUuid}' <#else>NULL </#if>,
+        <#if defaultDate??>'${defaultDate}' <#else>NULL </#if>,
+         <#if journalVoucherUuid??>'${journalVoucherUuid}' <#else>NULL </#if>,
+         <#if ledgerBookNo??>'${ledgerBookNo}' <#else>NULL </#if>,
+        <#if ledgerBookOwnerId??>'${ledgerBookOwnerId}' <#else>NULL </#if>,
+        <#if lifeCycle??>${lifeCycle} <#else>NULL </#if>,
+         <#if relatedLv1AssetOuterIdenity??>'${relatedLv1AssetOuterIdenity}' <#else>NULL </#if>,
+        <#if relatedLv1AssetUuid??>'${relatedLv1AssetUuid}' <#else>NULL </#if>,
+        <#if relatedLv2AssetOuterIdenity??>'${relatedLv2AssetOuterIdenity}' <#else>NULL </#if>,
+         <#if relatedLv2AssetUuid??>'${relatedLv2AssetUuid}' <#else>NULL </#if>,
+         <#if relatedLv3AssetOuterIdenity??>'${relatedLv3AssetOuterIdenity}' <#else>NULL </#if>,
+         <#if relatedLv3AssetUuid??>'${relatedLv3AssetUuid}' <#else>NULL </#if>,
+        <#if sourceDocumentUuid??>'${sourceDocumentUuid}' <#else>NULL </#if>
+        );
+        
+       ]]>
+        </template>
+
+
+    </sqltemplate>
+</sql>

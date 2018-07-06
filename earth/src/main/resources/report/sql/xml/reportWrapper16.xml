@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper16"> 
+		<![CDATA[ 
+			SELECT
+				c.contract_no AS contractNo,
+				asst.asset_fair_value AS totalAmount,
+				SUM(CASE WHEN trade_time <:startDate THEN booking_amount ELSE 0 END) AS beforeStartDateAmount,
+				SUM(CASE WHEN trade_time <:endDate THEN booking_amount ELSE 0 END) AS beforeEndDateAmount
+			FROM journal_voucher jv
+			INNER JOIN asset_set asst ON asst.asset_uuid = jv.billing_plan_uuid
+			INNER JOIN contract c ON c.id = asst.contract_id
+			WHERE jv.related_bill_contract_info_lv_1 =:financialContractUuid
+				AND jv.status = 1
+			GROUP BY billing_plan_uuid
+			HAVING beforeStartDateAmount < totalAmount
+				AND (beforeEndDateAmount - beforeStartDateAmount) < totalAmount
+				AND beforeEndDateAmount > 0
+		]]>
+	</sqltemplate>
+</sql>

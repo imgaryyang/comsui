@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="reportWrapper22">
+   <![CDATA[ 
+    	SELECT
+    	    *
+		FROM
+			t_first_overdue_rate
+		WHERE
+		    status = 1
+		    <#if financialContractUuidList??> AND financial_contract_uuid IN (:financialContractUuidList)</#if>
+		    <#if assetRecycleDate??> AND asset_recycle_date = :assetRecycleDate </#if>
+   ]]>
+</sqltemplate> 
+</sql>

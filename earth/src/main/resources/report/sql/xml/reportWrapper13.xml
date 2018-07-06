@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper13_base"> 
+  	 <![CDATA[ 
+		SELECT
+			c.id AS contractId,
+			c.contract_no AS contractNo,
+			c.interest_rate AS interestRate,
+			c.begin_date AS beginDate,
+			c.repayment_way AS repaymentWay,
+			c.payment_frequency AS paymentFrequency,
+			c.total_amount AS totalAmount,
+			cs.`name` AS customerName,
+			c.periods AS periods,
+			MAX(asset_recycle_date) AS maxAssetRecycleDate
+		FROM contract c
+		INNER JOIN asset_set asst ON asst.contract_id = c.id
+		INNER JOIN customer cs ON cs.id = c.customer_id
+		WHERE
+			c.financial_contract_uuid IN (:financialContractUuidList)
+			AND asst.active_status = 0
+			<#if loanEffectStartDate??> AND c.begin_date >=:loanEffectStartDate </#if>
+			<#if loanEffectEndDate??> AND c.begin_date <:loanEffectEndDate </#if>
+			<#if customerName??> AND cs.`name` =:customerName </#if>
+			<#if contractNo??> AND c.contract_no =:contractNo </#if>
+		GROUP BY c.id
+		HAVING 1 = 1
+			<#if loanExpectTerminateStartDate??> AND maxAssetRecycleDate >=:loanExpectTerminateStartDate </#if>
+			<#if loanExpectTerminateEndDate??> AND maxAssetRecycleDate <:loanExpectTerminateEndDate </#if>
+	   	]]>
+	</sqltemplate>
+	<sqltemplate id="reportWrapper13_assetMap"> 
+  	 <![CDATA[ 
+		SELECT
+			a.contract_id AS contractId,
+			a.asset_recycle_date AS assetRecycleDate,
+			a.actual_recycle_date AS actualRecycleDate,
+			a.current_period AS currentPeriod,
+			a.asset_principal_value AS assetPrincipalValue,
+			a.asset_interest_value AS assetInterestValue,
+			a.asset_status AS assetStatus,
+			a.on_account_status AS onAccountStatus
+		FROM
+			asset_set a
+		INNER JOIN contract c ON a.contract_id = c.id
+		<#if customerName??> INNER JOIN customer cs ON c.customer_id = cs.id </#if>
+		WHERE
+			c.financial_contract_uuid IN (:financialContractUuidList)
+			AND a.active_Status = 0
+			<#if loanEffectStartDate??> AND c.begin_date >=:loanEffectStartDate </#if>
+			<#if loanEffectEndDate??> AND c.begin_date <:loanEffectEndDate </#if>
+			<#if contractNo??> AND c.contract_no =:contractNo </#if>
+			<#if customerName??> AND cs.`name` =:customerName </#if>
+		]]>
+	</sqltemplate>
+</sql>

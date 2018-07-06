@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper12"> 
+   <![CDATA[ 
+    	SELECT
+			cf.bank_sequence_no AS bankSequenceNo,
+			cf.account_side AS accountSide,
+			cf.transaction_amount AS transactionAmount,
+			cf.balance AS balance,
+			cf.counter_account_no AS counterAccountNo,
+			cf.counter_account_name AS counterAccountName,
+			cf.transaction_time AS transactionTime,
+			cf.remark AS remark
+		FROM
+			cash_flow cf
+		WHERE
+			cf.cash_flow_channel_type = 0
+			AND cf.transaction_time >=:startTime
+			AND cf.transaction_time <:endTime
+		<#if accountSide??>AND cf.account_side =:accountSide</#if>
+		<#if auditStatus??>AND cf.audit_status =:auditStatus</#if>
+		<#if hostAccountNo??>AND cf.host_account_no =:hostAccountNo</#if>
+		<#if bankSequenceNo??>AND cf.bank_sequence_no =:bankSequenceNo</#if>
+		<#if counterAccountNo??>AND cf.counter_account_no =:counterAccountNo</#if>
+		<#if counterAccountName??>AND cf.counter_account_name =:counterAccountName</#if>
+		<#if remark??>AND cf.remark LIKE :remark</#if>
+		ORDER BY cf.transaction_time DESC
+   	]]>
+	</sqltemplate>
+</sql>

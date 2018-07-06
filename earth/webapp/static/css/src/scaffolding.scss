@@ -1,0 +1,26 @@
+body {
+    font-size: $font-size-default;
+    font-family: $font-family-default;
+    background-color: #f4f4f4;
+}
+
+a {
+    color: #436ba7;
+
+    &[href]:hover {
+        text-decoration: none;
+    }
+}
+
+.form-control {
+    @include placeholder(#bbb);
+
+    &.form-control-error,
+    &.error {
+        border-color: $brand-danger;
+    }
+}
+
+.datetimepicker {
+    z-index: 8888;
+}

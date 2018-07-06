@@ -1,0 +1,10 @@
+SET FOREIGN_KEY_CHECKS = 0 ;
+
+delete from `clearing_exec_log`;
+
+
+INSERT INTO `clearing_exec_log` (id, `uuid`, `repayment_business_uuid`, `contract_uuid`, `financial_contract_uuid`, `clearing_status`, `create_time`, `clearing_complete_time`, `last_modified_time`, `amount`, `detail_amount`, `batch_uuid`, `journal_voucher_type`, `journal_voucher_uuid`, `principal`, `interest`, `service_charge`, `maintenance_charge`, `other_charge`, `penalty_fee`, `late_penalty`, `late_fee`, `late_other_cost`, `clearing_voucher_uuid`,`appendix`) VALUES
+('1', 'clearing_exec_log_uuid1', 'asset_uuid_1', 'contract_uuid', 'financial_contract_uuid_1', 0, '2016-08-27 16:06:53', NULL, '2016-08-27 16:06:53', 1000.00, '{SND_UNEARNED_LOAN_ASSET_PRINCIPLE=800.00, SND_UNEARNED_LOAN_ASSET_TECH_FEE=50.00, TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION=null, TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE=null, SND_UNEARNED_LOAN_ASSET_OTHER_FEE=null, SND_RECIEVABLE_LOAN_PENALTY=null, SND_UNEARNED_LOAN_ASSET_INTEREST=100.00, TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE=null, SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE=50.00}', '', 5, 'journal_voucher_uuid1', '800.00', '100.00', '50.00', '50.00', NULL, NULL, NULL, NULL, NULL, NULL,'{"contract_id":1l}'),
+('2', 'clearing_exec_log_uuid2', 'asset_uuid_1', 'contract_uuid', 'financial_contract_uuid_1', 0, '2016-08-27 16:06:53', NULL, '2016-08-27 16:06:53', 2000.00, '{SND_UNEARNED_LOAN_ASSET_PRINCIPLE=1800.00, SND_UNEARNED_LOAN_ASSET_TECH_FEE=null, TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION=null, TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE=null, SND_UNEARNED_LOAN_ASSET_OTHER_FEE=null, SND_RECIEVABLE_LOAN_PENALTY=null, SND_UNEARNED_LOAN_ASSET_INTEREST=100.00, TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE=null, SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE=100.00}', '', 9, 'journal_voucher_uuid2', '1800.00', '100.00', '100.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL,'{"contract_id":1l}');
+
+SET FOREIGN_KEY_CHECKS = 1 ;

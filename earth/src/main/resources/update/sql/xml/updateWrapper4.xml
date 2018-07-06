@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+    <sqltemplate id="updateWrapper4">
+
+
+        <template id="params">
+            <![CDATA[
+         {"offlineBillNo": " ","contractNo": "信托合同代码"}
+    	]]>
+        </template>
+
+        <!--select sql  -->
+
+        <template id="financialContract">
+            <![CDATA[
+
+       SELECT financial_contract_uuid AS  financialContractUuid
+        FROM financial_contract
+         WHERE  contract_no =<#if contractNo??>:contractNo</#if>
+
+							]]>
+        </template>
+
+        <template id="offlineBill">
+            <![CDATA[
+
+        SELECT * FROM offline_bill
+         WHERE offline_bill_no =<#if offlineBillNo??>:offlineBillNo</#if>
+
+			]]>
+        </template>
+
+
+        <!--update or insert sql  -->
+
+
+        <template id="updateOfflineBill">
+            <![CDATA[
+
+        UPDATE `offline_bill`
+        SET `financial_contract_uuid` =<#if financialContractUuid??> '${financialContractUuid}' <#else> NULL</#if>
+        WHERE `offline_bill_no` =<#if offlineBillNo??> '${offlineBillNo}' <#else> NULL</#if>;
+
+					]]>
+        </template>
+
+
+
+
+    </sqltemplate>
+</sql>

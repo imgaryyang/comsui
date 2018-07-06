@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="reportWrapper18"> 
+   <![CDATA[ 
+    	SELECT tda.id AS id,
+			   tda.deduct_id AS deductId,
+			   tda.contract_no AS contractNo,
+			   tda.customer_name AS customerName,
+			   tda.create_time AS createTime,
+			   tda.repayment_type AS repaymentType,
+			   tda.planned_deduct_total_amount AS plannedDeductTotalAmount,
+			   tda.last_modified_time AS lastModifiedTime,
+			   tda.execution_status AS executionStatus,
+			   tda.execution_remark AS executionRemark
+		FROM t_deduct_application tda
+		WHERE tda.financial_contract_uuid IN (:financialContractIdList)
+		    AND tda.repayment_type IN (:repaymentTypeList)
+		    AND tda.execution_status IN (:executionStatusList) 
+		    <#if customerName??> AND tda.customer_name LIKE :customerName </#if>
+		    <#if loanContractNo??> AND tda.contract_no LIKE :loanContractNo </#if>
+		    <#if deductId??> AND tda.deduct_id LIKE :deductId </#if>
+			<#if startDate??> AND tda.create_time >= :startDate </#if>
+			<#if endDate??> AND tda.create_time <= :endDate </#if>
+				
+   ]]>   
+</sqltemplate> 
+</sql>

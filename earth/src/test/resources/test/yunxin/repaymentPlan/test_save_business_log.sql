@@ -1,0 +1,11 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+
+DELETE FROM contract;
+DELETE FROM asset_set;
+
+INSERT INTO `contract` (`id`, `uuid`, `unique_id`, `begin_date`, `contract_no`, `end_date`, `asset_type`, `month_fee`, `app_id`, `customer_id`, `house_id`, `actual_end_date`, `create_time`, `interest_rate`, `payment_day_in_month`, `payment_frequency`, `periods`, `repayment_way`, `total_amount`, `penalty_interest`, `active_version_no`, `repayment_plan_operate_logs`, `state`, `financial_contract_uuid`, `interest_rate_cycle`, `customer_uuid`) VALUES ('2', 'a0afcd9a-5fa8-11e6-b2c2-00163e002839', 'cb6ad8eb-d46e-460f-a844-9c9188fd4e80', '2016-04-17', '2016-78-DK(ZQ2016042422395)', NULL, '1', '0.00', '1', '2', '163', NULL, '2016-05-27 18:27:16', '0.1560000000', '0', '0', '1', '2', '1200.00', '0.0005000000', '1', NULL, '6', '2d380fe1-7157-490d-9474-12c5a9901e29', '0', '3da51915-6207-43c9-a444-e521faded5b0');
+INSERT INTO `asset_set` (`id`, `guarantee_status`, `settlement_status`, `asset_fair_value`, `asset_principal_value`, `asset_interest_value`, `asset_initial_value`, `asset_recycle_date`, `confirm_recycle_date`, `refund_amount`, `asset_status`, `on_account_status`, `repayment_plan_type`, `last_valuation_time`, `asset_uuid`, `create_time`, `last_modified_time`, `comment`, `single_loan_contract_no`, `contract_id`, `actual_recycle_date`, `current_period`, `overdue_status`, `overdue_date`, `version_no`, `active_status`, `sync_status`, `active_deduct_application_uuid`, `repurchase_status`, `financial_contract_uuid`, `asset_finger_print`, `asset_extra_fee_finger_print`, `asset_finger_print_update_time`, `asset_extra_fee_finger_print_update_time`, `plan_type`, `write_off_reason`, `can_be_rollbacked`, `time_interval`, `deduction_status`, `executing_status`, `executing_status_bak`, `customer_uuid`, `contract_uuid`, `contract_funding_status`) VALUES ('2', '2', '0', '1324.80', '0.00', '1200.00', '1200.00', '2016-05-17', NULL, '0.00', '0', '1', '0', '2016-12-11 03:00:38', 'b2453ef0-853a-47a7-a41e-de6fe2bad389', '2016-05-27 18:27:16', '2016-12-11 03:00:38', NULL, 'ZC2730FAE4095260A1', '2', NULL, '1', '2', '2016-07-01', '1', '1', '0', 'repurchasing', '0', '2d380fe1-7157-490d-9474-12c5a9901e29', NULL, NULL, NULL, NULL, '0', '3', '0', '2', '0', '5', NULL, '3da51915-6207-43c9-a444-e521faded5b0', 'a0afcd9a-5fa8-11e6-b2c2-00163e002839', '1');
+
+
+SET FOREIGN_KEY_CHECKS=1;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper2"> 
+   <![CDATA[ 
+		SELECT
+			ae.asset_recycle_date as assetRecycleDate,
+			ae.asset_interest_value as assetInterestValue,
+			ae.asset_principal_value as assetPrincipalValue
+		FROM
+			asset_set ae
+		WHERE
+			ae.contract_id = :contractId
+		AND ae.active_status=0
+		ORDER BY ae.current_period ASC
+   ]]>
+	</sqltemplate>
+	<sqltemplate id="reportWrapper2_sub"> 
+   <![CDATA[ 
+		SELECT
+			c.id AS id,
+			c.unique_id AS contractUniqueId,
+			c.contract_no AS contractNo
+		FROM
+			contract c
+		INNER JOIN asset_package ap ON ap.contract_id = c.id
+		WHERE
+			ap.loan_batch_id =:loanBatchId
+   ]]>
+	</sqltemplate>
+</sql>

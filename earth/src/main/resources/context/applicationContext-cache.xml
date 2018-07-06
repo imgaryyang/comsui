@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd" default-autowire="byName">
+
+    <cache:annotation-driven/>
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" autowire="byType"/>
+
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+        <property name="shared" value="true"/>
+    </bean>
+
+    <bean id="cacheAccessor" class="com.demo2do.core.cache.CompositeCacheAccessor">
+        <property name="cacheRoot" ref="cacheRoot"/>
+    </bean>
+
+    <bean id="cacheRoot" class="com.zufangbao.earth.cache.ApplicationCacheRoot"/>
+
+    <!-- 基于XML管理模版SQL，参数fileNames为SQL XML文件路径 -->
+    <bean id="sqlCacheManager" class="com.zufangbao.earth.report.factory.SqlCacheManager">
+        <property name="fileNames">
+            <list>
+                <value>classpath*:report/sql/xml/*.xml</value>
+                <value>classpath*:create/sql/xml/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 基于XML管理模版SQL，参数fileNames为SQL XML文件路径 -->
+    <bean id="updateSqlCacheManager" class="com.zufangbao.earth.update.wrapper.UpdateSqlCacheManager">
+        <property name="fileNames">
+            <list>
+                <value>classpath*:update/sql/xml/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

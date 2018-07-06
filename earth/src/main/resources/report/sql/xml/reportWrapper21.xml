@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql> 
+	 <sqltemplate id="reportWrapper21-repaymentRecord"> 
+	   <![CDATA[ 
+					
+					
+					select 
+						jv.related_bill_contract_no_lv_2 as contractNo,
+						jv.related_bill_contract_no_lv_3 as repaymentPlanNo,
+						jv.trade_time as actualRecyleDate,
+						jv.issued_time as happenDate,
+						datediff(jv.issued_time,jv.trade_time) as delayDays,
+						jv.booking_amount as bookingAmount,
+						jv.appendix as appendix,
+						jv.journal_voucher_type as journalVoucherType,
+						(select 
+						CONCAT_WS(
+								",",ast.asset_recycle_date,
+								case when ast.outer_repayment_plan_no is null or ast.outer_repayment_plan_no = '' then ' '
+								else ast.outer_repayment_plan_no
+								end,
+								ast.executing_status,ast.time_interval,ast.deduction_status) from asset_set ast where ast.asset_uuid=jv.related_bill_contract_info_lv_3 ) as asset ,
+				(select 
+							c.unique_id from contract c where c.uuid=jv.related_bill_contract_info_lv_2 ) as uniqueid ,
+				
+						(case 
+				       		when jv.journal_voucher_type=0 then '线上扣款'
+				     		when jv.journal_voucher_type =1 then '线下支付'
+							when jv.journal_voucher_type=3 then '余额冲销还款计划'
+							when jv.journal_voucher_type=5 then '委托代付'
+							when jv.journal_voucher_type=7 and jv.second_journal_voucher_type is null then '第三方扣款'
+							when jv.journal_voucher_type=7 and (jv.second_journal_voucher_type = 0 or jv.second_journal_voucher_type = 1) then '线上代扣'
+							when jv.journal_voucher_type=7 and jv.second_journal_voucher_type = 2 then '商户代扣'
+							when jv.journal_voucher_type=9 then '主动付款'
+							when jv.journal_voucher_type=11 then '商户代偿'
+							when jv.journal_voucher_type=14 then '差额划拨'
+				      		else ''
+						     end
+						  ) as 'repaymentWay',
+						
+						(select CONCAT_WS(
+								",",
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_PRINCIPAL' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSEL_PRINCIPAL' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_INTEREST' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_INTEREST' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_TECH_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_TECH_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_PENALTY' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_PENALTY' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_OBLIGATION' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_OBLIGATION' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								)
+							) amount 
+						FROM ledger_book_shelf where life_cycle != 2 and journal_voucher_uuid= jv.journal_voucher_uuid) as amount
+						from journal_voucher jv 
+						where jv.related_bill_contract_info_lv_1 =:financialContractUuid  and jv.status =1 and jv.journal_voucher_type in (0,1,3,5,7,9,11,14)
+							
+							
+							
+						<#if startActualRecycleDate ??> AND jv.trade_time >= :startActualRecycleDate </#if>
+						<#if endActualRecycleDate ??> AND jv.trade_time <= :endActualRecycleDate </#if>
+						<#if startHappenDate ??> AND jv.issued_time >= :startHappenDate </#if>
+						<#if endHappenDate ??> AND jv.issued_time <= :endHappenDate </#if>
+						<#if repaymentPlanNo ??> AND jv.related_bill_contract_no_lv_3 = :repaymentPlanNo </#if>
+						<#if contractNo ??> AND jv.related_bill_contract_no_lv_2 = :contractNo </#if>
+						
+	   ]]>   
+	</sqltemplate> 
+	 <sqltemplate id="reportWrapper21-repurchaseRecord"> 
+	   <![CDATA[ 
+					
+					select 
+						jv.related_bill_contract_no_lv_2 as contractNo,
+						jv.related_bill_contract_no_lv_3 as repaymentPlanNo,
+						jv.trade_time as actualRecyleDate,
+						jv.issued_time as happenDate,
+						jv.trade_time as accountedDate,
+						jv.booking_amount as bookingAmount,
+						(select 
+							CONCAT_WS(
+								",",red.repo_start_date,red.repo_end_date,red.repurchase_status) from repurchase_doc red where red.repurchase_doc_uuid=jv.related_bill_contract_info_lv_3 ) as repurch,
+								(select c.unique_id from contract c where c.uuid=jv.related_bill_contract_info_lv_2) as uniqueid,
+						(case 
+						      when jv.journal_voucher_type=10 then '回购'
+				      		  else ''
+						    end
+						  ) as repaymentWay,
+						
+						(select CONCAT_WS(
+								",",
+								SUM(
+										CASE third_account_name
+											WHEN 'TRD_BANK_SAVING_GENERAL_REPURCHASE_ASSET_PRINCIPLE' THEN
+												debit_balance - credit_balance
+											ELSE
+												0
+											END
+									),
+									SUM(
+										CASE third_account_name
+											WHEN 'TRD_BANK_SAVING_GENERAL_REPURCHASE_ASSET_INTEREST' THEN
+												debit_balance - credit_balance
+											ELSE
+												0
+											END
+									),
+									SUM(
+										CASE third_account_name
+											WHEN 'TRD_BANK_SAVING_GENERAL_REPURCHASE_ASSET_PENALTY' THEN
+												debit_balance - credit_balance
+											ELSE
+												0
+											END
+									),
+									SUM(
+										CASE third_account_name
+											WHEN 'TRD_BANK_SAVING_GENERAL_REPURCHASE_ASSET_OTHER_FEE' THEN
+												debit_balance - credit_balance
+											ELSE
+												0
+											END
+									)
+							) amount 
+						FROM ledger_book_shelf where life_cycle != 2 and journal_voucher_uuid= jv.journal_voucher_uuid) as amount
+						
+						from journal_voucher jv 
+						where jv.related_bill_contract_info_lv_1=:financialContractUuid and jv.status =1 and jv.journal_voucher_type = 10
+					
+						<#if startActualRecycleDate ??> AND jv.trade_time >= :startActualRecycleDate </#if>
+						<#if endActualRecycleDate ??> AND jv.trade_time <= :endActualRecycleDate </#if>
+						<#if startHappenDate ??> AND jv.issued_time >= :startHappenDate </#if>
+						<#if endHappenDate ??> AND jv.issued_time <= :endHappenDate </#if>
+						<#if repaymentPlanNo ??> AND jv.related_bill_contract_no_lv_3 = :repaymentPlanNo </#if>
+						<#if contractNo ??> AND jv.related_bill_contract_no_lv_2 = :contractNo </#if>
+
+	   ]]>   
+	</sqltemplate> 
+</sql>

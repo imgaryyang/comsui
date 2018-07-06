@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+ <sqltemplate id="reportWrapper5">
+   <![CDATA[
+		SELECT
+			cu.name AS customerName,
+			c.contract_no AS contractNo,
+			c.unique_id AS uniqueId,
+			c.periods AS allPeriods,
+			assetSet.single_loan_contract_no AS singleLoanContractNo,
+			assetSet.outer_repayment_plan_no AS outerRepaymentPlanNo,
+			assetSet.current_period AS currentPeriod,
+			assetSet.asset_principal_value AS assetPrincipalValue,
+			assetSet.asset_interest_value AS assetInterestValue,
+			assetSet.asset_fair_value AS amount,
+			assetSet.asset_Recycle_date AS assetRecycleDate,
+			assetSet.actual_recycle_date AS actualRecycleDate,
+			assetSet.asset_initial_value AS assetInitialValue,
+			assetSet.refund_amount AS refundAmount,
+			assetSet.executing_status AS executingStatus,
+			assetSet.time_interval AS timeInterval,
+			assetSet.overdue_status AS overdueStatus,
+			assetSet.guarantee_status AS guaranteeStatus,
+			assetSet.comment AS comment,
+			assetSet.asset_status AS assetStatus,
+			assetSet.on_account_status AS onAccountStatus,
+			assetSet.overdue_date AS overdueDate,
+			assetSet.deduction_status AS deductionStatus,
+			assetSet.financial_contract_uuid AS financialContractUuid,
+			ca.id_card_num AS idCardNum,
+		    ca.province AS province,
+		    <#if exportTags==true>
+		        group_concat(tag.name) AS tags,
+		    </#if>
+			(
+				SELECT
+					CONCAT_WS(
+						",",
+						SUM(
+							CASE second_account_name
+							WHEN 'SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE second_account_name
+							WHEN 'SND_UNEARNED_LOAN_ASSET_OTHER_FEE' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE second_account_name
+							WHEN 'SND_UNEARNED_LOAN_ASSET_TECH_FEE' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE second_account_name
+							WHEN 'SND_RECIEVABLE_LOAN_PENALTY' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE third_account_name
+							WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE third_account_name
+							WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE' THEN
+								account_amount
+							ELSE
+								0
+							END
+						),
+						SUM(
+							CASE third_account_name
+							WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE' THEN
+								account_amount
+							ELSE
+								0
+							END
+						)
+					)
+				FROM
+					asset_set_extra_charge asstec
+				WHERE
+					assetSet.asset_uuid = asstec.asset_set_uuid
+			) AS chargeArray,
+			(CASE assetSet.on_account_status
+				WHEN 3 THEN
+					(
+						SELECT
+							CONCAT_WS(
+								",",
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_PRINCIPAL' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSEL_PRINCIPAL' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_INTEREST' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_INTEREST' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_TECH_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_TECH_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_PENALTY' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_PENALTY' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_OBLIGATION' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_OBLIGATION' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_SERVICE_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								),
+								SUM(
+									CASE third_account_name
+									WHEN 'TRD_BANK_SAVING_GENERAL_LOAN_ASSET_OVERDUE_FEE_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									WHEN 'TRD_LIABILITIES_INDEPENDENT_REIMBURSE_LOAN_ASSET_OVERDUE_FEE_OTHER_FEE' THEN
+										debit_balance - credit_balance
+									ELSE
+										0
+									END
+								)
+							)
+						FROM
+							ledger_book_shelf lbs
+						WHERE
+							lbs.related_lv_1_asset_uuid = assetSet.asset_uuid
+					)
+				ELSE
+					''
+			END )  AS actualChargeArray
+		FROM asset_set assetSet
+		INNER JOIN contract c ON c.id = assetSet.contract_id
+		LEFT JOIN contract_account ca ON c.id = ca.contract_id
+				AND ca.contract_account_type = 0
+				AND ca.thru_date = '2900-01-01 00:00:00'
+		LEFT JOIN customer cu ON c.customer_id = cu.id
+		<#if exportTags==true>
+			LEFT JOIN t_tag_identity_map map ON ( assetSet.single_loan_contract_no = map.outer_identifier or (c.unique_id =  map.outer_identifier AND map.transitivity =1))
+			LEFT JOIN t_tag tag ON map.tag_uuid = tag.uuid
+		</#if>
+		WHERE assetSet.financial_contract_uuid IN (:financialContractUuids)
+			<#if repaymentStatusList ??>
+				AND(
+					<#list repaymentStatusList as repaymentStatus>
+
+						<#if repaymentStatus==1>
+			 				<#if repaymentStatus_index==0>
+			 					((assetSet.executing_status = 1 OR (assetSet.executing_status = 0 AND assetSet.time_interval <> 0)) AND assetSet.deduction_status NOT IN (1,2))
+							<#else>
+								OR((assetSet.executing_status = 1 OR (assetSet.executing_status = 0 AND assetSet.time_interval <> 0))AND assetSet.deduction_status NOT IN (1,2))
+			 				</#if>
+						</#if>
+
+			 			<#if repaymentStatus==2>
+			 				<#if repaymentStatus_index==0>
+			 					(assetSet.executing_status = 1 AND assetSet.deduction_status IN (1,2))
+			 				<#else>
+			 					OR(assetSet.executing_status = 1 AND assetSet.deduction_status IN (1,2))
+			 				</#if>
+			 			</#if>
+
+			 			<#if repaymentStatus==3>
+			 				<#if repaymentStatus_index==0>
+			 					(assetSet.executing_status = 2 )
+			 				<#else>
+			 					OR(assetSet.executing_status = 2 )
+			 				</#if>
+						</#if>
+
+						<#if repaymentStatus==5>
+ 							<#if repaymentStatus_index==0>
+ 								(assetSet.executing_status = 3 )
+ 							<#else>
+ 								OR(assetSet.executing_status = 3 )
+ 							</#if>
+ 						</#if>
+
+ 						<#if repaymentStatus==6>
+							 <#if repaymentStatus_index==0>
+ 								(assetSet.executing_status = 4 )
+ 							<#else>
+ 								OR(assetSet.executing_status = 4 )
+ 							</#if>
+ 						</#if>
+
+
+					</#list>
+				)
+			</#if>
+			AND assetSet.overdue_status IN (:overdueStatusList)
+			AND assetSet.active_status = 0
+			<#if singleLoanContractNo ??> AND assetSet.single_loan_contract_no =:singleLoanContractNo </#if>
+			<#if outerRepaymentPlanNo ??> AND assetSet.outer_repayment_plan_no =:outerRepaymentPlanNo </#if>
+			<#if startDate ??> AND assetSet.asset_recycle_date >=:startDate </#if>
+			<#if endDate ??> AND assetSet.asset_recycle_date <=:endDate </#if>
+			<#if actualStartDate ??> AND date(assetSet.actual_recycle_date) >=:actualStartDate </#if>
+			<#if actualEndDate ??> AND date(assetSet.actual_recycle_date) <=:actualEndDate </#if>
+			<#if contractNo ??> AND c.contract_no =:contractNo </#if>
+			<#if customerName ??> AND cu.name =:customerName </#if>
+		GROUP BY assetSet.id
+		ORDER BY assetSet.id DESC
+   ]]>
+</sqltemplate>
+</sql>

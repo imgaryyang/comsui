@@ -1,0 +1,82 @@
+.operations {
+    .datetimepicker-trigger,
+    .el-form-item__content {
+        line-height: 28px;
+    }
+
+    .el-form-item__label,
+    .el-input__inner,
+    .el-button {
+        font-size: 12px;
+    }
+}
+
+.query-area {
+    background-image: -webkit-linear-gradient(top,rgba(255,255,255,.06),rgba(0,0,0,.06));
+    background-image: linear-gradient(top,rgba(255,255,255,.06),rgba(0,0,0,.06));
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d1d1d1;
+    padding: 5px 20px;
+
+    .divider {
+        height: 28px;
+        display: inline-block;
+        border-left: 1px #ccc dotted;
+        vertical-align: bottom;
+        margin-right: -1px;
+    }
+
+    .el-form-item__content {
+        line-height: 28px;
+    }
+
+    .el-select .el-input__inner {
+        padding-right: 30px;
+    }
+
+    .el-form-item {
+        margin-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .el-form-item .el-form-item {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .el-select.is-small .el-tag {
+        height: 17px;
+        line-height: 17px;
+        margin-top: 5px;
+    }
+
+    .el-form-item__label,
+    .el-input__inner,
+    .el-button {
+        font-size: 12px;
+    }
+
+    .el-input__inner,
+    .el-button {
+        border-radius: 2px;
+    }
+
+    .el-input-group__prepend {
+        border-radius: 2px 0 0 2px;
+    }
+
+    .el-input-group__prepend,
+    .el-input__inner {
+        color: #666;
+        background-color: #fff;
+    }
+
+    .el-input-group__prepend {
+        width: auto;
+    }
+
+    .el-input__inner {
+        width: 130px;
+    }
+}

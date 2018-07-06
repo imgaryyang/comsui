@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sql> 
+	 <sqltemplate id="reportWrapper20-repaymentdetail"> 
+	   <![CDATA[ 
+					select 
+						OD.order_uuid as orderUuid,
+						OD.order_unique_id as orderUniqueId,
+						OD.first_customer_name as firstCustomerName,
+						OD.order_amount as orderAmount,
+						OD.order_create_time as orderCreateTime,
+						OD.order_last_modified_time as orderLastModifiedTime,
+						OD.order_check_status as orderCheckStatus,
+						OD.order_recover_status as orderRecoverStatus,
+						OD.order_alive_status as orderAliveStatus,
+						OD.order_pay_status as orderPayStatus,
+						ODIT.repayment_business_no as repaymentBusinessNo,
+						ODIT.contract_no as contractNo,
+						ODIT.repayment_plan_time as repaymentPlanTime,
+						ODIT.repayment_way as repaymentWay,
+						ODIT.amount as repaymentAmount,
+						ODIT.remark as remark,
+						ODIT.detail_pay_status as detailPayStatus,
+						(select concat_ws(
+							",",
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_PRINCIPLE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_INTEREST' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_TECH_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_OTHER_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_RECIEVABLE_LOAN_PENALTY' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE third_account_name
+									WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE third_account_name
+									WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE third_account_name
+									WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							)
+							)
+							from repayment_order_item_charge ODITCH where ODITCH.repayment_order_item_uuid = ODIT.order_detail_uuid 
+							 group by ODITCH.repayment_order_item_uuid
+						)as AmountGroup,
+						(select contract_name  
+							from financial_contract FCCT 
+							where FCCT.financial_contract_uuid = OD.financial_contract_uuid
+						)as financialProduct
+						from repayment_order OD inner join repayment_order_item ODIT on OD.order_uuid=ODIT.order_uuid
+						where OD.financial_contract_uuid IN (:financialContractUuids) and ODIT.repayment_business_type = 0 and ODIT.detail_alive_status=0
+						<#if checkStatus ??> AND OD.order_check_status = :checkStatus </#if>
+						<#if orderRecoverResult ??> AND OD.order_recover_status = :orderRecoverResult </#if>
+						<#if aliveStatus ??> AND OD.order_alive_status = :aliveStatus </#if>
+						<#if orderPayStatus ??> AND OD.order_pay_status = :orderPayStatus </#if>
+						<#if repaymentOrderstartDate ??> AND OD.order_create_time >= :repaymentOrderstartDate </#if>
+						<#if repaymentOrderendDate ??> AND OD.order_last_modified_time <= :repaymentOrderendDate </#if>
+						<#if repaymentOrderuuid ??> AND OD.order_uuid = :repaymentsortField </#if>
+						<#if repaymentOrderAmount ??> AND OD.order_amount = :repaymentsortField </#if>
+						<#if repaymentfirstCustomerName ??> AND OD.first_customer_name = :repaymentsortField </#if>
+						<#if repaymentorderUniqueId ??> AND OD.order_unique_id = :repaymentsortField </#if>
+						<#if repaymentsourceStatus ??> AND OD.source_status = :repaymentsourceStatus </#if>
+						<#if repaymentWay ??> AND ODIT.repayment_way = :repaymentWay</#if>
+	   ]]>   
+	</sqltemplate> 
+	 <sqltemplate id="reportWrapper20-repurchasedetail"> 
+	   <![CDATA[ 
+					select 
+						OD.order_uuid as orderUuid,
+						OD.order_unique_id as orderUniqueId,
+						OD.first_customer_name as firstCustomerName,
+						OD.order_amount as orderAmount,
+						OD.order_create_time as orderCreateTime,
+						OD.order_last_modified_time as orderLastModifiedTime,
+						OD.order_check_status as orderCheckStatus,
+						OD.order_recover_status as orderRecoverStatus,
+						OD.order_alive_status as orderAliveStatus,
+						OD.order_pay_status as orderPayStatus,
+						ODIT.repayment_business_no as repaymentBusinessNo,
+						ODIT.contract_no as contractNo,
+						ODIT.repayment_plan_time as repaymentPlanTime,
+						ODIT.repayment_way as repaymentWay,
+						ODIT.amount as repaymentAmount,
+						ODIT.remark as remark,
+						ODIT.detail_pay_status as detailPayStatus,
+						(select concat_ws(
+							",",
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_RECIEVABLE_REPURCHASE_ASSET_PRINCIPLE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_RECIEVABLE_REPURCHASE_ASSET_INTEREST' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_RECIEVABLE_REPURCHASE_ASSET_PENALTY' THEN
+										account_amount
+									ELSE
+										0
+									END
+							),
+							SUM(
+								CASE second_account_name
+									WHEN 'SND_RECIEVABLE_REPURCHASE_ASSET_OTHER_FEE' THEN
+										account_amount
+									ELSE
+										0
+									END
+							)
+							)
+							from repayment_order_item_charge ODITCH where ODITCH.repayment_order_item_uuid IN (ODIT.order_detail_uuid)
+							 group by ODITCH.repayment_order_item_uuid
+						)as AmountGroup,
+						(select contract_name  
+							from financial_contract FCCT 
+							where FCCT.financial_contract_uuid = OD.financial_contract_uuid
+						)as financialProduct
+						from repayment_order OD inner join repayment_order_item ODIT on OD.order_uuid=ODIT.order_uuid
+						where OD.financial_contract_uuid IN (:financialContractUuids) and ODIT.repayment_business_type = 1 and ODIT.detail_alive_status=0
+						<#if checkStatus ??> AND OD.order_check_status = :checkStatus </#if>
+						<#if orderRecoverResult ??> AND OD.order_recover_status = :orderRecoverResult </#if>
+						<#if aliveStatus ??> AND OD.order_alive_status = :aliveStatus </#if>
+						<#if orderPayStatus ??> AND OD.order_pay_status = :orderPayStatus </#if>
+						<#if repaymentOrderstartDate ??> AND OD.order_create_time >= :repaymentOrderstartDate </#if>
+						<#if repaymentOrderendDate ??> AND OD.order_last_modified_time <= :repaymentOrderendDate </#if>
+						<#if repaymentOrderuuid ??> AND OD.order_uuid = :repaymentsortField </#if>
+						<#if repaymentOrderAmount ??> AND OD.order_amount = :repaymentsortField </#if>
+						<#if repaymentfirstCustomerName ??> AND OD.first_customer_name = :repaymentsortField </#if>
+						<#if repaymentorderUniqueId ??> AND OD.order_unique_id = :repaymentsortField </#if>
+						<#if repaymentsourceStatus ??> AND OD.source_status = :repaymentsourceStatus </#if>
+						<#if repaymentWay ??> AND ODIT.repayment_way = :repaymentWay</#if>
+	   ]]>   
+	</sqltemplate> 
+</sql>

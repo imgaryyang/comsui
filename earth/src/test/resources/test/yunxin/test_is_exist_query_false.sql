@@ -1,0 +1,1 @@
+DELETE FROM t_interface_query_voucher;

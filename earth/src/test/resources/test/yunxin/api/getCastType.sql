@@ -1,0 +1,19 @@
+
+
+SET FOREIGN_KEY_CHECKS=0;
+
+DELETE FROM `asset_set`;
+delete from `t_deduct_application`;
+delete from `t_deduct_application_detail`;
+
+
+INSERT INTO `asset_set` (`id`, `guarantee_status`, `settlement_status`, `asset_fair_value`, `asset_principal_value`, `asset_interest_value`, `asset_initial_value`, `asset_recycle_date`, `confirm_recycle_date`, `refund_amount`, `asset_status`, `on_account_status`, `repayment_plan_type`, `last_valuation_time`, `asset_uuid`, `create_time`, `last_modified_time`, `comment`, `single_loan_contract_no`, `contract_id`, `actual_recycle_date`, `current_period`, `overdue_status`, `overdue_date`, `version_no`, `active_status`, `sync_status`, `active_deduct_application_uuid`, `repurchase_status`, `financial_contract_uuid`, `asset_finger_print`, `asset_extra_fee_finger_print`, `asset_finger_print_update_time`, `asset_extra_fee_finger_print_update_time`, `plan_type`, `write_off_reason`, `can_be_rollbacked`, `time_interval`, `deduction_status`, `executing_status`, `executing_status_bak`, `customer_uuid`, `contract_uuid`, `contract_funding_status`)
+VALUES
+	(310248, 0, 0, 100.50, 100.00, 0.00, 100.00, '2016-12-18', '2016-12-28', 0.00, 1, 2, 0, '2016-12-28 19:21:00', 'bdf61ac6-fba6-468a-a4a4-301a69b77f7e', '2016-12-28 19:21:00', '2016-12-28 20:00:46', NULL, 'ZC275CCB7336AE0B0D', 310048, '2016-12-28 20:00:24', 1, 1, NULL, 1, 0, 0, 'cfa5ab17-c790-46cb-ad45-513504e53c61', NULL, 'd2812bc5-5057-4a91-b3fd-9019506f0499', 'c4d16f2cf9936e8a7d1b8d2c656977bd', '00bfd64b58361d989ac8bf13dccc3c9b', '2016-12-28 19:21:00', '2016-12-28 19:21:00', 0, 0, 0, 1, 3, 2, 0, 'f2e2b9a3-cd0d-4f3a-8a6b-6c244f58212a', 'de8f0b85-4254-4df6-aef9-c9e6a89961d7', 0);
+
+	
+	INSERT INTO `journal_voucher` (`id`, `account_side`, `bank_identity`, `billing_plan_uuid`, `booking_amount`, `business_voucher_type_uuid`, `business_voucher_uuid`, `cash_flow_amount`, `cash_flow_breif`, `cash_flow_channel_type`, `cash_flow_serial_no`, `cash_flow_uuid`, `checking_level`, `company_id`, `completeness`, `counter_party_account`, `counter_party_name`, `journal_voucher_uuid`, `notification_identity`, `notification_memo`, `notification_record_uuid`, `notified_date`, `settlement_modes`, `source_document_amount`, `source_document_breif`, `source_document_cash_flow_serial_no`, `source_document_counter_party_uuid`, `source_document_identity`, `source_document_uuid`, `status`, `trade_time`, `batch_uuid`, `created_date`, `source_document_counter_party_account`, `source_document_counter_party_name`, `issued_time`, `journal_voucher_type`, `counter_account_type`, `related_bill_contract_info_lv_1`, `related_bill_contract_info_lv_2`, `related_bill_contract_info_lv_3`, `cash_flow_account_info`, `journal_voucher_no`, `related_bill_contract_no_lv_1`, `related_bill_contract_no_lv_2`, `related_bill_contract_no_lv_3`, `related_bill_contract_no_lv_4`, `source_document_no`, `appendix`, `last_modified_time`, `source_document_local_party_account`, `source_document_local_party_name`, `local_party_account`, `local_party_name`, `second_journal_voucher_type`, `third_journal_voucher_type`)
+VALUES
+	(251792, 1, '中国建设银行 ', 'bdf61ac6-fba6-468a-a4a4-301a69b77f7e', 70.00, '2b784ef2-a1ab-41fa-b315-8e1bf8cfa2ba', '', 0.00, NULL, 4, NULL, NULL, 0, 1, 3, '12312893521892130', '测试员1', '1cc5912c-2d67-4995-b4d1-78d64af02cd1', NULL, NULL, NULL, NULL, NULL, 70.00, NULL, NULL, NULL, '9344b081-c4c4-4531-a7ea-f1cad9ddc4a4', '7c7c6614-32b1-44a9-8ebd-3ce97db4b4c6', 1, NULL, NULL, '2016-12-28 19:33:22', '12312893521892130', '测试员1', NULL, 7, 0, 'd2812bc5-5057-4a91-b3fd-9019506f0499', 'de8f0b85-4254-4df6-aef9-c9e6a89961d7', 'bdf61ac6-fba6-468a-a4a4-301a69b77f7e', '', '0cd879a0-ab2f-4a5b-92f6-5fa419be259b', '拍拍贷测试', 'wwtest--contract-23', 'ZC275CCB7336AE0B0D', 'JS275CCB85DD61A270', 'KK275CCB85DD16A5A4', NULL, '2016-12-28 19:33:22', '600000000001', '云南信托国际有限公司', '600000000001', '云南信托国际有限公司', 1, 0);
+
+SET FOREIGN_KEY_CHECKS=1;

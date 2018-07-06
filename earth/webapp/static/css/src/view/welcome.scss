@@ -1,0 +1,100 @@
+.welcome {
+    .background {
+        height: 100%;
+        position: relative;
+        padding-right: $width-dashboard;
+
+        .inner {
+            height: 100%;
+            background: url("../../images/bg-welcome.jpg") no-repeat left center;
+            background-size: cover;
+            position: relative;
+            color: #fff;
+            text-align: center;
+        }
+
+        .slogan {
+            height: 100%;
+            overflow: hidden;
+
+            .bd {
+                margin-top: -180px;
+            }
+
+            .bd,
+            &:before {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            &:before {
+                height: 100%;
+                content: '';
+            }
+
+            .title {
+                font-size: 72px;
+                font-style: italic;
+                font-weight: normal;
+            }
+
+            .subtitle {
+                font-weight: normal;  
+                margin-top: 0px; 
+            }
+        }
+
+        .copyright {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+        }
+    }
+}
+.icon-tag {
+    background-position: -268px -224px;
+    width: 50px;
+    height: 50px;
+}
+
+.welcome-notice {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    .notice-content {
+        background: rgba(0,0,0,0.4);
+        padding: 5px 0 5px 70px;
+        line-height: 20px;
+        margin-right: 370px;
+    }
+    .icon-notice {
+        vertical-align: top;
+    }
+    .notice-block {
+        display: inline-block;
+        height: 20px;
+        overflow: hidden;
+        position: relative;
+        margin-left: 5px;
+        min-width: 80%;
+        ul {
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            list-style: none;
+            li {
+                height: 20px;
+                a{
+                    color: #fff;
+                    font-size: 12px;
+                    cursor:pointer;
+                    }
+
+            }
+        }
+    }
+}
+

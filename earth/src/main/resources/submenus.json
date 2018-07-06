@@ -1,0 +1,433 @@
+[
+  {
+    "id": "submenu-assets",
+    "key": "menu-data",
+    "name": "资产包",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-assets-contract",
+        "name": "贷款合同",
+        "description": "",
+        "url": "contracts#/data/contracts"
+      },
+      {
+        "id": "submenu-assets-package-loan_batch",
+        "name": "资产包导入",
+        "description": "",
+        "url": "loan-batch#/data/loan-batch"
+      },
+      {
+        "id": "submenu-remittance",
+        "name": "放款计划",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-remittance-application",
+            "name": "计划订单",
+            "description": "",
+            "url": "remittance/application#/data/remittance/application"
+          },
+          {
+            "id": "submenu-remittance-plan",
+            "name": "放款单",
+            "description": "",
+            "url": "remittance/plan#/data/remittance/plan"
+          }
+        ]
+      },
+      {
+        "id": "submenu-repayment-plan",
+        "name": "还款计划",
+        "description": "",
+        "url": "repaymentPlan#/data/repayment-plan"
+      },
+      {
+        "id": "submenu-overdue-asset",
+        "name": "逾期管理",
+        "description": "",
+        "url": "repaymentPlan#/data/overdue-asset"
+      }
+    ]
+  },
+  {
+    "id": "submenu-financial",
+    "key": "menu-financial",
+    "name": "信托合同",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-financial-contract",
+        "name": "信托合同",
+        "description": "",
+        "url": "financialContract#/financial/contract"
+      },
+      {
+        "id": "submenu-financial-contract-app",
+        "name": "信托商户",
+        "description": "",
+        "url": "app"
+      },
+      {
+        "id": "submenu-channel",
+        "key": "menu-channel",
+        "name": "通道管理",
+        "icon": "refresh",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-channel-config",
+            "name": "通道配置",
+            "description": "",
+            "url": "paymentchannel#/financial/channel/configure/list"
+          },
+          {
+            "id": "submenu-channel-switch",
+            "name": "通道切换",
+            "description": "",
+            "url": "paymentchannel/switch#/financial/channel/switch/list"
+          },
+          {
+            "id": "submenu-channel-efficentanalysis",
+            "name": "效率分析",
+            "description": "",
+            "url": "paymentchannel/efficentanalysis#/financial/channel/efficentanalysis"
+          },
+          {
+            "id": "submenu-channel-limit",
+            "name": "第三方限额",
+            "description": "",
+            "url": "paymentchannel/limitSheet/list#/financial/channel/limit-sheet"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "submenu-message",
+    "key": "menu-message",
+    "name": "短信激活",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-message-activate",
+        "name": "短信激活",
+        "description": "",
+        "url": "message"
+      }
+    ]
+  },
+  {
+    "id": "submenu-payment",
+    "key": "menu-finance",
+    "name": "付款管理",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-payment-asset",
+        "name": "还款列表",
+        "description": "",
+        "url": "assets#/finance/assets"
+      },
+      {
+        "id": "submenu-payment-order",
+        "name": "结算单列表",
+        "description": "",
+        "url": "payment-manage/order/list#/finance/payment-order"
+      },
+      {
+        "id": "submenu-deduct",
+        "name": "扣款订单列表",
+        "description": "",
+        "url": "deduct/application#/finance/application"
+      },
+      {
+        "id": "submenu-guarantee",
+        "name": "商户担保",
+        "description": "",
+        "url": "",
+        "submenus": [
+          {
+            "id": "submenu-guarantee-order",
+            "name": "担保补足",
+            "description": "",
+            "url": "guarantee/order#/finance/guarantee/complement"
+          },
+          {
+            "id": "submenu-settlement-order",
+            "name": "担保清算",
+            "description": "",
+            "url": "settlement-order#/finance/guarantee/settlement"
+          }
+        ]
+      },
+      {
+        "id": "submenu-repurchase",
+        "name": "商户回购",
+        "description": "",
+        "url": "",
+        "submenus": [
+          {
+            "id": "submenu-repurchase-doc",
+            "name": "回购单",
+            "description": "",
+            "url": "repurchasedoc/list#/finance/repurchasedoc"
+          }
+        ]
+      },
+      {
+        "id": "submenu-prepayment-order",
+        "name": "提前还款",
+        "description": "",
+        "url": "assets/prepayment/list#/finance/prepayment"
+      }
+    ]
+  },
+  {
+    "id": "submenu-role",
+    "key": "menu-system",
+    "name": "用户管理",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-update-password",
+        "name": "修改密码",
+        "description": "",
+        "url": "post-update-password"
+      },
+      {
+        "id": "submenu-user-login-log",
+        "name": "用户日志",
+        "description": "",
+        "url": "logs/user-login-log"
+      },
+      {
+        "id": "submenu-role-list",
+        "name": "用户列表",
+        "description": "",
+        "url": "show-user-list#/system/user"
+      }
+    ]
+  },
+  {
+    "id": "submenu-notice",
+    "key": "menu-system",
+    "name": "公告管理",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-notice",
+        "name": "公告管理",
+        "description": "",
+        "url": "notice/notice-show"
+      }
+    ]
+  },
+  {
+    "id": "submenu-capital",
+    "key": "menu-capital",
+    "name": "资金管理",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-flow-monitor",
+        "name": "银企直联流水",
+        "description": "",
+        "url": "capital/directbank-cash-flow"
+      },
+      {
+        "id": "submenu-external-original-voucher",
+        "name": "原始凭证",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-third-party-audit-bill",
+            "name": "机构对账文件",
+            "description": "",
+            "url": "bill/third-party#/capital/original-voucher/reconciliation"
+          },
+          {
+            "id": "submenu-external-trade-batch",
+            "name": "回盘文件",
+            "description": "",
+            "url": "trade/external-batch#/capital/original-voucher/counteroffer"
+          }
+        ]
+      },
+      {
+        "id": "submenu-voucher",
+        "name": "凭证管理",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-voucher-business",
+            "name": "商户付款凭证",
+            "description": "",
+            "url": "voucher/business#/capital/voucher/business"
+          },
+          {
+            "id": "submenu-voucher-active",
+            "name": "主动付款凭证",
+            "description": "",
+            "url": "voucher/active#/capital/voucher/active"
+          },
+          {
+            "id": "submenu-voucher-thirdpart",
+            "name": "第三方扣款凭证",
+            "description": "",
+            "url": "voucher/thirdParty#/capital/voucher/third-party"
+          }
+        ]
+      },
+      {
+        "id": "submenu-remittance-cash-flow",
+        "name": "放款资金流",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-remittance-plan-execlog",
+            "name": "线上代付单",
+            "description": "",
+            "url": "capital/plan/execlog"
+          },
+          {
+            "id": "submenu-remittance-refund-bill",
+            "name": "代付撤销单",
+            "description": "",
+            "url": "capital/refundbill"
+          }
+        ]
+      },
+      {
+        "id": "submenu-payment-cash-flow",
+        "name": "还款资金流",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-interface-payment",
+            "name": "线上支付单列表",
+            "description": "",
+            "url": "interfacePayment/list"
+          },
+          {
+            "id": "submenu-offline-payment-payment",
+            "name": "线下支付单列表",
+            "description": "",
+            "url": "offline-payment-manage/payment/list"
+          }
+        ]
+      },
+      {
+        "id": "submenu-account-manage",
+        "name": "专户账户管理",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-bank-cash-flow-audit",
+            "name": "银行对账",
+            "description": "",
+            "url": "capital/account-manager/cash-flow-audit/show"
+          }
+        ]
+      },
+      {
+        "id": "submenu-customer-account-management",
+        "name": "客户账户管理",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-virtual-account-list",
+            "name": "账户列表",
+            "description": "",
+            "url": "capital/customer-account-manage/virtual-account-list/show#/capital/account/virtual-acctount"
+          },
+          {
+            "id": "submenu-account-flow-list",
+            "name": "账户流水",
+            "description": "",
+            "url": "capital/customer-account-manage/account-flow-list/show#/capital/account/account-flow"
+          },
+          {
+            "id": "submenu-deposit-receipt-list",
+            "name": "账户充值",
+            "description": "",
+            "url": "capital/customer-account-manage/deposit-receipt-list/show#/capital/account/deposit-receipt"
+          },
+          {
+            "id": "submenu-recharge-revoke-list",
+            "name": "充值撤销",
+            "description": "",
+            "url": "capital/customer-account-manage/recharge-revoke-list/show#/capital/account/recharge-revoke"
+          },
+          {
+            "id": "submenu-payment-order-list",
+            "name": "余额支付",
+            "description": "",
+            "url": "capital/customer-account-manage/payment-order-list/show#/capital/account/payment-order"
+          },
+          {
+            "id": "submenu-refund-order-list",
+            "name": "支付退款",
+            "description": "",
+            "url": "capital/customer-account-manage/refund-order-list/show#/capital/account/refund-order"
+          }
+        ]
+      },
+      {
+        "id": "submenu-third-party-account-manage",
+        "name": "第三方账户管理",
+        "description": "",
+        "url": "javascript:void(0)",
+        "submenus": [
+          {
+            "id": "submenu-remittance-audit",
+            "name": "机构对账",
+            "description": "",
+            "url": "audit/remittance#/capital/third-party-account/reconciliation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "submenu-report",
+    "key": "menu-report",
+    "name": "报表管理",
+    "icon": "refresh",
+    "url": "javascript:void(0)",
+    "submenus": [
+      {
+        "id": "submenu-project-information",
+        "name": "项目信息",
+        "description": "",
+        "url": "project-information#/reportform/project-information"
+      },
+      {
+        "id": "submenu-report-form-loans",
+        "name": "贷款规模",
+        "description": "",
+        "url": "reportform/loans#/reportform/loans"
+      },
+      {
+        "id": "submenu-report-form-interest",
+        "name": "应收利息",
+        "description": "",
+        "url": "reportform/interest#/reportform/interest"
+      }
+    ]
+  }
+]

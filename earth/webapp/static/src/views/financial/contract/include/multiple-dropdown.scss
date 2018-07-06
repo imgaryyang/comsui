@@ -1,0 +1,119 @@
+.el-form-item.is-error {
+    .el-dropdown-link {
+        border-color: #e8415f;
+    }
+}
+.penalty-interest-dropdown,
+.repurchase-dropdown {
+    vertical-align: middle;
+    
+    .el-icon--right {
+        color: #e0e0e0;
+        font-size: 12px;
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        margin-top: -6px;
+    }
+
+    .el-dropdown-link-text{
+        white-space: nowrap;
+        text-overflow: ellipsis; /* for internet explorer */
+        overflow: hidden;
+        width: 190px;
+        display: block;
+        float: left;
+
+        &.placeholder {
+            color: #bab9b9;
+        }
+    }
+
+    .el-dropdown-link {
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+        height: 34px;
+        width: 230px;
+        padding-left: 10px;
+        line-height: 34px;
+        color: #1f2d3d;
+
+        &.error {
+            border-color: #e8415f;
+        }
+    }
+}
+.penalty-interest-dropdown-menu,
+.repurchase-dropdown-menu {
+    min-width: 230px;
+
+    .el-dropdown-menu__item {
+        position: relative;
+            
+        &:hover {
+            .delete,
+            .edit {
+                display: inline-block;
+            }
+        }
+
+        .text {
+            width: 100%;
+            display: block;
+            padding-right: 20px;
+            width: 190px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .delete,
+        .edit{
+            display: none;
+            position: absolute;
+            top: 0;
+            color: #999;
+        }
+
+        .edit {
+            right: 35px;
+        }
+
+        .delete {
+            right: 10px;
+        }
+    }
+
+    .create-box {
+        position: relative;
+        width: 100%;
+        outline: none;
+        height: 28px;
+        color: #436ba7;
+        text-align: center;
+    }
+}
+
+#confirmModal {
+    line-height: 24px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    div {
+        display: flex;
+    }
+
+    .title {
+        width: 45%;
+        min-width: 120px;
+        text-align: right;
+    }
+    .content {
+        width: 65%;
+        padding-left: 15px;
+        text-align: left;
+        max-height: 50px;
+    }
+}

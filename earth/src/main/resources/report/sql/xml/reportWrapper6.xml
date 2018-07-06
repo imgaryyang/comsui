@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="reportWrapper6"> 
+   <![CDATA[
+		SELECT
+			c.unique_id AS uniqueId,
+			asst.contract_id AS contractId,
+			asst.asset_recycle_date AS assetRecycleDate,
+			asst.asset_initial_value AS assetInitialValue,
+			asst.actual_recycle_date AS actualRecycleDate,
+			asst.guarantee_status AS guaranteeStatus,
+			asst.outer_repayment_plan_no As outerRepaymentPlanNo,
+			asst.single_loan_contract_no AS singleLoanContractNo,
+			ro.asset_set_id,
+			ro.asset_set_uuid,
+            ro.order_no AS orderNo,
+            ro.due_date AS dueDate,
+            ro.modify_time AS modifyTime,
+            ro.total_rent AS totalRent,
+            ro.financial_contract_id AS financialContractId
+		FROM asset_set asst
+		INNER JOIN rent_order ro ON asst.asset_uuid = ro.asset_set_uuid AND ro.order_type = 1 AND ro.financial_contract_id IN (:financialContractIdList)
+			<#if outerRepaymentPlanNo ??>AND ro.outer_repayment_plan_no = :outerRepaymentPlanNo </#if>
+			<#if orderNo ??>AND ro.order_no = :orderNo </#if>
+            <#if dueStartDate ??>AND ro.due_date >=:dueStartDate</#if>
+            <#if dueEndDate ??>AND ro.due_date <=:dueEndDate</#if>
+			<#if guaranteeStatus ??>AND asst.guarantee_status=:guaranteeStatus</#if>
+			<#if singleLoanContractNo ??>AND asst.single_loan_contract_no = :singleLoanContractNo</#if>
+			<#if startDate ??>AND asst.asset_recycle_date >=:startDate</#if>
+			<#if endDate ??> AND asst.asset_recycle_date <=:endDate</#if>
+		INNER JOIN contract c ON c.id = asst.contract_id
+		INNER JOIN app app ON c.app_id = app.id WHERE 1=1
+		    <#if appId ??> AND app.app_id = :appId</#if>
+		ORDER BY ro.id DESC
+   ]]>
+</sqltemplate> 
+</sql>

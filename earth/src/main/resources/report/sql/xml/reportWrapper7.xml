@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper7">   
+	 <![CDATA[ 
+		SELECT
+			sr.settle_order_no AS settleOrderNo,
+			sr.due_date AS dueDate,
+			sr.overdue_days AS overdueDays,
+			sr.overdue_penalty AS overduePenalty,
+			sr.last_modify_time AS modifyTime,
+			sr.settlement_amount AS settlementAmount,
+			sr.`comment` AS `comment`,
+			ast.single_loan_contract_no AS repaymentNo,
+			ast.asset_recycle_date AS recycleDate,
+			ast.settlement_status AS settlementStatus,
+			ast.asset_initial_value AS principalAndInterestAmount,
+			c.unique_id AS uniqueId,
+			c.app_id AS appId
+		FROM
+			settlement_order sr
+		INNER JOIN asset_set ast ON ast.id = sr.asset_set_id
+		INNER JOIN contract c ON c.id = ast.contract_Id
+		WHERE ast.financial_contract_uuid IN (:financialContractIdList) 
+		<#if singleLoanContractNo??>AND ast.single_loan_contract_no =:singleLoanContractNo</#if>
+		<#if outerRepaymentPlanNo??>AND ast.outer_repayment_plan_no =:outerRepaymentPlanNo</#if>
+		<#if settlementStatus??>AND ast.settlement_status =:settlementStatus</#if>
+		<#if appId??>AND c.app_id =:appId</#if>
+		<#if settleOrderNo??>AND sr.settle_order_no =:settleOrderNo</#if>
+	 ]]>
+	</sqltemplate>
+</sql>

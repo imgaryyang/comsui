@@ -1,0 +1,6 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DELETE FROM import_result;
+
+
+SET FOREIGN_KEY_CHECKS = 0;

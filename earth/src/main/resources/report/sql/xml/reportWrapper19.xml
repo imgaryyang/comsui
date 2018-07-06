@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper19_local"> 
+   <![CDATA[ 
+    	SELECT
+			bar.system_bill_identity as systemBillIdentity,
+			bar.system_bill_type as systemBillType,
+			bar.counter_party_account_name as counterPartyAccountName,
+			bar.counter_party_account_no as counterPartyAccountNo,
+			bar.system_bill_plan_amount as systemBillPlanAmount,
+			bar.trade_uuid as tradeUuid,
+			bar.system_bill_occur_date as systemBillOccurDate,
+			bar.trans_excution_status as transExcutionStatus
+		FROM
+			beneficiary_audit_result bar
+		WHERE
+			bar.payment_channel_uuid = :paymentChannelUuid
+		<#if pgClearingAccount ??>
+			AND bar.snd_merchant_no = :pgClearingAccount
+		<#else> 
+			AND (bar.snd_merchant_no is NULL OR bar.snd_merchant_no = '')
+		</#if> 
+		AND bar.result_time >= :startTime
+		AND bar.result_time <= :endTime
+		AND bar.result_code = 1
+		AND bar.trans_excution_status = 2
+		AND (bar.trade_uuid is not NULL AND bar.trade_uuid<>'')
+				
+   ]]>
+	</sqltemplate>
+	<sqltemplate id="reportWrapper19_counter"> 
+   <![CDATA[ 
+    	SELECT
+			bar.cash_flow_sequence_no as cashFlowSequenceNo,
+			bar.cash_flow_fst_merchant_no as cashFlowFstMerchantNo,
+			bar.counter_party_account_no as counterPartyAccountNo,
+			bar.counter_party_account_name as counterPartyAccountName,
+			bar.cash_flow_transaction_amount as cashFlowTransactionAmount,
+			bar.cash_flow_account_side as cashFlowAccountSide,
+			bar.trade_uuid as tradeUuid,
+			bar.cash_flow_settle_date as cashFlowSettleDate,
+			bar.cash_flow_remark as cashFlowRemark
+		FROM
+			beneficiary_audit_result bar
+		WHERE
+			bar.cash_flow_payment_gateway = :paymentGateway
+		AND bar.cash_flow_fst_merchant_no = :merchantNo
+		<#if pgClearingAccount ??>
+			AND bar.cash_flow_snd_merchant_no = :pgClearingAccount
+		<#else> 
+			AND (bar.cash_flow_snd_merchant_no is NULL OR bar.cash_flow_snd_merchant_no = '')
+		</#if> 
+		AND bar.result_time >= :startTime
+		AND bar.result_time <= :endTime
+		AND bar.result_code = 3
+		AND (bar.trade_uuid is not NULL AND bar.trade_uuid<>'')
+  ]]>
+	</sqltemplate>
+	<sqltemplate id="reportWrapper19_issued"> 
+   <![CDATA[ 
+    	SELECT
+			bar.system_bill_identity as systemBillIdentity,
+			bar.system_bill_type as systemBillType,
+			bar.counter_party_account_name as counterPartyAccountName,
+			bar.counter_party_account_no as counterPartyAccountNo,
+			bar.system_bill_plan_amount as systemBillPlanAmount,
+			bar.trade_uuid as tradeUuid,
+			bar.system_bill_occur_date as systemBillOccurDate,
+			bar.trans_excution_status as transExcutionStatus
+		FROM
+			beneficiary_audit_result bar
+		WHERE
+			bar.payment_channel_uuid = :paymentChannelUuid
+		<#if pgClearingAccount ??>
+			AND bar.snd_merchant_no = :pgClearingAccount
+		<#else> 
+			AND (bar.snd_merchant_no is NULL OR bar.snd_merchant_no = '')
+		</#if> 
+		AND bar.result_time >= :startTime
+		AND bar.result_time <= :endTime
+		AND bar.result_code = 1
+		AND bar.trans_excution_status = 2
+		AND (bar.trade_uuid is not NULL AND bar.trade_uuid<>'')
+  ]]>
+	</sqltemplate>
+</sql>

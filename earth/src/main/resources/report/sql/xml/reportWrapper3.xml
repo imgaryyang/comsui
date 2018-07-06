@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="reportWrapper3"> 
+   <![CDATA[ 
+		SELECT
+			tmp_asst.*,
+			c.unique_id AS uniqueId,
+			c.contract_no AS contractNo,
+			c.begin_date AS beginDate,
+			ca.payer_name AS customerName,
+			ca.pay_ac_no AS payAcNo,
+			ca.id_card_num AS idCardNum,
+			ca.bank AS bank,
+			ca.province AS province,
+			ca.city AS city,
+			(SELECT
+				CONCAT_WS(",",
+					SUM(CASE second_account_name
+							WHEN 'SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE' THEN account_amount
+			             	ELSE 0
+			         	END),
+					SUM(CASE second_account_name
+							WHEN 'SND_UNEARNED_LOAN_ASSET_OTHER_FEE' THEN account_amount
+			                ELSE 0
+			            END),
+					SUM(CASE second_account_name
+			                WHEN 'SND_UNEARNED_LOAN_ASSET_TECH_FEE' THEN account_amount
+			                ELSE 0
+			            END))
+			FROM asset_set_extra_charge asstec
+			WHERE asstec.asset_set_uuid = tmp_asst.asset_uuid) AS chargeArray
+		FROM  
+		(
+			SELECT 
+				asset_uuid,
+		   		contract_id,
+		   		on_account_status AS onAccountStatus,
+			    executing_status AS executingStatus,
+			    time_interval AS timeInterval,
+			    deduction_status AS deductionStatus,
+			    active_status AS activeStatus,
+			    plan_type AS planType,
+			    can_be_rollbacked AS canBeRollbacked,
+		   		financial_contract_uuid AS financialContractUuid,
+				single_loan_contract_no AS repaymentPlanNo,
+				outer_repayment_plan_no AS outerRepaymentPlanNo,
+		   		asset_recycle_date AS assetRecycleDate,
+		   		actual_recycle_date AS actualRecycleDate,
+		   		asset_principal_value AS planPrincipal,
+		   		asset_interest_value AS planInterest
+			FROM asset_set WHERE financial_contract_uuid IN (:financialContractUuids)
+				<#if outerRepaymentPlanNo ??> AND outer_repayment_plan_no = :outerRepaymentPlanNo </#if>
+				<#if singleLoanContractNo ??> AND single_loan_contract_no = :singleLoanContractNo </#if>
+				<#if repaymentPlanStartDate ??> AND asset_recycle_date >=:repaymentPlanStartDate </#if>
+				<#if repaymentPlanEndDate ??> AND asset_recycle_date <=:repaymentPlanEndDate </#if>
+				<#if actualRepaymentStartDate ??> AND date(actual_recycle_date) >=:actualRepaymentStartDate </#if>
+				<#if actualRepaymentEndDate ??> AND date(actual_recycle_date) <=:actualRepaymentEndDate </#if>
+				<#if planStatus != -1>
+		     		<#if planStatus == 0> AND plan_type = 0 AND active_status = 0
+		     		<#elseif planStatus == 1> AND plan_type = 1 AND active_status = 0 AND can_be_rollbacked = 1 
+		     		<#elseif planStatus == 2> AND plan_type = 1 AND active_status = 0 AND can_be_rollbacked = 0 
+		     		<#elseif planStatus == 3> AND active_status = 2 
+		      		<#elseif planStatus == 4> AND active_status = 1 
+		     		<#else></#if>
+		     	</#if>
+		     	<#if repaymentStatus != -1>
+		     		<#if repaymentStatus == 0> AND time_interval = 0 AND executing_status = 0
+		     		<#elseif repaymentStatus == 1> AND ((executing_status = 1 OR (executing_status = 0 AND time_interval != 0) ) AND deduction_status NOT IN (1,2))
+		     		<#elseif repaymentStatus == 2> AND executing_status = 1 AND deduction_status IN (1,2)
+		        <#elseif repaymentStatus == 3> AND executing_status = 2
+		     		<#elseif repaymentStatus == 4> AND executing_status = 4
+		     		<#elseif repaymentStatus == 5> AND executing_status = 3
+		     		<#elseif repaymentStatus == 6> AND executing_status = 5
+		     		<#elseif repaymentStatus == 7> AND executing_status = 6
+		     		<#else></#if> 
+		     	</#if>
+		     	<#if repaymentType !=-1 >
+		     		<#if repaymentType == 0> AND repayment_plan_type = 0 AND asset_status = 1
+		      		<#elseif repaymentType == 1> AND repayment_plan_type = 1 AND contract_funding_status = 0 AND asset_status = 1 
+		     		<#elseif repaymentType == 2> AND repayment_plan_type = 1 AND contract_funding_status = 1 AND asset_status = 1 
+		     		<#elseif repaymentType == 3> AND repayment_plan_type = 2 AND asset_status = 1 
+		     		<#else></#if>
+		     	</#if>
+		) tmp_asst
+		INNER JOIN contract c ON tmp_asst.contract_id = c.id
+			<#if contractNo ??> AND c.contract_no =:contractNo </#if>
+		LEFT JOIN contract_account ca ON tmp_asst.contract_id = ca.contract_id
+			AND ca.contract_account_type = 0
+			AND ca.thru_date = '2900-01-01 00:00:00'
+		WHERE 1 = 1
+			<#if customerName ??> AND ca.payer_name =:customerName </#if>
+   ]]>   
+</sqltemplate> 
+</sql>

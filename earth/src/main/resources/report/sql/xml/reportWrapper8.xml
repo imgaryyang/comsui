@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper8"> 
+   <![CDATA[ 
+		SELECT
+			c.unique_id AS uniqueId,
+			rd.repurchase_doc_uuid AS repurchaseDocUuid,
+			rd.contract_no AS contractNo,
+			rd.batch_no AS batchNo,
+			rd.repo_start_date AS repoStartDate,
+			rd.repo_end_date AS repoEndDate,
+			rd.app_name AS appName,
+			rd.customer_name AS customerName,
+			rd.amount AS amount,
+			rd.repurchase_principal AS repurchasePrincipal,
+			rd.repurchase_interest AS repurchaseInterest,
+			rd.repurchase_penalty AS repurchasePenalty,
+			rd.repurchase_other_charges AS repurchaseOtherCharges,
+			rd.repo_days AS repoDays,
+			rd.creat_time AS createTime,
+			rd.repurchase_status AS repoStatus
+		FROM
+			repurchase_doc rd
+		LEFT JOIN contract c ON c.id = rd.contract_id
+		WHERE rd.financial_contract_uuid IN (:fcList)
+			<#if appId??> AND rd.app_id =:appId</#if>
+			<#if contractNo??> AND rd.contract_no =:contractNo</#if>
+			<#if batchNo??> AND rd.batch_no =:batchNo</#if>
+			<#if customerName??> AND rd.customer_name =:customerName</#if>
+			<#if repoStartDate??> AND rd.repo_start_date >=:repoStartDate</#if>
+			<#if repoEndDate??> AND rd.repo_end_date <=:repoEndDate</#if>
+			<#if repurchaseStatusList??> AND rd.repurchase_status IN (:repurchaseStatusList)</#if>
+   ]]>
+	</sqltemplate>
+</sql>

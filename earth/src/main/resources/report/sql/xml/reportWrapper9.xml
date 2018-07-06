@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper9_rel"> 
+   <![CDATA[ 
+    	SELECT
+			rpel.exec_req_no as execReqNo,
+			rpel.exec_rsp_no as execRspNo,
+			rpel.planned_amount as plannedAmount,
+			rpel.last_modified_time as lastModifiedTime,
+			rpel.create_time as createTime,
+			rpel.cp_bank_card_no as cpBankCardNo,
+			rpel.cp_id_number as cpIdNumber,
+			rpel.reverse_status as reverseStatus,
+			rpel.execution_status as executionStatus
+		FROM
+			t_remittance_plan_exec_log rpel
+		WHERE
+			rpel.financial_contract_uuid =:financialContractUuid
+		AND rpel.create_time >=:fromDate
+		AND rpel.create_time <=:toDate
+   ]]>
+	</sqltemplate>
+	<sqltemplate id="reportWrapper9_rcf"> 
+   <![CDATA[ 
+    	SELECT
+			cf.cash_flow_uuid as cashFlowUuid,
+			cf.counter_account_name as counterAccountName,
+			cf.counter_account_no as counterAccountNo,
+			cf.transaction_amount as transactionAmount,
+			cf.transaction_time as transactionTime,
+			cf.trade_uuid as tradeUuid,
+			cf.remark as remark,
+			cf.account_side as accountSide
+		FROM
+			cash_flow cf
+		WHERE
+			cf.host_account_no =:hostAccountNo
+		AND cf.transaction_time >=:fromDate
+		AND cf.transaction_time <=:toDate
+		AND cf.account_side = 0
+  ]]>
+	</sqltemplate>
+</sql>

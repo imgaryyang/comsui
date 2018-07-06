@@ -1,0 +1,27 @@
+
+[
+   {
+    "paymentChannelUuid":"f1ccca57-7c80-4429-b226-8ad31a729609",
+    "apiUrl":"http://121.8.154.151/ProcessServlet",
+    "cerFilePath":"/data/webapps/tomcat-yunxin/certificate/guangyinlian_paipaidai_public.cer",
+    "channelName":"G31700广银联代收付",
+    "merchantId":"000191400206128",
+    "paymentChannelType":"GuangdongUnionPay",
+    "pfxFileKey":"123456",
+    "pfxFilePath":"/data/webapps/tomcat-yunxin/certificate/000191400206128.pfx",
+    "userName":"00019140020612804",
+    "userPassword":"YNTRUSTdaishou128"
+    },
+    {
+    "paymentChannelUuid":"4d43e4c7-a722-11e6-ae26-00163e002839",
+    "apiUrl":"http://121.8.154.151/ProcessServlet",
+    "cerFilePath":"/data/webapps/tomcat-yunxin/certificate/gnete_pds.cer",
+    "channelName":"农分期-广银联(代收)",
+    "merchantId":"000191400205800",
+    "paymentChannelType":"GuangdongUnionPay",
+    "pfxFileKey":"123456",
+    "pfxFilePath":"/data/webapps/tomcat-yunxin/certificate/000191400205800.pfx",
+    "userName":"00019140020580004",
+    "userPassword":"YNTRUSTdaishou800"
+    }
+]

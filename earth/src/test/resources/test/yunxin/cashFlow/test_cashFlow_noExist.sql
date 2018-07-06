@@ -1,0 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+DELETE FROM galaxy_autotest_yunxin.cash_flow;
+
+SET FOREIGN_KEY_CHECKS=1;

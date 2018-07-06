@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+
+    <!-- CacableLedgerTemplate Parser -->
+    <bean class="com.zufangbao.wellsfargo.silverpool.ledgerbookv2.template.CachecableLedgerTemplateParser"></bean>
+    <bean class="com.zufangbao.sun.ledgerbookv2.handler.impl.LedgerCacheHandlerImpl" id="ledgerCacheHandler"/>
+    <bean class="com.zufangbao.sun.ledgerbookv2.service.impl.CacheableInsideAccountServiceImpl"
+          id="insideAccountService"/>
+
+    <bean class="com.zufangbao.wellsfargo.yunxin.handler.impl.RepaymentOrderActualHandlerImpl"
+          id="repaymentOrderHandlerProxy"/>
+    <bean class="com.zufangbao.wellsfargo.yunxin.handler.impl.RepaymentOrderReconciliationNoSessionImpl"
+          id="repaymentOrderReconciliationNoSession"/>
+</beans>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper11"> 
+		<![CDATA[
+			SELECT tmp_deduct_detail.*,
+					asst.asset_recycle_date AS assetRecycleDate,
+					asst.asset_principal_value AS assetPrincipalValue,
+					asst.asset_interest_value AS assetInterestValue,
+					(SELECT
+						CONCAT_WS(",",
+							SUM(CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_LOAN_SERVICE_FEE' THEN account_amount
+                                 	ELSE 0
+                             	END),
+							SUM(CASE second_account_name
+									WHEN 'SND_UNEARNED_LOAN_ASSET_OTHER_FEE' THEN account_amount
+                                    ELSE 0
+                                END),
+							SUM(CASE second_account_name
+                                    WHEN 'SND_UNEARNED_LOAN_ASSET_TECH_FEE' THEN account_amount
+                                    ELSE 0
+                                END),
+							SUM(CASE second_account_name
+                                    WHEN 'SND_RECIEVABLE_LOAN_PENALTY' THEN account_amount
+                                    ELSE 0
+                                END),
+							SUM(CASE third_account_name
+                                    WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION' THEN account_amount
+                                    ELSE 0
+                            	END),
+							SUM(CASE third_account_name
+                                    WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE' THEN account_amount
+                                    ELSE 0
+                                END),
+							SUM(CASE third_account_name
+                                    WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE' THEN account_amount
+                                    ELSE 0
+                            	END))
+					FROM asset_set_extra_charge asstec
+   					WHERE asst.asset_uuid = asstec.asset_set_uuid) AS chargeArray
+			FROM asset_set asst
+			INNER JOIN
+				(SELECT tdad.asset_set_uuid,
+						tmp_tdp.*,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_LOAN_ASSET_PRINCIPLE' THEN account_amount
+						        ELSE 0
+						    END) actualPrinciple,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_LOAN_ASSET_INTEREST' THEN account_amount
+						        ELSE 0
+						    END) actualInterest,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_LOAN_ASSET_TECH_FEE' THEN account_amount
+						        ELSE 0
+						    END) actualTechFee,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_LOAN_ASSET_LOAN_SERVICE_FEE' THEN account_amount
+						        ELSE 0
+						    END) actualLoanServiceFee,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_LOAN_ASSET_OTHER_FEE' THEN account_amount
+						        ELSE 0
+						    END) actualOtherFee,
+						SUM(CASE second_account_name
+						        WHEN 'SND_RECIEVABLE_LOAN_PENALTY' THEN account_amount
+						        ELSE 0
+						    END) actualPenalty,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OBLIGATION' THEN account_amount
+						        ELSE 0
+						    END) actualOverDueFeeObligation,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_SERVICE_FEE' THEN account_amount
+						        ELSE 0
+						    END) actualOverDueFeeServiceFee,
+						SUM(CASE third_account_name
+						        WHEN 'TRD_RECIEVABLE_OVERDUE_FEE_OTHER_FEE' THEN account_amount
+						        ELSE 0
+						    END) actualOverDueFeeOtherFee
+				FROM t_deduct_application_detail tdad
+				INNER JOIN
+					(SELECT tdp.deduct_application_uuid,
+					        tdp.deduct_plan_uuid AS deductPlanUuid,
+							tdp.contract_unique_id AS uniqueId,
+							tdp.complete_time AS completeTime,
+							tdp.create_time AS createTime,
+							tdp.actual_total_amount AS actualTotalAmount,
+							tdp.cp_bank_account_holder AS cpBankAccountHolder,
+							tdp.cp_bank_card_no AS cpBankCardNo,
+							tdp.execution_status AS executionStatus,
+							tdp.execution_remark AS executionRemark,
+							tdp.cp_bank_name AS cpBankName,
+							tdp.last_modified_time AS lastModifiedTime,
+							tdp.contract_no AS contractNo,
+							tdp.payment_gateway AS paymentGateway
+					FROM t_deduct_plan tdp
+					WHERE tdp.financial_contract_uuid =:financialContractUuid
+						AND tdp.payment_gateway IN (:paymentGateways)
+						AND tdp.complete_time >=:startTime
+						AND tdp.complete_time <:endTime
+			 		) AS tmp_tdp ON tdad.deduct_application_uuid = tmp_tdp.deduct_application_uuid
+				GROUP BY tmp_tdp.deductPlanUuid, tdad.asset_set_uuid, tmp_tdp.paymentGateway
+			) AS tmp_deduct_detail ON tmp_deduct_detail.asset_set_uuid = asst.asset_uuid
+		]]>
+	</sqltemplate>
+</sql>

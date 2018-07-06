@@ -1,0 +1,121 @@
+// 1,2000.00
+.cell-width-money {
+    min-width: 60px;
+    box-sizing: content-box;
+}
+
+// 11,100,000,002.00
+.cell-width-largemoney {
+    min-width: 100px;
+    box-sizing: content-box;
+}
+
+// 2015-01-10, 1994/03/21
+.cell-width-date {
+    min-width: 65px;
+    box-sizing: content-box;
+}
+
+// 2016-09-19 17:32:39
+.cell-width-datetime {
+    min-width: 120px;
+    box-sizing: content-box;
+}
+
+// .cell-width-status {
+//     width: 60px;
+//     box-sizing: content-box;
+// }
+
+// @include min-screen(1280px) {
+//     .cell-width-uuid {
+//         width: 220px;
+//         box-sizing: content-box;
+//     }
+// }
+
+// @include screen(1080px, 1280px) {
+//     .cell-width-uuid {
+//         width: 120px;
+//         box-sizing: content-box;
+//     }
+// }
+
+// @include screen(900px, 1080px) {
+//     .cell-width-uuid {
+//         width: 85px;
+//         box-sizing: content-box;
+//     }
+// }
+
+// @include max-screen(900px) {
+//     .cell-width-uuid {
+//         width: 60px;
+//         box-sizing: content-box;
+//     }
+// }
+
+.color-danger {
+    color: $brand-danger;
+}
+
+.color-primary {
+    color: $brand-primary;
+}
+
+.color-dim {
+    color: $gray-softer;
+}
+
+.color-warning {
+    color: $brand-warning;
+}
+
+.color-success {
+    color: $brand-success;
+}
+
+.color-notice {
+    color: $highlight-color;
+}
+
+a.disabled {
+    color: #666;
+    text-decoration: none !important;
+    cursor: default !important;
+}
+
+ul.inline {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    & > .item {
+        float: left;
+        margin: 0 10px 10px 0;
+        position: relative;
+    }
+}
+
+
+// 删掉
+.list-inline {
+    font-size: 0;
+
+    .inline-item {
+        font-size: $font-size-14;
+        @include inline-block(false);
+    }
+}
+
+.visiable-sm {
+    display: none !important;
+
+    @include max-screen(1094px) {
+        display: initial !important;
+    }
+}
+
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+    					http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/security
+                        http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <beans:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+
+    <http pattern="/" security="none"/>
+    <http pattern="/timeout" security="none"/>
+    <http pattern="/login" security="none"/>
+    <http pattern="/captcha/captcha-image" security="none"/>
+    <http pattern="/static/**" security="none"/>
+    <http pattern="/upload/**" security="none"/>
+    <http pattern="/capital/transaction-detail" security="none"/>
+    <http pattern="/capital/batch-payment" security="none"/>
+    <http pattern="/capital/query-transaction" security="none"/>
+    <http pattern="/api/**" security="none"/>
+    <http pattern="/pre/api/**" security="none"/>
+    <http pattern="/inner-api/**" security="none"/>
+    <!-- <http pattern="/before-create-systemrole" security="none"/> -->
+
+
+    <http use-expressions="true">
+        <form-login login-page="/login" authentication-failure-url="/login" default-target-url="/post-login"
+                    always-use-default-target="true"/>
+        <logout delete-cookies="JSESSIONID"/>
+        <http-basic/>
+        <expression-handler ref="principalWebSecurityExpressionHandler"/>
+        <session-management invalid-session-url="/timeout"/>
+        <access-denied-handler error-page="/WEB-INF/jsps/403.jsp"/>
+        <custom-filter ref="captchaVerifierFilter" before="FORM_LOGIN_FILTER"/>
+        <custom-filter ref="sdfFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+        <custom-filter ref="firstLoginFilter" after="FILTER_SECURITY_INTERCEPTOR"/>
+        <custom-filter ref="financialContractDataFilter" after="SWITCH_USER_FILTER"/>
+    </http>
+
+    <beans:bean id="financialContractDataFilter" class="com.zufangbao.earth.security.AuthenticationUrlFilter">
+        <beans:property name="excludeUrlPathRegexSet">
+            <beans:set>
+                <beans:value>/</beans:value>
+                <beans:value>/timeout</beans:value>
+                <beans:value>/login</beans:value>
+                <beans:value>/captcha/captcha-image</beans:value>
+                <beans:value>/static/**</beans:value>
+                <beans:value>/upload/**</beans:value>
+                <beans:value>/capital/transaction-detail</beans:value>
+                <beans:value>/capital/query-transaction</beans:value>
+                <beans:value>/capital/batch-payment</beans:value>
+                <beans:value>/api/**</beans:value>
+                <beans:value>/pre/api/**</beans:value>
+                <beans:value>/inner-api/**</beans:value>
+                <beans:value>/post-login</beans:value>
+                <beans:value>/v</beans:value>
+                <beans:value>/403</beans:value>
+                <beans:value>/favicon.ico</beans:value>
+            </beans:set>
+        </beans:property>
+
+        <beans:property name="open">
+            <beans:value>false</beans:value>
+        </beans:property>
+        
+    </beans:bean>
+
+
+
+    <beans:bean id="sdfFilter" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="accessDecisionManager" ref="accessDecisionManager"/>
+        <beans:property name="securityMetadataSource" ref="securityMetadataBySDF"/>
+    </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="authenticationProvider">
+
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="authenticationProvider" class="com.zufangbao.earth.security.ApplicationAuthenticationProvider"
+                autowire="byType"/>
+
+    <beans:bean id="principalWebSecurityExpressionHandler"
+                class="com.demo2do.core.security.expression.PrincipalWebSecurityExpressionHandler" autowire="byType"/>
+
+    <beans:bean id="captchaVerifierFilter" class="com.zufangbao.earth.web.filter.CaptchaVerifierFilter"/>
+
+    <beans:bean id="firstLoginFilter" class="com.zufangbao.earth.web.filter.FirstLoginFilter"/>
+
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <!--         是否允许所有的投票者弃权,如果为false，表示如果所有的投票者弃权，就禁止访问   -->
+        <beans:property name="allowIfAllAbstainDecisions" value="false"/>
+        <beans:property name="decisionVoters">
+            <beans:list>
+                <beans:bean class="org.springframework.security.access.vote.RoleVoter">
+                    <!--                     security默认角色有前缀“ROLE_”但本系统没有因此需要设置为“” -->
+                    <beans:property name="rolePrefix" value=""/>
+                </beans:bean>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean id="securityMetadataBySDF"
+                class="com.zufangbao.earth.security.FilterInvocationSecurityMetadataSourceBySDF"/>
+
+    <beans:bean id="accessDeniedHandlerBySDF" class="com.zufangbao.earth.security.AccessDeniedHandlerBySDF"/>
+</beans:beans>

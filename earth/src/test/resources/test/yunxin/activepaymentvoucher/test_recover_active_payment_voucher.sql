@@ -1,0 +1,19 @@
+delete from `source_document`;
+
+
+
+
+
+
+INSERT INTO `source_document` (`id`, `company_id`, `source_document_uuid`, `source_document_type`, `create_time`, `issued_time`, `source_document_status`, `source_account_side`, `booking_amount`, `outlier_document_uuid`, `outlier_trade_time`, `outlier_counter_party_account`, `outlier_counter_party_name`, `outlier_account`, `outlie_account_name`, `outlier_account_id`, `outlier_company_id`, `outlier_serial_global_identity`, `outlier_memo`, `outlier_amount`, `outlier_settlement_modes`, `outlier_breif`, `outlier_account_side`, `appendix`, `first_outlier_doc_type`, `second_outlier_doc_type`, `third_outlier_doc_type`, `currency_type`, `audit_status`, `first_party_id`, `second_party_id`, `virtual_account_uuid`, `first_account_id`, `second_account_id`, `third_account_id`, `excute_status`, `excute_result`, `related_contract_uuid`, `financial_contract_uuid`, `source_document_no`, `first_party_type`, `first_party_name`, `virtual_account_no`, `last_modified_time`)
+VALUES
+(1, 1, '5dfe45e6-4ec8-4728-9e56-0c1a2123ac68', 1, '2016-05-27 18:32:35', '2016-05-27 18:32:36', 1, 1, 2406.00, 'ed0cd216d03b4a889d023ac20a46880e', '2016-05-27 18:29:50', '6217000000000000000', '测试用户18', 'account_no', 'account_name', 5, 1, '2730FAE730E7B3C6', '', 2406.00, 3, '', 1, '', 'batch_pay_record', '', '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-05-27 18:32:36'),
+(2, 1, '7cf60311-c5cd-47f7-8825-c89e0df262af', 1, '2016-05-27 18:32:36', '2016-05-27 18:32:36', 1, 1, 1804.50, '883992639dc04cb8b596f26a187d52a3', '2016-05-27 18:29:53', '6217000000000000000', '测试用户19', 'account_no', 'account_name', 5, 1, '2730FAE730EC7B52', '', 1804.50, 3, '', 1, '', 'batch_pay_record', '', '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-05-27 18:32:36'),
+(3, 1, 'ea1ec4d5dedd4f8fba2744132cf72065', 1, '2016-05-27 18:38:35', '2016-05-27 18:38:35', 1, 1, 3007.50, '4bbccd45d2ab4f7d9b62a61f6a3c51c6', '2016-05-27 18:29:53', '6217000000000000000', '测试用户20', 'account_no', 'account_name', 5, 1, '2730FAE730F0BFD2', '', 3007.50, 3, '', 1, '', 'batch_pay_record', '', '', NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016-05-27 18:38:35');
+
+
+INSERT INTO `source_document_detail` (`id`, `uuid`, `source_document_uuid`, `contract_unique_id`, `repayment_plan_no`, `amount`, `status`, `first_type`, `first_no`, `second_type`, `second_no`, `payer`, `receivable_account_no`, `payment_account_no`, `payment_name`, `payment_bank`, `check_state`, `comment`, `financial_contract_uuid`)
+VALUES
+(3, 'cbb69a99-6087-4c63-bf84-faad38aa4d6a', '5dfe45e6-4ec8-4728-9e56-0c1a2123ac68', 'cfe9fb12-b089-4c3b-8a41-f6662a44bd92', 'ZC2743ECD5DAEB2ABA', 11000.00, 2, 'enum.voucher-source.business-payment-voucher', '4b1ac11e-9bfe-49ac-a736-29ed7db09036', 'enum.voucher-type.pay', 'bank_transaction_no_10000', 0, '6600000000000000001', '10001', 'counter_name', 'account_account_name', 0, NULL, 'db36ecc9-d80c-4350-bd0d-59b1139d550d'),
+(10004, 'f5abc9fc-4192-4cfa-a3f2-99509ef50b71', '7cf60311-c5cd-47f7-8825-c89e0df262af', '9db8ce1f-34d2-4601-b246-8d015d92308c', 'ZC2748790EAB0CED9A', 1100.00, 1, 'enum.voucher-source.business-payment-voucher', '67413fc7-c96a-41bd-950f-1f6259882b48', 'enum.voucher-type.pay', null, 0, '600000000112', '10001', 'counter_name', 'account_account_name', 2, NULL, '9b5da2a4-a2ac-40d3-9fe5-0f0e92045e80'),
+(10005, null, 'ea1ec4d5dedd4f8fba2744132cf72065', '9db8ce1f-34d2-4601-b246-8d015d92308c', 'ZC2748790EAB0CED9A', 1100.00, 1, 'enum.voucher-source.business-payment-voucher', '67413fc7-c96a-41bd-950f-1f6259882b48', 'enum.voucher-type.pay', 'bank_transaction_no_10001', 0, '600000000112', '10001', 'counter_name', 'account_account_name', 2, NULL, '9b5da2a4-a2ac-40d3-9fe5-0f0e92045e80');

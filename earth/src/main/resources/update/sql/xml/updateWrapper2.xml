@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="updateWrapper1"> 
+  
+    	
+    	<template id="params">
+    	<![CDATA[
+				{"repuchaseAmountBefore": " ","repuchaseAmountAfter": " ","repurchaseUuid":" ","assetNo": " ","totalOrderRent":" ","bankDebitAmount":" ","key":" ","payoutTime":" "} 
+    	]]>
+    	</template>
+    	
+			    <!--select sql  -->
+			   
+						   <template id="assetSet">
+				 <![CDATA[
+						   SELECT
+				ast.id AS assetSetId , ast.asset_uuid AS assetUuid,ast.asset_recycle_date AS assetRecycleDate,ct.id AS customerId,fc.financial_contract_uuid AS financialContractUuid,fc.id AS financialContractId,fc.app_id AS appId
+			FROM
+				asset_set ast  LEFT JOIN customer ct on ct.customer_uuid = ast.customer_uuid LEFT JOIN financial_contract fc on fc.financial_contract_uuid = ast.financial_contract_uuid
+			WHERE
+				<#if assetNo ??>single_loan_contract_no =:assetNo</#if>;
+					]]>	    
+				 </template>
+			   
+			 <template id="ledgerBookShelf">
+			 <![CDATA[
+				SELECT
+			ledger_book_no AS ledgerBookNo,
+			ledger_book_owner_id AS ledgerBookOwnerId,
+			contract_id AS contractId,
+			contract_uuid AS contractUuid ,first_party_id AS yunxinCompanyUuid,related_lv_1_asset_uuid AS relatedlv1assetuuid ,related_lv_1_asset_outer_idenity AS relatedlv1assetouteridenity
+				FROM
+					ledger_book_shelf
+				WHERE
+					<#if assetUuid?? >related_lv_1_asset_uuid = :assetUuid</#if>
+					AND first_account_name = 'FST_UNEARNED_LOAN_ASSET'
+					LIMIT 1;
+			]]>		    
+			 </template>
+			    
+	 
+			 <template id="customer">
+			 <![CDATA[
+					  SELECT
+						customer_uuid AS appCustomerUuid
+					FROM
+						customer
+					WHERE
+					customer_type = 1
+					AND <#if appId??>app_id =:appId</#if>
+					LIMIT 1;
+		
+					]]>    
+			 </template>
+			    
+			     <template id="repurchaseDoc">
+			 <![CDATA[
+			    SELECT amount_detail As amountDetail FROM repurchase_doc WHERE 
+			    <#if repurchaseDocUuid??>  repurchase_doc_uuid=:repurchaseDocUuid </#if>;
+			   		]]>    
+			 </template>
+			     
+			    
+			    <!--update or insert sql  -->
+			    
+			   
+	<template id="insertLedgerBookShelf1">
+	<![CDATA[
+							/* 修改部分还款的还款计划  */
+				/* 修改已还金额 */
+				INSERT INTO `ledger_book_shelf` (
+					`ledger_uuid`,
+					`debit_balance`,
+					`credit_balance`,
+					`first_account_name`,
+					`first_account_uuid`,
+					`account_side`,
+					`second_account_name`,
+					`second_account_uuid`,
+					`third_account_name`,
+					`third_account_uuid`,
+					`first_party_id`,
+					`second_party_id`,
+					`third_party_id`,
+					`forward_ledger_uuid`,
+					`backward_ledger_uuid`,
+					`batch_serial_uuid`,
+					`amortized_date`,
+					`book_in_date`,
+					`business_voucher_uuid`,
+					`carried_over_date`,
+					`contract_id`,
+					`contract_uuid`,
+					`default_date`,
+					`journal_voucher_uuid`,
+					`ledger_book_no`,
+					`ledger_book_owner_id`,
+					`life_cycle`,
+					`related_lv_1_asset_outer_idenity`,
+					`related_lv_1_asset_uuid`,
+					`related_lv_2_asset_outer_idenity`,
+					`related_lv_2_asset_uuid`,
+					`related_lv_3_asset_outer_idenity`,
+					`related_lv_3_asset_uuid`,
+					`source_document_uuid`
+				)
+				VALUES
+					(
+						<#if uuid1??>  '${uuid1}'   <#else> NULL    </#if>,
+						<#if bankDebitAmount??>${bankDebitAmount}<#else> NULL </#if>,
+						0.00,
+						<#if pFstBankName??>	'${pFstBankName}'  <#else> NULL  </#if>,
+						<#if pFstBankId??>		'${pFstBankId}'    <#else> NULL  </#if>,
+						1,
+						<#if pSndBankName??>	'${pSndBankName}'   <#else> NULL  </#if>,
+						<#if pSndBankId??>		'${pSndBankId}'     <#else> NULL  </#if>,
+						<#if pTrdBankName??>	'${pTrdBankName}'    <#else> NULL  </#if>,
+						<#if pTrdBankId??>		'${pTrdBankId}'      <#else> NULL  </#if>,
+						<#if yunxinCompanyUuid??>  '${yunxinCompanyUuid}'   <#else> NULL    </#if>,
+						'',
+						NULL,
+						NULL,
+						NULL,
+						<#if batchserialuuid1??>  '${batchserialuuid1}'   <#else> NULL    </#if>,
+						<#if assetRecycleDate??>  '${assetRecycleDate}'   <#else> NULL    </#if>,
+						now(),
+						'',
+						NULL,
+						<#if contractId??>  ${contractId}   <#else> NULL    </#if>,
+						<#if contractUuid??>  '${contractUuid}'   <#else> NULL    </#if>,
+						<#if defaultDate??>  '${defaultDate}'   <#else> NULL    </#if>,
+						'',
+						<#if ledgerBookNo??>  '${ledgerBookNo}'   <#else> NULL    </#if>,
+						<#if ledgerBookOwnerId??>  '${ledgerBookOwnerId}'   <#else> NULL    </#if>,
+						1,
+						<#if relatedlv1assetouteridenity??>  '${relatedlv1assetouteridenity}'   <#else> NULL    </#if>,
+						<#if relatedlv1assetuuid??>  '${relatedlv1assetuuid}'   <#else> NULL    </#if>,
+						NULL,
+						NULL,
+						NULL,
+						NULL,
+						''
+					);
+				
+					]]>
+					</template>
+			
+			
+								<template id="insertLedgerBookShelf2">
+								<![CDATA[
+										/* 修改回购金额 */
+							INSERT INTO `ledger_book_shelf` (
+								`ledger_uuid`,
+								`debit_balance`,
+								`credit_balance`,
+								`first_account_name`,
+								`first_account_uuid`,
+								`account_side`,
+								`second_account_name`,
+								`second_account_uuid`,
+								`third_account_name`,
+								`third_account_uuid`,
+								`first_party_id`,
+								`second_party_id`,
+								`third_party_id`,
+								`forward_ledger_uuid`,
+								`backward_ledger_uuid`,
+								`batch_serial_uuid`,
+								`amortized_date`,
+								`book_in_date`,
+								`business_voucher_uuid`,
+								`carried_over_date`,
+								`contract_id`,
+								`contract_uuid`,
+								`default_date`,
+								`journal_voucher_uuid`,
+								`ledger_book_no`,
+								`ledger_book_owner_id`,
+								`life_cycle`,
+								`related_lv_1_asset_outer_idenity`,
+								`related_lv_1_asset_uuid`,
+								`related_lv_2_asset_outer_idenity`,
+								`related_lv_2_asset_uuid`,
+								`related_lv_3_asset_outer_idenity`,
+								`related_lv_3_asset_uuid`,
+								`source_document_uuid`
+							)
+							VALUES
+								(
+									<#if uuid2??>  '${uuid2}'   <#else> NULL    </#if>,
+									<#if repuchaseAmountAfter??>  ${repuchaseAmountAfter}   <#else> NULL    </#if>,
+									<#if repuchaseAmountBefore??>  ${repuchaseAmountBefore}   <#else> NULL    </#if>,
+									'FST_REPURCHASE_ASSET',
+									'120000',
+									1,
+									NULL,
+									NULL,
+									NULL,
+									NULL,
+								  <#if yunxinCompanyUuid??>  	'${yunxinCompanyUuid}'   <#else> NULL    </#if>,
+									<#if appCustomerUuid??>  '${appCustomerUuid}'   <#else> NULL    </#if>,
+									NULL,
+									NULL,
+									NULL,
+									<#if batchserialuuid2??>  '${batchserialuuid2}'   <#else> NULL    </#if>,
+									NULL,
+									now(),
+									'',
+									NULL,
+									<#if contractId??>  ${contractId}   <#else> NULL    </#if>,
+									<#if contractUuid??>  '${contractUuid}'   <#else> NULL    </#if>,
+									NULL,
+									'',
+									<#if ledgerBookNo??>  '${ledgerBookNo}'   <#else> NULL    </#if>,
+									<#if ledgerBookOwnerId??>  '${ledgerBookOwnerId}'   <#else> NULL    </#if>,
+									1,
+									NULL,
+									NULL,
+									NULL,
+									<#if repurchaseUuid??>  '${repurchaseUuid}'   <#else> NULL    </#if>,
+									NULL,
+									NULL,
+									''
+								);
+								]]>
+								</template>
+								
+								
+								
+								<template id="rentOrder">
+								<![CDATA[
+									/* 修改结算单 */
+									INSERT INTO `rent_order` (
+										`order_type`,
+										`due_date`,
+										`order_no`,
+										`payout_time`,
+										`total_rent`,
+										`customer_id`,
+										`user_upload_param`,
+										`modify_time`,
+										`financial_contract_id`,
+										`repayment_bill_id`,
+										`asset_set_id`,
+										`asset_set_uuid`,
+										`create_time`,
+										`clearing_status`,
+										`executing_settling_status`,
+										`comment`,
+										`charges_detail`,
+										`order_source`
+									)
+									VALUES
+										(
+											0,
+											<#if dueDate??>  '${dueDate}'   <#else> NULL    </#if>,
+											<#if orderNo??>  '${orderNo}'   <#else> NULL    </#if>,
+											<#if payoutTime??>  '${payoutTime}'   <#else> NULL    </#if>,
+										  <#if totalOrderRent??>  ${totalOrderRent}   <#else> NULL    </#if>,
+											<#if customerId??>  ${customerId}   <#else> NULL    </#if>,
+											NULL,
+											<#if payoutTime??>  '${payoutTime}' <#else> NULL    </#if>,
+											<#if financialContractId??>  ${financialContractId}  <#else> NULL    </#if>,
+											<#if repaymentBillId??>  '${repaymentBillId}'   <#else> NULL    </#if>,
+											<#if assetSetId??>  ${assetSetId}   <#else> NULL    </#if>,
+											<#if assetUuid??>  ${assetUuid}   <#else> NULL    </#if>,
+											now(),
+											1,
+											2,
+											NULL,
+											'回购资产后人工生成部分还款的结算单',
+											1
+										);
+																		
+									
+								]]>
+								</template>
+								
+								<template id="insertAssetSet">
+								<![CDATA[
+								UPDATE asset_set
+							SET on_account_status = 3,
+							 actual_recycle_date =
+							 <#if payoutTime??>'${payoutTime}'<#else> NULL </#if>
+							WHERE
+								<#if assetNo?? >single_loan_contract_no = '${assetNo}'   <#else> single_loan_contract_no=NULL </#if>;
+							
+							UPDATE repurchase_doc SET 
+							<#if amount??>amount=${amount}</#if>
+							<#if repurchasePrincipal??>,repurchase_principal=${repurchasePrincipal}</#if>
+							<#if repurchaseInterest??>,repurchase_interest=${repurchaseInterest}</#if>
+							<#if repurchasePenalty??>,repurchase_penalty=${repurchasePenalty}</#if>
+							<#if repurchaseOtherCharges??>,repurchase_other_charges=${repurchaseOtherCharges}</#if>
+							<#if amountDetail??>,amount_detail='${amountDetail}'</#if>
+							
+							 WHERE <#if repurchaseDocUuid??>  repurchase_doc_uuid='${repurchaseDocUuid}'   <#else> repurchase_doc_uuid=NULL    </#if>;
+								]]>
+								</template>
+    	
+</sqltemplate> 
+</sql>

@@ -1,0 +1,104 @@
+.sdf-form {
+    $short-form-control-width: 115px;
+    $middle-form-control-width: 230px;
+    $long-form-control-width: 350px;
+
+    margin-left: 12%;
+
+    // 子类别
+    &.sdf-modal-form {
+        margin-left: 30px;
+    }
+
+    &.sdf-query-form {
+        margin-left: 0;
+
+        .el-form-item__label {
+            padding: 0 10px 0 0;
+            vertical-align: sub;
+            display: inline-block;
+            float: none;
+        }
+
+        .el-form-item__content {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .el-select__tags {
+            z-index: 2;
+        }
+    }
+
+    .fieldset {
+        margin-top: 30px;
+    }
+
+    // 表单内的基本样式，用于覆盖
+    .el-button {
+        min-width: 65px;
+    }
+
+    .el-textarea__inner {
+        resize: none;
+    }
+
+    // .el-select__tags {
+    //     overflow: hidden;
+    //     white-space: nowrap;
+    //     text-overflow: ellipsis;
+    //     font-size: 12px;
+    //     color: #666;
+    //     padding: 0px 0 0px 10px;
+    //     margin-top: 7px;
+    // }
+
+    // ledgend
+    .form-item-legend {
+        .el-form-item__label {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .supplement {
+            color: #999;
+            position: relative;
+            left: -15px;
+        }
+    }
+
+    // error
+    .el-form-item.is-error {
+        .button-multimedia {
+            border-color: $brand-danger;   
+        }
+    }
+
+    // 长度
+    .long:not(.el-input-group),
+    .middle:not(.el-input-group),
+    .short:not(.el-input-group) {
+        display: inline-block;
+    }
+
+    .long {
+        .el-textarea__inner,
+        .el-input__inner {
+            width: $long-form-control-width;
+        }
+    }
+
+    .middle {
+        .el-textarea__inner,
+        .el-input__inner {
+            width: $middle-form-control-width;
+        }
+    }
+
+    .short {
+        .el-textarea__inner,
+        .el-input__inner {
+            width: $short-form-control-width;
+        }
+    }
+}

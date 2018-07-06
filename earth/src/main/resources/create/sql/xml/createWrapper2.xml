@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<sql>
+    <sqltemplate id="createBatchSql1">
+        <![CDATA[
+            CREATE TABLE if not exists `t_ledger_book_batch_${tableName}` (
+            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `ledger_book_batch_uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+            `booking_account` int(1) NOT NULL DEFAULT '0' COMMENT '入账状态',
+            `add_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+            `booking_account_time` timestamp NULL DEFAULT NULL COMMENT '登账时间',
+            `ledger_book_no` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '账本编号',
+            `ledger_book_d_b_location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '分表表名',
+            `contract_uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '合同UUID',
+            `financial_contract_uuid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '信托合同UUID',
+            `batch_size` int(11) NOT NULL COMMENT '批次数量',
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `ledger_book_batch_uuid` (`ledger_book_batch_uuid`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+        ]]>
+
+    </sqltemplate>
+</sql>

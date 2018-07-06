@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<sql> 
+ <sqltemplate id="updateWrapper1"> 
+  
+    	
+    	<template id="params">
+    	<![CDATA[
+				{"bankSequenceNo": "放款流水号","contractId": "多个贷款合同id,用逗号分割","financialContractUuid":"信托合同uuid","secondNo": "打款流水","comment":"备注","amount":"金额"} 
+    	]]>
+    	</template>
+    	
+			    <!--select sql  -->
+			    
+	 <template id="cashFlow">
+	 <![CDATA[
+			SELECT  cash_flow_uuid as cashFlowUuid, host_account_no as receivableAccountNo, counter_account_no as paymentAccountNo,
+		counter_account_name as paymentName, counter_bank_info as paymentBank FROM cash_flow WHERE 
+		<#if bankSequenceNo ??>bank_sequence_no =:bankSequenceNo</#if>
+	]]>		    
+	 </template>
+			    
+	 <template id="sourceDocument">
+	 <![CDATA[
+			    SELECT source_document_uuid as sourceDocumentUuid FROM `source_document` WHERE 
+			    <#if cashFlowUuid ??>outlier_document_uuid =:cashFlowUuid</#if>
+		]]>	    
+	 </template>
+	 
+	 <template id="contract">
+	 <![CDATA[
+			   SELECT c.unique_id as uniqueId, rd.repurchase_doc_uuid as repurchaseDocUuid FROM contract c INNER JOIN repurchase_doc
+				 rd on c.id=rd.contract_id where
+				 <#if contractId ??>c.id in (:contractId) and</#if>
+				   repurchase_status=0;
+			]]>    
+	 </template>
+			    
+			    <!--update or insert sql  -->
+			    
+			   
+	<template id="tVoucher">
+	<![CDATA[
+			 /* 新增凭证*/
+			INSERT INTO `t_voucher` (`uuid`, `voucher_no`, `source_document_uuid`, `financial_contract_uuid`, `amount`
+				, `status`, `first_type`, `first_no`, `second_type`, `second_no`
+				, `receivable_account_no`, `payment_account_no`, `payment_name`, `payment_bank`, `check_state`
+				, `comment`, `create_time`, `last_modified_time`)
+			VALUES (
+			<#if uuid  ??>      				'${uuid}'      <#else>NULL</#if>,
+			<#if voucherNo ??>      			'${voucherNo}'      <#else>NULL</#if>,
+			<#if sourceDocumentUuid ??>     '${sourceDocumentUuid}'      <#else>NULL</#if>,
+			<#if financialContractUuid ??>  '${financialContractUuid}'     <#else>NULL</#if>,
+			<#if amount ??>      			${amount}     <#else>NULL</#if>, 
+			 2, 
+			<#if firstType  ??>      		'${firstType}'     <#else>NULL</#if>,
+			<#if firstNo ??>		 			'${firstNo}'     <#else>NULL</#if>,
+			<#if secondType ??> 				'${secondType}'     <#else>NULL</#if>,
+			<#if secondNo ??>     			'${secondNo}'      <#else>NULL</#if>, 
+			<#if receivableAccountNo??>     '${receivableAccountNo}'     <#else>NULL</#if>, 
+			<#if paymentAccountNo ??>       '${paymentAccountNo}'     <#else>NULL</#if>,
+			<#if paymentName??>     			'${paymentName}'      <#else>NULL</#if>, 
+			<#if paymentName??>     		 	'${paymentBank}'     <#else>NULL</#if>, 
+			   0, 
+			<#if comment??>      			'${comment}'     <#else>NULL</#if>, 
+			   now(),
+			   now());
+	]]>
+	</template>
+			
+			
+	<template id="sourceDocumentDetail">
+	<![CDATA[
+			/* 新增明细*/
+			INSERT INTO `source_document_detail` (`uuid`, `source_document_uuid`, `contract_unique_id`, `repayment_plan_no`, `amount`
+				, `status`, `first_type`, `first_no`, `second_type`, `second_no`
+				, `payer`, `receivable_account_no`, `payment_account_no`, `payment_name`, `payment_bank`
+				, `check_state`, `financial_contract_uuid`)
+			SELECT 
+			<#if uuid??>					'${uuid1}'       				<#else>NULL</#if>,
+			v.`source_document_uuid`, 
+			<#if uniqueId??>				'${uniqueId}'       			<#else>NULL</#if>,
+			<#if repurchaseDocUuid??> 	'${repurchaseDocUuid}'      <#else>NULL</#if>,
+			<#if amount1??>   			${amount1}               <#else>0,</#if>
+			  0, v.`first_type`, v.`first_no`, v.`second_type`, v.`second_no`
+				, 0, v.`receivable_account_no`, v.`payment_account_no`, v.`payment_name`, v.`payment_bank`
+				, 0, v.`financial_contract_uuid`
+			FROM `t_voucher` v
+			WHERE 
+			<#if uuid??>			v.`uuid` = '${uuid}'       <#else>v.`uuid` =NULL</#if>;
+				UPDATE `t_voucher` SET `status` = '0' WHERE 
+			<#if uuid??>							`uuid` = '${uuid}'      <#else>NULL</#if>;
+	]]>
+	</template>
+    	
+</sqltemplate> 
+</sql>

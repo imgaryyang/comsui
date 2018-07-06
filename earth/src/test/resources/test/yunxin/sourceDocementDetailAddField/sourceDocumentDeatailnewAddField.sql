@@ -1,0 +1,2 @@
+alter table `source_document_detail` add `repay_schedule_no` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '商户还款计划编号(MD5加密)';
+alter table `source_document_detail` add `current_period` int(11) DEFAULT NULL COMMENT '期数';

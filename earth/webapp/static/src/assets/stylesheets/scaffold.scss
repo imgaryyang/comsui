@@ -1,0 +1,97 @@
+[v-cloak] {
+  display: none;
+}
+
+// 暂时只为了覆盖bootstrap
+label {
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+.el-checkbox__inner::after {
+    box-sizing: content-box;
+}
+
+input[type=file].el-upload__input {
+    display: none
+}
+
+input::-ms-clear{
+    display:none;
+}
+
+.effect {
+    transition: all .3s ease-out;
+
+    &.slide-leave-active,
+    &.slide-enter {
+        opacity: 0;
+        @include translate(0, -25%);
+    }
+
+    &.opacity-leave-active,
+    &.opacity-enter {
+        opacity: 0;
+    }
+}
+
+// overwrite element
+.el-button--default {
+    background: #f6f6f6;
+
+    &.el-button--default:focus,
+    &.el-button--default:active,
+    &.el-button--default:hover {
+        border-color: #e0e0e0;
+        color: #1F2D3D;
+        background: #fff;
+    }
+}
+
+.el-form-item {
+    margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    .el-form-item {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+.el-form-item__error {
+    padding-top: 0;
+}
+
+.el-form-item.is-required .el-form-item__label:before {
+    margin-right: 0;
+}
+
+.el-form-item__label {
+    margin-bottom: 0;
+    color: #999;
+    font-weight: normal;
+}
+
+.el-table__empty-block {
+    height: 40px;
+    min-height: 40px;
+}
+
+.el-table__empty-text {
+    color: #666
+}
+
+.el-select-dropdown {
+    &.is-multiple .el-select-dropdown__item.selected {
+        padding-right: 30px;
+    }
+}
+
+.el-dropdown-menu__item {
+    line-height: 34px;
+}
+
+.el-popover {
+    border-radius: 4px;
+}

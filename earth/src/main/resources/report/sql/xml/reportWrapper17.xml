@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+	<sqltemplate id="reportWrapper17"> 
+		<![CDATA[
+SELECT * FROM third_party_voucher_command_log
+WHERE 1=1
+<#if financialContractUuids ??> AND financial_contract_uuid in (:financialContractUuids) </#if>
+<#if transcationGateway ??> AND transcation_gateway = :transcationGateway </#if>
+<#if voucherLogStatus ??> AND voucher_log_status IN (:voucherLogStatus) </#if>
+<#if voucherLogIssueStatus ??> AND voucher_log_issue_status = :voucherLogIssueStatus </#if>
+<#if receivableAccountNo ??> AND receivable_account_no LIKE :receivableAccountNo </#if>
+<#if paymentName ??> AND payment_name LIKE :paymentName </#if>
+<#if paymentAccountNo ??> AND payment_account_no LIKE :paymentAccountNo </#if>
+<#if voucherUuid ??> AND voucher_uuid LIKE :voucherUuid </#if>
+<#if tradeUuid ??> AND trade_uuid LIKE :tradeUuid </#if>
+<#if startTime ??> AND create_time >= :startTime </#if>
+<#if endTime ??> AND create_time <= :endTime </#if> 
+ORDER BY create_time DESC;
+		]]>
+	</sqltemplate>
+</sql>

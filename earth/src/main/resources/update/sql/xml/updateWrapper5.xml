@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sql>
+    <sqltemplate id="updateWrapper5">
+
+
+        <template id="params">
+            <![CDATA[
+	{"voucherNo": "凭证编号"}
+    	]]>
+        </template>
+
+        <!--select sql  -->
+
+        <template id="thirdPartyVoucherCommandLog">
+            <![CDATA[
+
+            SELECT trade_uuid AS tradeUuid,repayment_no_json_list AS  repaymentNoJsonList
+            FROM third_party_voucher_command_log
+            WHERE voucher_no =<#if voucherNo??> :voucherNo </#if>;
+							]]>
+        </template>
+
+        <template id="journalVoucher">
+            <![CDATA[
+            SELECT source_document_identity AS sourceDocumentIdentity,source_document_uuid AS sourceDocumentUuid,journal_voucher_uuid AS journalVoucherUuid
+             FROM journal_voucher
+             WHERE
+             <#if relatedBillContractNoLv3??> related_bill_contract_no_lv_3 IN (${relatedBillContractNoLv3}); </#if>
+
+			]]>
+        </template>
+
+
+        <!--update or insert sql  -->
+
+
+        <template id="updateThirdPartyVoucherCommandLog">
+            <![CDATA[
+
+            UPDATE third_party_voucher_command_log
+             SET voucher_log_status = 2
+
+             WHERE trade_uuid =<#if tradeUuid??>'${tradeUuid}'<#else>NULL</#if> AND voucher_no=<#if voucherNo??> '${voucherNo}' </#if>;
+
+
+					]]>
+        </template>
+
+        <template id="updateThirdPartyTransactionRecord">
+            <![CDATA[
+
+            UPDATE third_party_transaction_record
+            SET audit_status = 0
+            WHERE merchant_order_no =<#if tradeUuid??>'${tradeUuid}'<#else>NULL</#if>;
+
+
+					]]>
+        </template>
+
+        <template id="updateThirdPartyPayAuditResult">
+            <![CDATA[
+
+            UPDATE third_party_pay_audit_result
+            SET audit_result_status = 4,error_message ='手动作废'
+            WHERE trade_uuid =<#if tradeUuid??>'${tradeUuid}'<#else>NULL</#if> AND transcation_voucher_no=<#if voucherNo??> '${voucherNo}'<#else>NULL</#if>;
+
+					]]>
+        </template>
+
+        <template id="updateDeductApplicationAndDeductPlan">
+            <![CDATA[
+
+            UPDATE t_deduct_application da,t_deduct_plan dp
+            SET da.execution_status = 3,dp.execution_status = 3
+            WHERE da.deduct_id =<#if voucherNo??>'${voucherNo}'<#else>NULL</#if>
+            AND dp.deduct_application_uuid = da.deduct_application_uuid;
+
+					]]>
+        </template>
+
+
+        <template id="updateJournalVoucher">
+            <![CDATA[
+         UPDATE journal_voucher
+         SET status = 2
+         WHERE  journal_voucher_uuid =<#if journalVoucherUuid??>'${journalVoucherUuid}'<#else>NULL</#if>;
+
+					]]>
+        </template>
+
+        <template id="updateSourceDocument">
+            <![CDATA[
+            UPDATE source_document
+            SET  source_document_status = 2
+            WHERE source_document_uuid = <#if sourceDocumentIdentity??>'${sourceDocumentIdentity}'<#else>NULL</#if>;
+
+					]]>
+        </template>
+
+        <template id="updateSourceDocumentDetail">
+            <![CDATA[
+             UPDATE source_document_detail
+             SET status = 2
+             WHERE  uuid = <#if sourceDocumentUuid??>'${sourceDocumentUuid}'<#else>NULL</#if>;
+
+					]]>
+        </template>
+
+    </sqltemplate>
+</sql>

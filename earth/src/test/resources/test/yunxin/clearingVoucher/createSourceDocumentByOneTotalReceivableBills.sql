@@ -1,0 +1,19 @@
+SET FOREIGN_KEY_CHECKS=0;
+	delete from `cash_flow`;
+	delete from `audit_job`;
+	delete from `total_receivable_bills`;
+	delete from `clearing_voucher`;
+	delete from `source_document`;
+
+INSERT INTO `cash_flow` (`id`, `cash_flow_uuid`, `cash_flow_channel_type`, `company_uuid`, `host_account_uuid`, `host_account_no`, `host_account_name`, `counter_account_no`, `counter_account_name`, `counter_account_appendix`, `counter_bank_info`, `account_side`, `transaction_time`, `transaction_amount`, `balance`, `transaction_voucher_no`, `bank_sequence_no`, `remark`, `other_remark`, `strike_balance_status`, `cash_flow_type`, `trade_uuid`, `issued_amount`, `audit_status`, `date_field_one`, `date_field_two`, `date_field_three`, `long_field_one`, `long_field_two`, `long_field_three`, `string_field_one`, `string_field_two`, `string_field_three`, `decimal_field_one`, `decimal_field_two`, `decimal_field_three`) VALUES 
+('285', '635e5285-e3c8-4df2-826b-b58dd2f201b5', '0', NULL, NULL, '95200155300001595', '浦发2000040752', '95130154900000571', '浦发2000040752', NULL, '{\"bankCode\":\"9513\",\"bankName\":\"浦发杭州高新支行\"}', '1', '2017-09-07 10:31:19', '40000.00', '1491795320.00', NULL, '999702020206', '普通同城同行拨付测试', '000100000001', NULL, NULL, '', '0.00', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '3f84eb1c94a86316b7c8bce1c3f70342', NULL, NULL, NULL, NULL),
+('286', '8d81d7a4-f7b6-49a9-b2f9-bb50adae722b', '0', NULL, NULL, '95200155300001595', '浦发2000040752', '95130154900000571', '浦发2000040752', NULL, '{\"bankCode\":\"9513\",\"bankName\":\"浦发杭州高新支行\"}', '1', '2017-09-07 10:31:54', '50000.00', '1494995320.00', NULL, '999702160202', '单笔下拨(委贷)', '单笔下拨(委贷)', NULL, NULL, '委贷', '10000.00', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '052eb6b5be34b82c686d1a87e06fe722', NULL, NULL, NULL, NULL),
+('287', '9056aef3-15b6-436b-a9ef-d735ab04e267', '0', NULL, NULL, '95200155300001595', '浦发2000040752', '95130154900000571', '浦发2000040752', NULL, '{\"bankCode\":\"9513\",\"bankName\":\"浦发杭州高新支行\"}', '1', '2017-09-07 10:32:53', '20000.00', '1495306420.00', NULL, '999700970246', '单笔下拨(委贷)', '单笔下拨(委贷)', NULL, NULL, '委贷', '0.00', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '7e320c06d191a8181efd3c4cf8ffeaf8', NULL, NULL, NULL, NULL);
+
+INSERT INTO `audit_job` (`id`, `uuid`, `audit_job_no`, `financial_contract_uuid`, `capital_account_no`, `payment_channel_uuid`, `payment_channel_service_uuid`, `pg_clearing_account`, `payment_institution`, `audit_job_source`, `account_side`, `start_time`, `end_time`, `audit_result`, `create_time`, `last_modified_time`, `clearing_status`, `merchant_no`, `audit_result_Code`) VALUES 
+('1', 'b2e136c7-f595-4861-86af-f95fcf888d70', 'DZ131269695966961664', 'b6b407fb-de54-4d84-9cba-84ccb2c17fcf', '19014526016005', 'b0f571da-72fa-4c0e-bf34-2b4285134c13', 'f8bb9956-1952-4893-98c8-66683d25d7ce', '', '3', '0', '0', '2017-11-23 00:00:00', '2017-11-23 23:59:59', '0', '2017-11-24 03:00:00', '2017-11-24 03:00:00', '0', '001053110000001', '0');
+
+INSERT INTO `total_receivable_bills` (`id`, `uuid`, `financial_contract_uuid`, `payment_channel_uuid`, `clearing_receivable_identity`, `fst_merchant_no`, `fst_merchant_name`, `total_num`, `total_amount`, `total_charge`, `total_receivable_amount`, `clearing_cash_flow_identity`, `clearing_cash_flow_identity_list`, `clearing_time`, `create_time`, `last_modified_time`, `cash_flow_clearing_time`, `audit_status`, `payment_gateway`, `snd_merchant_no`) VALUES 
+('5797', 'ed055704-25c1-46fe-ab56-d733d9af0bb0', 'b6b407fb-de54-4d84-9cba-84ccb2c17fcf', 'f1ccca57-7c80-4429-b226-8ad31a729609', 'YS128370599623024640', '001053110000001', '拍拍贷', '0', '100000.00', '0.00', '100000.00', '', '', '2017-11-23 00:00:00', '2017-11-16 03:00:01', '2017-11-23 03:00:01', NULL, NULL,'3','');
+
+SET FOREIGN_KEY_CHECKS=1;

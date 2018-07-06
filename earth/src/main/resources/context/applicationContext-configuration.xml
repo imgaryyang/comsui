@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	   default-autowire="byName">
+   
+    <!-- enable aspect -->
+    <aop:aspectj-autoproxy/>
+    
+    <util:properties id="config" location="classpath:/config.properties"></util:properties>
+	<util:properties id="task" location="classpath:/task.properties"></util:properties>
+	<util:properties id="redis" location="classpath:/redis.properties"></util:properties>
+	<util:properties id="rabbit" location="classpath:/rabbit.properties"></util:properties>
+	<util:properties id="kaptcha" location="classpath:/kaptcha.properties"></util:properties>
+	<util:properties id="verificationCodeConfig" location="classpath:/verificationCodeConfig.properties" ignore-resource-not-found="true" local-override="true"></util:properties>
+    <!-- Enable annotation based container configuration  -->
+	<context:annotation-config />
+	<!-- begin task -->
+	
+	<task:scheduled-tasks scheduler="task-scheduler">
+		<!-- 资产评估 -->
+		<task:scheduled ref="assetTask" method="endYesterdayWorkAndStartTodayWork" cron="#{task['assetTask_cron']}"/>
+		<!-- 代扣对账任务金额统计 -->
+		<task:scheduled ref="assetTask" method="debitAuditJobCount" cron="#{task['assetTask_debit_cron']}"/>
+		<!-- 系统－正常扣款 -->
+		<task:scheduled ref="systemDeductTask" method="sysDeductOnPlannedRepaymentDate" cron="#{task['sys_deduct_on_planned_repayment_date_cron']}"/>
+		<!-- 系统－逾期扣款 -->
+		<task:scheduled ref="systemDeductTask" method="sysDeductAfterPlannedRepaymentDate" cron="#{task['sys_deduct_after_planned_repayment_date_cron']}"/>
+		<!-- 系统－提前还款扣款 -->
+		<task:scheduled ref="systemDeductTask" method="sysDeductForPrepaymentApplication" cron="#{task['sys_deduct_for_prepayment_application_cron']}"/>
+		<!-- 系统－结算单拆分扣款 -->
+		<task:scheduled ref="systemDeductTask" method="sysDeductForManualNormalOrder" cron="#{task['sys_deduct_for_manual_normal_order_cron']}"/>
+		<!-- 系统－扣款状态同步 -->
+		<task:scheduled ref="systemDeductTask" method="syncSysDeductStatus" fixed-delay="#{task['sync_sys_deduct_status_fixed_rate']}" initial-delay="#{task['sync_sys_deduct_status_initial_delay']}"/>
+		<!-- 生成清算单task已转移至实时生成 -->
+		<!-- 凭证核销 -->
+		<task:scheduled ref="voucherTask" method="voucher_and_auto_deposit" fixed-delay="#{task['voucher_and_auto_deposit_fixed_rate']}" initial-delay="#{task['voucher_and_auto_deposit_initial_delay']}" />
+		<!-- 短信发送 -->
+		<task:scheduled ref="smsTask" method="sendSmsQuene" fixed-delay="#{task['sendSmsQuene_fixed_rate']}" initial-delay="#{task['sendSmsQuene_initial_delay']}"/>
+		
+		<task:scheduled ref="dataSyncTask" method="fillHandleMissingJV"  fixed-delay="#{task['dataSync_fill_missing_task_fixed_delay']}" initial-delay="#{task['dataSync_fill_missing_initial_delay']}"/>
+		<task:scheduled ref="cashFlowTask" method="exeQueryIntradayCashFlow" cron="0 0/2 5-22 * * ?"/>
+		<task:scheduled ref="cashFlowTask" method="exeQueryHistoryCashFlow" cron="0 0/2 3-4 * * ?"/>
+		<task:scheduled ref="RepurchaseTask" method="genRepurchaseDoc" cron="0 30 0 * * ?"/>
+		<task:scheduled ref="remittanceCashFlowCheckTask" method="execute" fixed-delay="#{task['check_cash_flow_for_remittance_fixed_rate']}" initial-delay="#{task['check_cash_flow_for_remittance_initial_delay']}" />
+		
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="task-scheduler" pool-size="10" />
+	 
+	<!-- end task -->
+    
+	<!-- Enable classpath scanning to find candidate managed beans -->
+	<context:component-scan base-package="com.zufangbao,com.suidifu">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="regex" expression="com.zufangbao.sun.yunxin.ledgerBook.MockBankAccountCache"/>
+	</context:component-scan> 
+	
+	<!-- Only needed because we install custom converters to support the examples in the org.springframewok.samples.mvc.convert package -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+	        <bean class="com.demo2do.core.web.format.PersistentAnnotationFormatterFactory" autowire="byName" />
+	    </property>
+	</bean> 
+	
+	<!-- Expression parser -->
+	<bean id="expressionParser" class="com.demo2do.core.expression.FormattingSpelExpressionParser" autowire="byName">
+		<constructor-arg index="0">
+			<bean class="org.springframework.expression.spel.SpelParserConfiguration">
+				<constructor-arg index="0" value="true"></constructor-arg>
+				<constructor-arg index="1" value="true"></constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<!-- 验证码 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+        <property name="config">  
+            <bean class="com.google.code.kaptcha.util.Config">  
+                <constructor-arg>  
+                    <props>  
+                        <prop key="kaptcha.border">#{kaptcha['kaptcha.border']}</prop>  
+                        <prop key="kaptcha.border.color">#{kaptcha['kaptcha.border.color']}</prop>  
+                        <prop key="kaptcha.textproducer.font.color">#{kaptcha['kaptcha.textproducer.font.color']}</prop>  
+                        <prop key="kaptcha.textproducer.font.names">#{kaptcha['kaptcha.textproducer.font.names']}</prop>  
+                        <prop key="kaptcha.textproducer.font.size">#{kaptcha['kaptcha.textproducer.font.size']}</prop>  
+                        <prop key="kaptcha.textproducer.char.space">#{kaptcha['kaptcha.textproducer.char.space']}</prop>  
+                        <prop key="kaptcha.textproducer.char.length">#{kaptcha['kaptcha.textproducer.char.length']}</prop>  
+                        <prop key="kaptcha.image.width">#{kaptcha['kaptcha.image.width']}</prop>  
+                        <prop key="kaptcha.image.height">#{kaptcha['kaptcha.image.height']}</prop>  
+                        <prop key="kaptcha.session.key">#{kaptcha['kaptcha.session.key']}</prop>  
+                        <prop key="kaptcha.background.clear.from">#{kaptcha['kaptcha.background.clear.from']}</prop>
+                        <prop key="kaptcha.background.clear.to">#{kaptcha['kaptcha.background.clear.to']}</prop>
+                        <prop key="kaptcha.noise.color">#{kaptcha['kaptcha.noise.color']}</prop>  
+                        <prop key="kaptcha.noise.impl">#{kaptcha['kaptcha.noise.impl']}</prop>
+                        <prop key="kaptcha.obscurificator.impl">#{kaptcha['kaptcha.obscurificator.impl']}</prop>
+                        <prop key="kaptcha.word.impl">#{kaptcha['kaptcha.word.impl']}</prop>
+                    </props>  
+                </constructor-arg>  
+            </bean>  
+        </property>  
+    </bean>
+    
+     <!-- Definition of Redis -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+		p:max-idle="#{redis['redis.pool.maxIdle']}"
+		p:max-total="#{redis['redis.pool.maxTotal']}"
+		p:test-on-borrow="#{redis['redis.pool.testOnBorrow']}"
+		p:max-wait-millis="#{redis['redis.pool.maxWaitMillis']}"
+		  p:test-on-return="#{redis['redis.pool.testOnReturn']}"
+		  p:test-while-idle="#{redis['redis.pool.testWhileIdle']}"
+		  p:time-between-eviction-runs-millis="#{redis['redis.pool.timeBetweenEvictionRunsMillis']}"
+		  p:num-tests-per-eviction-run="#{redis['redis.pool.numTestsPerEvictionRun']}"
+		  p:min-evictable-idle-time-millis="#{redis['redis.pool.minEvictableIdleTimeMillis']}"
+		  p:block-when-exhausted="#{redis['redis.pool.blockWhenExhausted']}"
+	/>
+	
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="#{redis['redis.host']}" 
+		p:port="#{redis['redis.port']}" 
+		p:password="#{redis['redis.password']}"
+		p:use-pool="true" 
+		p:pool-config-ref="jedisPoolConfig"
+		p:timeout="#{redis['redis.pool.timeout']}"
+	/>
+	
+		
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory" p:enable-transaction-support="true"/>
+	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+	
+	 <!-- End Definition of Redis -->
+	
+	
+	<!-- Definition of rabbitMQ -->
+	<bean id="cfg_rabbitmq_producer" class="com.suidifu.mq.config.RabbitMqConfig">
+        <property name="host" value="#{rabbit['rabbitmq.producer.host']}" />
+        <property name="port" value="#{rabbit['rabbitmq.producer.port']}" />
+        <property name="userName" value="#{rabbit['rabbitmq.producer.userName']}" />
+        <property name="password" value="#{rabbit['rabbitmq.producer.password']}" />
+        <property name="serviceName" value="#{rabbit['rabbitmq.producer.serviceName']}" />
+        <property name="start" value="#{rabbit['rabbitmq.producer.start']}" />
+        <property name="end" value="#{rabbit['rabbitmq.producer.end']}" />
+        <property name="replyTimeout" value="#{rabbit['rabbitmq.producer.replyTimeout']}" />
+        <property name="receiveTimeout" value="#{rabbit['rabbitmq.producer.receiveTimeout']}" />
+    </bean>
+	
+	<bean id="messageSender" class="com.zufangbao.wellsfargo.mq.sender.MqMessageSender"></bean>
+	
+	<bean id="mqRpcHandler" class="com.suidifu.hathaway.mq.handler.MqRpcHandler">
+		<property name="messageSender" ref="messageSender"></property>
+	</bean>
+     
+	<!-- End Definition of rabbitMQ -->
+
+	<bean class="com.zufangbao.earth.config.accountbalance.BoscAccoutBalanceConfig" id="boscAccoutBalanceConfig"/>
+
+</beans>
