@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  <properties>
+    <property name="project-name">berkshire</property>
+    <property name="dstJobSubrogationReconciliationImpl-log">dstJobSubrogationReconciliation</property>
+    <property name="logfile-dir">../</property>
+    <property name="sync-logfile-dir">./berkshire-logs/business_logs/</property>
+    <property name="repayment-logfile-dir">./berkshire-logs/repayment_logs/</property>
+    <property name="repayment-order-item-logfile-dir">./berkshire-logs/repayment_order_item_logs/</property>
+    <property name="repayment-order-item-charge-logfile-dir">./berkshire-logs/repayment_order_item_charge_logs/
+    </property>
+    <property name="syncLog">syncLog</property>
+    <property name="repaymentLog">repaymentLog</property>
+    <property name="repaymentOrderItemLog">repaymentOrderItemLog</property>
+    <property name="repaymentOrderItemChargeLog">repaymentOrderItemChargeLog</property>
+    <property name="console-pattern">%-d{yyyy-MM-dd HH:mm:ss} [ %t:%r ] - [ %p ] %m%n</property>
+    <property name="logfile-pattern">%-d{yyyy-MM-dd HH:mm:ss} [ %t:%r ] - [ %p ] %m%n</property>
+    <property name="zufangbao">com.zufangbao</property>
+    <property name="suidifu">com.suidifu</property>
+    <property name="yali">yali</property>
+    <property name="yali-logfile-pattern">%m%n</property>
+  </properties>
+  <Appenders>
+    <Console name="stdout" target="SYSTEM_OUT" follow="true">
+      <PatternLayout pattern="${console-pattern}"/>
+      <filters>
+        <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+    </Console>
+    <RollingFile name="${project-name}" fileName="${logfile-dir}${project-name}.log"
+      filePattern="${logfile-dir}${project-name}.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true" immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+    <RollingFile name="${project-name}-debug" fileName="${logfile-dir}${project-name}-debug.log"
+      filePattern="${logfile-dir}${project-name}-debug.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true" immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+    <RollingFile name="${project-name}-info" fileName="${logfile-dir}${project-name}-info.log"
+      filePattern="${logfile-dir}${project-name}-info.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true" immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+    <RollingFile name="${project-name}-error" fileName="${logfile-dir}${project-name}-error.log"
+      filePattern="${logfile-dir}${project-name}-error.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true" immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+    <RollingFile name="${dstJobSubrogationReconciliationImpl-log}"
+      fileName="${logfile-dir}${dstJobSubrogationReconciliationImpl-log}.log"
+      filePattern="${logfile-dir}${dstJobSubrogationReconciliationImpl-log}-.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true"
+      immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+
+    <!-- sync log settings-->
+    <RollingFile name="${syncLog}" fileName="${sync-logfile-dir}${syncLog}.log"
+      filePattern="${sync-logfile-dir}${syncLog}.%d{yyyyMMdd}-%i.log.gz"
+      bufferedIO="true" immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+
+    <!-- repayment log settings-->
+    <RollingFile name="${repaymentLog}" fileName="${repayment-logfile-dir}${repaymentLog}.log"
+      filePattern="${repayment-logfile-dir}${repaymentLog}.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true"
+      immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+
+    <!-- repaymentOrderItem log settings-->
+    <RollingFile name="${repaymentOrderItemLog}"
+      fileName="${repayment-order-item-logfile-dir}${repaymentOrderItemLog}.log"
+      filePattern="${repayment-order-item-logfile-dir}${repaymentOrderItemLog}.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true"
+      immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+
+    <!-- repaymentOrderItemCharge log settings-->
+    <RollingFile name="${repaymentOrderItemChargeLog}"
+      fileName="${repayment-order-item-charge-logfile-dir}${repaymentOrderItemChargeLog}.log"
+      filePattern="${repayment-order-item-charge-logfile-dir}${repaymentOrderItemChargeLog}.%d{yyyyMMdd}-%i.log.gz"
+      bufferedIO="true"
+      immediateFlush="true">
+      <PatternLayout pattern="${logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+    <RollingFile name="${yali}" fileName="${logfile-dir}${yali}.log"
+      filePattern="${logfile-dir}${yali}.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true"
+      immediateFlush="true">
+      <PatternLayout pattern="${yali-logfile-pattern}"/>
+      <filters>
+        <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 GB"/>
+      </Policies>
+    </RollingFile>
+
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="stdout"/>
+      <AppenderRef ref="${project-name}"/>
+      <AppenderRef ref="${project-name}-info"/>
+      <AppenderRef ref="${project-name}-error"/>
+    </Root>
+    <Logger name="${suidifu}" level="debug">
+      <AppenderRef ref="${project-name}-debug"/>
+    </Logger>
+    <Logger name="${zufangbao}" level="debug">
+      <AppenderRef ref="${project-name}-debug"/>
+    </Logger>
+    <Logger name="syncLog" level="info">
+      <AppenderRef ref="stdout"/>
+      <AppenderRef ref="${syncLog}"/>
+    </Logger>
+    <Logger name="repaymentLog" level="info">
+      <AppenderRef ref="stdout"/>
+      <AppenderRef ref="${repaymentLog}"/>
+    </Logger>
+    <Logger name="repaymentOrderItemLog" level="info">
+      <AppenderRef ref="stdout"/>
+      <AppenderRef ref="${repaymentOrderItemLog}"/>
+    </Logger>
+    <Logger name="repaymentOrderItemChargeLog" level="info">
+      <AppenderRef ref="stdout"/>
+      <AppenderRef ref="${repaymentOrderItemChargeLog}"/>
+    </Logger>
+
+    <Logger name="yali" level="debug">
+      <AppenderRef ref="${yali}"/>
+    </Logger>
+  </Loggers>
+
+</Configuration>
