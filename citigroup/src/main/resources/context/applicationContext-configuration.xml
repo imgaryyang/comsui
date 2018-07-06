@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd" default-autowire="byName">
+
+    <util:properties id="config" location="classpath:/config.properties"/>
+
+    <util:properties id="task" location="classpath:/task.properties"/>
+
+    <!-- Enable annotation based container configuration  -->
+    <context:annotation-config/>
+    <!-- begin task -->
+
+  <!--   <task:scheduled-tasks scheduler="task-scheduler">
+
+        文件批量变更还款计划 
+        <task:scheduled ref="fileProcessTask" method="process_BQJR_modify_repayment_file" cron="#{task['process_modify_repayment_file_cron']}"/>
+        文件批量浮动费用 
+        <task:scheduled ref="fileProcessTask" method="process_BQJR_mutable_file" cron="#{task['process_mutable_repayment_file_cron']}"/>
+
+        文件批量变更还款计划 
+        <task:scheduled ref="fileProcessTask" method="process_ZHXT_modify_repayment_file" cron="#{task['process_zhonghang_modify_repayment_file_cron']}"/>
+
+        文件扫描 
+        <task:scheduled ref="fileProcessTask" method="scan_sftp_file" cron="#{task['scan_sftp_file_cron']}"/>
+
+        解析文件发送到NotifyServer
+        <task:scheduled ref="fileProcessTask" method="file_send_servers" cron="#{task['file_send_servers_cron']}"/>
+
+        从NotifyServer查询文件执行状态
+        <task:scheduled ref="fileProcessTask" method="query_send_servers_result" cron="#{task['query_send_servers_result_cron']}"/>
+
+    </task:scheduled-tasks> 
+
+
+    <task:scheduler id="task-scheduler" pool-size="10"/>
+    -->
+
+    <!-- end task -->
+    
+</beans>
