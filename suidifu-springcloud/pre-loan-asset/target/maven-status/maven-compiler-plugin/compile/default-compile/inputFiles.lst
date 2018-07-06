@@ -1,0 +1,17 @@
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/feign/credit/CreditApplicationFeign.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/PreLoanAssertServiceApplication.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/service/LoanContractService.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/constant/ErrorCodeConstant.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/dvo/contract/LoanContractQuery.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/dao/Merchant.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/feign/credit/CreditApplicationFallBackFactory.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/mybatis/IntegerEnumHandler.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/constant/ErrorReasonConstant.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/enumation/response/ContractResponseEnum.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/dvo/contract/LoanContractVo.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/mapper/LoanContractMapper.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/service/MerchantService.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/controller/LoanContractController.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/dao/LoanContract.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/entity/dvo/contract/LoanContractQueryVO.java
+/data/repos/suidifu-springcloud/pre-loan-asset/src/main/java/com/suidifu/mapper/MerchantMapper.java

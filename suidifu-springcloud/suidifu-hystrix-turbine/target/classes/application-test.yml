@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    config:
+      label: test
+# this port must define in the yml
+# don't know why
+server:
+  port: 8750
+management:
+  port: 8550

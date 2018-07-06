@@ -1,0 +1,54 @@
+version: "2"
+services:
+    modify-overdue-fee-consumer:
+    entrypoint:  [/data/webapps/start_micro_service.sh]
+    extra_hosts:
+    - local:192.168.122.9
+    - rabbit:192.168.122.18
+    - mysql:192.168.122.28
+    image: 192.168.0.159:5000/suidifu/modify-overdue-fee-consumer:1.0
+    links:
+    - redis:redis
+    depends_on:
+    - suidifu-discovery-eureka
+    - suidifu-config-server
+    ports:
+    - 8099:8080/tcp
+    stop_signal: SIGTERM
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /data/work1/logs/modify-overdue-fee-consumer:/logs/
+    - /data/work1/settings/docker-link-settings/modify-overdue-fee-consumer/src/main/resources/bootstrap.properties:/config/bootstrap.properties
+    - /data/work1/scripts/start_micro_service.sh:/data/webapps/start_micro_service.sh
+  suidifu-config-server:
+    extra_hosts:
+    - local:192.168.122.9
+    - rabbit:192.168.122.18
+    - mysql:192.168.122.28
+    image: 192.168.0.159:5000/suidifu/suidifu-config-server:1.0
+    links:
+    - redis:redis
+    depends_on:
+    - suidifu-discovery-eureka
+    ports:
+    - 8100:8080/tcp
+    stop_signal: SIGTERM
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /data/work1/logs/suidifu-config-server:/logs/
+    - /data/work1/settings/docker-link-settings/suidifu-config-server/src/main/resources/bootstrap.properties:/config/bootstrap.properties
+  suidifu-discovery-eureka:
+    extra_hosts:
+    - local:192.168.122.9
+    - rabbit:192.168.122.18
+    - mysql:192.168.122.28
+    image: 192.168.0.159:5000/suidifu/suidifu-discovery-eureka:1.0
+    links:
+    - redis:redis
+    ports:
+    - 8761:8080/tcp
+    stop_signal: SIGTERM
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /data/work1/logs/suidifu-discovery-eureka:/logs/
+    - /data/work1/settings/docker-link-settings/suidifu-discovery-eureka/src/main/resources/bootstrap.properties:/config/bootstrap.properties

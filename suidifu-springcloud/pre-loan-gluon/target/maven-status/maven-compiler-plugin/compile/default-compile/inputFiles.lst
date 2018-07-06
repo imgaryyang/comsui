@@ -1,0 +1,16 @@
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/product/MerchantDTO.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/RepaymentMethodEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/ContractStatusEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/LoanContractDTO.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/IntendedUseOfLoanEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/product/ProductDTO.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/ReceiverTypeEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/consts/GlobalConst.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/BaseEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/schedule/SchedulePlanDTO.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/InterestRateCycleEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/asset/enumeration/PayInterestCycleEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/consts/HttpRequestConst.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/enumeration/ScheduleTypeEnum.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/Result.java
+/data/repos/suidifu-springcloud/pre-loan-gluon/src/main/java/com/suidifu/gluon/entity/dto/credit/CreditApplicationDTO.java

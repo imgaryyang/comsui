@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <springProperty name="LOG_HOME" scope="context" source="logging.path" defaultValue="./"/>
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name"
+                    defaultValue="sdfLog"/>
+    <springProperty name="LOG_TYPE" scope="context" source="sdf.log.type" defaultValue="monitor"/>
+    <springProperty name="LO                                                         G_NAME" scope="context" source="sdf.log.name" defaultValue=""/>
+    <springProperty name="PATTERN" scope="context" source="sdf.log.pattern"
+                    defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{50}:%line] - %msg%n"/>
+    <!-- 字符集，默认UTF-8 -->
+    <springProperty name="CHARSET" scope="context" source="sdf.log.charset" defaultValue="UTF-8"/>
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--格式化输出:%d表示日期,%thread表示线程名,%-5level:级别从左显示5个字符宽度,%msg:日志消息,%n是换行符-->
+            <pattern>${PATTERN}</pattern>
+            <!-- 此处设置字符集 -->
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>TRACE</level>
+        </filter>
+    </appender>
+
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${APP_NAME}_${LOG_TYPE}_errorLog.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_HOME}/${APP_NAME}_${LOG_TYPE}_errorLog_%d{yyyy-MM-dd}.zip
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>${CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <level>WARN</level>
+            <level>INFO</level>
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="errorAppender"/>
+    </root>
+
+    <logger level="INFO" name="org.springframework"/>
+    <logger level="WARN" name="com.netflix"/>
+    <logger level="INFO" name="org"/>
+
+</configuration>

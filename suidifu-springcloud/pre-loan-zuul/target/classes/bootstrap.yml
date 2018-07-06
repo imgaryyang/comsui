@@ -1,0 +1,51 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.server.hostname}:${eureka.server.port}/eureka/
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+    prefer-ip-address: true
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+  application:
+    name: pre-loan-zuul
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: suidifu-config-server
+
+feign:
+  hystrix:
+    enabled: true
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.suidifu.credit.entity
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+
+management:
+  context-path: /admin
+
+security:
+  basic:
+    path: /admin
+
+
+zuul:
+  routes:
+    pre-loan-assert:
+      path: /preloan/api/v1/asset/**
+      serviceId: pre-loan-asset
+    pre-loan-credit:
+      path: /preloan/api/v1/credit/**
+      serviceId: pre-loan-credit
+    pre-loan-remittance:
+      path: /preloan/api/v1/remittance/**
+      serviceId: pre-loan-remittance

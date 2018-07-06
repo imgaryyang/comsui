@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <property name="project-name">source-document-reconciliation-consumer</property>
+        <property name="logfile-dir">../logs/source-document-reconciliation-consumer/</property>
+        <property name="log-pattern">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%level:%thread] [%logger:%line] - %msg%n
+        </property>
+
+      <property name="yali">yali</property>
+      <property name="yali-logfile-pattern">%m%n</property>
+
+    </properties>
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${log-pattern}"/>
+        </Console>
+        <RollingFile name="${project-name}" fileName="${logfile-dir}${project-name}.log"
+                     filePattern="${logfile-dir}${project-name}.%d{yyyy-MM-dd}-%i.log.gz"
+                     bufferedIO="true" immediateFlush="false">
+            <PatternLayout pattern="${log-pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="${project-name}-info" fileName="${logfile-dir}${project-name}-info.log"
+                     filePattern="${logfile-dir}${project-name}-info.%d{yyyy-MM-dd}-%i.log.gz" bufferedIO="true"
+                     immediateFlush="false">
+            <PatternLayout pattern="${log-pattern}"/>
+            <filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="${project-name}-error" fileName="${logfile-dir}${project-name}-error.log"
+                     filePattern="${logfile-dir}${project-name}-error.%d{yyyy-MM-dd}-%i.log.gz" bufferedIO="true"
+                     immediateFlush="false">
+            <PatternLayout pattern="${log-pattern}"/>
+            <filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1 GB"/>
+            </Policies>
+        </RollingFile>
+
+      <RollingFile name="${yali}" fileName="${logfile-dir}${yali}.log" filePattern="${logfile-dir}${yali}.%d{yyyyMMdd}-%i.log.gz" bufferedIO="true"
+        immediateFlush="true">
+        <PatternLayout pattern="${yali-logfile-pattern}"/>
+        <filters>
+          <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+        </filters>
+        <Policies>
+          <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+          <SizeBasedTriggeringPolicy size="1 GB"/>
+        </Policies>
+      </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="stdout"/>
+        </Root>
+
+      <Logger name="yali" level="debug">
+        <AppenderRef ref="${yali}"/>
+      </Logger>
+
+    </Loggers>
+</Configuration>

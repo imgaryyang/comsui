@@ -1,0 +1,5 @@
+com/suidifu/kryotest/KryoTest.class
+com/suidifu/PreLoanCreditApplicationTests.class
+com/suidifu/service/CreditServiceTest.class
+com/suidifu/mq/CreditSchedulerPlanProductorTest.class
+com/suidifu/controller/CreditApplicationControllerTest.class

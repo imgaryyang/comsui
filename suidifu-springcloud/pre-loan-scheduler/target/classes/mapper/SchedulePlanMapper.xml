@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.preloan.scheduler.mapper.SchedulePlanMapper">
+  <insert id="insert" parameterType="com.suidifu.preloan.scheduler.entity.SchedulePlan">
+    insert into schedule_plan (id, schedule_plan_uuid, access_version, 
+      schedule_type, applicant_uuid, applicant_table_name, 
+      product_uuid, request_content, request_appendix, 
+      lifecycle, status, current_item_uuid, 
+      current_item_lifecycle, history_item_desc, exe_start_time, 
+      exe_end_time, result_content, callback_url, 
+      gmt_create, gmt_modified)
+    values (#{id,jdbcType=BIGINT}, #{schedulePlanUuid,jdbcType=VARCHAR}, #{accessVersion,jdbcType=VARCHAR}, 
+      #{scheduleType,jdbcType=INTEGER}, #{applicantUuid,jdbcType=VARCHAR}, #{applicantTableName,jdbcType=VARCHAR}, 
+      #{productUuid,jdbcType=VARCHAR}, #{requestContent,jdbcType=CHAR}, #{requestAppendix,jdbcType=CHAR}, 
+      #{lifecycle,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{currentItemUuid,jdbcType=VARCHAR}, 
+      #{currentItemLifecycle,jdbcType=INTEGER}, #{historyItemDesc,jdbcType=CHAR}, #{exeStartTime,jdbcType=TIMESTAMP}, 
+      #{exeEndTime,jdbcType=TIMESTAMP}, #{resultContent,jdbcType=CHAR}, #{callbackUrl,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.preloan.scheduler.entity.SchedulePlan">
+    insert into schedule_plan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="schedulePlanUuid != null">
+        schedule_plan_uuid,
+      </if>
+      <if test="accessVersion != null">
+        access_version,
+      </if>
+      <if test="scheduleType != null">
+        schedule_type,
+      </if>
+      <if test="applicantUuid != null">
+        applicant_uuid,
+      </if>
+      <if test="applicantTableName != null">
+        applicant_table_name,
+      </if>
+      <if test="productUuid != null">
+        product_uuid,
+      </if>
+      <if test="requestContent != null">
+        request_content,
+      </if>
+      <if test="requestAppendix != null">
+        request_appendix,
+      </if>
+      <if test="lifecycle != null">
+        lifecycle,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="currentItemUuid != null">
+        current_item_uuid,
+      </if>
+      <if test="currentItemLifecycle != null">
+        current_item_lifecycle,
+      </if>
+      <if test="historyItemDesc != null">
+        history_item_desc,
+      </if>
+      <if test="exeStartTime != null">
+        exe_start_time,
+      </if>
+      <if test="exeEndTime != null">
+        exe_end_time,
+      </if>
+      <if test="resultContent != null">
+        result_content,
+      </if>
+      <if test="callbackUrl != null">
+        callback_url,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="schedulePlanUuid != null">
+        #{schedulePlanUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="accessVersion != null">
+        #{accessVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleType != null">
+        #{scheduleType,jdbcType=INTEGER},
+      </if>
+      <if test="applicantUuid != null">
+        #{applicantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantTableName != null">
+        #{applicantTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="productUuid != null">
+        #{productUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="requestContent != null">
+        #{requestContent,jdbcType=CHAR},
+      </if>
+      <if test="requestAppendix != null">
+        #{requestAppendix,jdbcType=CHAR},
+      </if>
+      <if test="lifecycle != null">
+        #{lifecycle,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="currentItemUuid != null">
+        #{currentItemUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="currentItemLifecycle != null">
+        #{currentItemLifecycle,jdbcType=INTEGER},
+      </if>
+      <if test="historyItemDesc != null">
+        #{historyItemDesc,jdbcType=CHAR},
+      </if>
+      <if test="exeStartTime != null">
+        #{exeStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exeEndTime != null">
+        #{exeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultContent != null">
+        #{resultContent,jdbcType=CHAR},
+      </if>
+      <if test="callbackUrl != null">
+        #{callbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

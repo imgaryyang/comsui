@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.CreditApplicationMapper">
+
+  <!--开启二级缓存-->
+  <!--<cache size="100" flushInterval="60000"/>-->
+
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.CreditApplication">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="credit_application_uuid" jdbcType="VARCHAR" property="creditApplicationUuid" />
+    <result column="merchant_uuid" jdbcType="VARCHAR" property="merchantUuid" />
+    <result column="merchant_credit_no" jdbcType="VARCHAR" property="merchantCreditNo" />
+    <result column="merchant_call_back" jdbcType="VARCHAR" property="merchantCallBack" />
+    <result column="merchant_request_no" jdbcType="VARCHAR" property="merchantRequestNo" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="veda_credit_no" jdbcType="VARCHAR" property="vedaCreditNo" />
+    <result column="role_type" jdbcType="TINYINT" property="roleType" />
+    <result column="borrower_application_info_uuid" jdbcType="VARCHAR" property="borrowerApplicationInfoUuid" />
+    <result column="borrower_uuid" jdbcType="VARCHAR" property="borrowerUuid" />
+    <result column="loan_business_no" jdbcType="VARCHAR" property="loanBusinessNo" />
+    <result column="credit_grade_desc" jdbcType="VARCHAR" property="creditGradeDesc" />
+    <result column="credit_grade_no" jdbcType="VARCHAR" property="creditGradeNo" />
+    <result column="credit_line" jdbcType="DECIMAL" property="creditLine" />
+    <result column="credit_status" jdbcType="TINYINT" property="creditStatus" />
+    <result column="credit_result_desc" jdbcType="VARCHAR" property="creditResultDesc" />
+    <result column="credit_result_no" jdbcType="VARCHAR" property="creditResultNo" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="schedule_plan_uuid" jdbcType="VARCHAR" property="schedulePlanUuid" />
+    <result column="string_field_one" jdbcType="VARCHAR" property="stringFieldOne" />
+    <result column="string_field_two" jdbcType="VARCHAR" property="stringFieldTwo" />
+    <result column="string_field_three" jdbcType="VARCHAR" property="stringFieldThree" />
+    <result column="long_field_one" jdbcType="BIGINT" property="longFieldOne" />
+    <result column="long_field_three" jdbcType="BIGINT" property="longFieldThree" />
+    <result column="long_field_two" jdbcType="BIGINT" property="longFieldTwo" />
+    <result column="double_field_one" jdbcType="DECIMAL" property="doubleFieldOne" />
+    <result column="double_field_two" jdbcType="DECIMAL" property="doubleFieldTwo" />
+    <result column="double_field_three" jdbcType="DECIMAL" property="doubleFieldThree" />
+    <result column="date_field_one" jdbcType="TIMESTAMP" property="dateFieldOne" />
+    <result column="date_field_two" jdbcType="TIMESTAMP" property="dateFieldTwo" />
+    <result column="date_field_three" jdbcType="TIMESTAMP" property="dateFieldThree" />
+
+    <association property="borrowerApplicationInfo" column="borrower_application_info_uuid" select="com.suidifu.mapper.BorrowerApplicationInfoMapper.getBorrowerAppByUuid" fetchType="lazy"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, credit_application_uuid, merchant_uuid, merchant_credit_no, merchant_call_back, 
+    merchant_request_no, product_code, veda_credit_no, role_type, borrower_application_info_uuid, 
+    borrower_uuid, loan_business_no, credit_grade_desc, credit_grade_no, credit_line,
+    credit_status, credit_result_desc, credit_result_no, remark, gmt_create, gmt_modified, 
+    schedule_plan_uuid, string_field_one, string_field_two, string_field_three, long_field_one, 
+    long_field_three, long_field_two, double_field_one, double_field_two, double_field_three, 
+    date_field_one, date_field_two, date_field_three
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from credit_application
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from credit_application
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.CreditApplication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into credit_application (credit_application_uuid, merchant_uuid, 
+      merchant_credit_no, merchant_call_back, merchant_request_no, 
+      product_code, veda_credit_no, role_type, 
+      borrower_application_info_uuid, borrower_uuid,
+      loan_business_no, credit_grade_desc, credit_grade_no, 
+      credit_line, credit_status, credit_result_desc, 
+      credit_result_no, remark, gmt_create, 
+      gmt_modified, schedule_plan_uuid, string_field_one, 
+      string_field_two, string_field_three, long_field_one, 
+      long_field_three, long_field_two, double_field_one, 
+      double_field_two, double_field_three, date_field_one, 
+      date_field_two, date_field_three)
+    values (#{creditApplicationUuid,jdbcType=VARCHAR}, #{merchantUuid,jdbcType=VARCHAR}, 
+      #{merchantCreditNo,jdbcType=VARCHAR}, #{merchantCallBack,jdbcType=VARCHAR}, #{merchantRequestNo,jdbcType=VARCHAR}, 
+      #{productCode,jdbcType=VARCHAR}, #{vedaCreditNo,jdbcType=VARCHAR}, #{roleType,jdbcType=TINYINT}, 
+      #{borrowerApplicationInfoUuid,jdbcType=VARCHAR}, #{borrowerUuid,jdbcType=VARCHAR},
+      #{loanBusinessNo,jdbcType=VARCHAR}, #{creditGradeDesc,jdbcType=VARCHAR}, #{creditGradeNo,jdbcType=VARCHAR}, 
+      #{creditLine,jdbcType=DECIMAL}, #{creditStatus,jdbcType=TINYINT}, #{creditResultDesc,jdbcType=VARCHAR}, 
+      #{creditResultNo,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{schedulePlanUuid,jdbcType=VARCHAR}, #{stringFieldOne,jdbcType=VARCHAR}, 
+      #{stringFieldTwo,jdbcType=VARCHAR}, #{stringFieldThree,jdbcType=VARCHAR}, #{longFieldOne,jdbcType=BIGINT}, 
+      #{longFieldThree,jdbcType=BIGINT}, #{longFieldTwo,jdbcType=BIGINT}, #{doubleFieldOne,jdbcType=DECIMAL}, 
+      #{doubleFieldTwo,jdbcType=DECIMAL}, #{doubleFieldThree,jdbcType=DECIMAL}, #{dateFieldOne,jdbcType=TIMESTAMP}, 
+      #{dateFieldTwo,jdbcType=TIMESTAMP}, #{dateFieldThree,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.entity.dao.CreditApplication">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into credit_application
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="creditApplicationUuid != null">
+        credit_application_uuid,
+      </if>
+      <if test="merchantUuid != null">
+        merchant_uuid,
+      </if>
+      <if test="merchantCreditNo != null">
+        merchant_credit_no,
+      </if>
+      <if test="merchantCallBack != null">
+        merchant_call_back,
+      </if>
+      <if test="merchantRequestNo != null">
+        merchant_request_no,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="vedaCreditNo != null">
+        veda_credit_no,
+      </if>
+      <if test="roleType != null">
+        role_type,
+      </if>
+      <if test="borrowerApplicationInfoUuid != null">
+        borrower_application_info_uuid,
+      </if>
+      <if test="borrowerUuid != null">
+        borrower_uuid,
+      </if>
+      <if test="loanBusinessNo != null">
+        loan_business_no,
+      </if>
+      <if test="creditGradeDesc != null">
+        credit_grade_desc,
+      </if>
+      <if test="creditGradeNo != null">
+        credit_grade_no,
+      </if>
+      <if test="creditLine != null">
+        credit_line,
+      </if>
+      <if test="creditStatus != null">
+        credit_status,
+      </if>
+      <if test="creditResultDesc != null">
+        credit_result_desc,
+      </if>
+      <if test="creditResultNo != null">
+        credit_result_no,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="schedulePlanUuid != null">
+        schedule_plan_uuid,
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one,
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two,
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three,
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one,
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three,
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two,
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one,
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two,
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three,
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one,
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two,
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="creditApplicationUuid != null">
+        #{creditApplicationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantUuid != null">
+        #{merchantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCreditNo != null">
+        #{merchantCreditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCallBack != null">
+        #{merchantCallBack,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantRequestNo != null">
+        #{merchantRequestNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vedaCreditNo != null">
+        #{vedaCreditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="borrowerApplicationInfoUuid != null">
+        #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerUuid != null">
+        #{borrowerUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="loanBusinessNo != null">
+        #{loanBusinessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditGradeDesc != null">
+        #{creditGradeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditGradeNo != null">
+        #{creditGradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLine != null">
+        #{creditLine,jdbcType=DECIMAL},
+      </if>
+      <if test="creditStatus != null">
+        #{creditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="creditResultDesc != null">
+        #{creditResultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditResultNo != null">
+        #{creditResultNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schedulePlanUuid != null">
+        #{schedulePlanUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suidifu.entity.dao.CreditApplication">
+    update credit_application
+    <set>
+      <if test="creditApplicationUuid != null">
+        credit_application_uuid = #{creditApplicationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantUuid != null">
+        merchant_uuid = #{merchantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCreditNo != null">
+        merchant_credit_no = #{merchantCreditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCallBack != null">
+        merchant_call_back = #{merchantCallBack,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantRequestNo != null">
+        merchant_request_no = #{merchantRequestNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vedaCreditNo != null">
+        veda_credit_no = #{vedaCreditNo,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        role_type = #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="borrowerApplicationInfoUuid != null">
+        borrower_application_info_uuid = #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerUuid != null">
+        borrower_uuid = #{borrowerUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="loanBusinessNo != null">
+        loan_business_no = #{loanBusinessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditGradeDesc != null">
+        credit_grade_desc = #{creditGradeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditGradeNo != null">
+        credit_grade_no = #{creditGradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLine != null">
+        credit_line = #{creditLine,jdbcType=DECIMAL},
+      </if>
+      <if test="creditStatus != null">
+        credit_status = #{creditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="creditResultDesc != null">
+        credit_result_desc = #{creditResultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="creditResultNo != null">
+        credit_result_no = #{creditResultNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="schedulePlanUuid != null">
+        schedule_plan_uuid = #{schedulePlanUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suidifu.entity.dao.CreditApplication">
+    update credit_application
+    set credit_application_uuid = #{creditApplicationUuid,jdbcType=VARCHAR},
+      merchant_uuid = #{merchantUuid,jdbcType=VARCHAR},
+      merchant_credit_no = #{merchantCreditNo,jdbcType=VARCHAR},
+      merchant_call_back = #{merchantCallBack,jdbcType=VARCHAR},
+      merchant_request_no = #{merchantRequestNo,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      veda_credit_no = #{vedaCreditNo,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=TINYINT},
+      borrower_application_info_uuid = #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      borrower_uuid = #{borrowerUuid,jdbcType=VARCHAR},
+      loan_business_no = #{loanBusinessNo,jdbcType=VARCHAR},
+      credit_grade_desc = #{creditGradeDesc,jdbcType=VARCHAR},
+      credit_grade_no = #{creditGradeNo,jdbcType=VARCHAR},
+      credit_line = #{creditLine,jdbcType=DECIMAL},
+      credit_status = #{creditStatus,jdbcType=TINYINT},
+      credit_result_desc = #{creditResultDesc,jdbcType=VARCHAR},
+      credit_result_no = #{creditResultNo,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      schedule_plan_uuid = #{schedulePlanUuid,jdbcType=VARCHAR},
+      string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectAmountByMerchantRequestNO" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT count(*) FROM credit_application
+    WHERE merchant_request_no = #{requestNo, jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBorrowerUuidByCreditRequest" parameterType="com.suidifu.entity.request.CreditRequest" resultType="java.lang.String">
+    SELECT borrower_uuid FROM credit_application
+    WHERE merchant_uuid = #{merchantUuid, jdbcType=VARCHAR}
+    AND merchant_credit_no = #{merchantCreditNo, jdbcType=VARCHAR}
+  </select>
+
+  <select id="getCreditByRequest" parameterType="com.suidifu.entity.request.CreditRequest" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM credit_application
+    <where>
+      <if test="merchantUuid != null">
+        merchant_uuid = #{merchantUuid, jdbcType=VARCHAR}
+      </if>
+      <if test="merchantCreditNo != null">
+        AND merchant_credit_no = #{merchantCreditNo, jdbcType=VARCHAR}
+      </if>
+      <if test="creditApplicationUuid != null">
+        AND credit_application_uuid = #{creditApplicationUuid, jdbcType=VARCHAR}
+      </if>
+      <if test="productCode != null">
+        AND product_code = #{productCode,jdbcType=VARCHAR}
+      </if>
+      <if test="vedaCreditNo != null">
+        AND veda_credit_no = #{vedaCreditNo,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+</mapper>

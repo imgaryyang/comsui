@@ -1,0 +1,10 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/.swift.iml
+/.test/test.iml
+/.main/main.iml
+/.greenLight (1).iml
+*.iml
+.externalToolBuilders/

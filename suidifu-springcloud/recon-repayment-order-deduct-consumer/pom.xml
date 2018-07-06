@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.suidifu</groupId>
+	<artifactId>recon-repayment-order-deduct-consumer</artifactId>
+	<packaging>jar</packaging>
+	<version>${suidifu.version}</version>
+
+	<name>recon-repayment-order-deduct-consumer</name>
+	<description>还款订单扣款核销微服务</description>
+
+	<parent>
+		<groupId>com.suidifu</groupId>
+		<artifactId>suidifu-springcloud</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<hibernate-commons.version>4.0.5.Final</hibernate-commons.version>
+		<project.groupId>com.suidifu</project.groupId>
+		<zufangbao.groupId>com.zufangbao</zufangbao.groupId>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- hibernate4 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.common</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>${hibernate-commons.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+		</dependency>
+
+		<!-- =============== dependency project ================= -->
+
+		<dependency>
+			<groupId>com.suidifu</groupId>
+			<artifactId>watchman</artifactId>
+			<version>${suidifu.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.suidifu</groupId>
+			<artifactId>watchman-message</artifactId>
+			<version>${suidifu.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.suidifu</groupId>
+			<artifactId>owlman</artifactId>
+			<version>${suidifu.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>${zufangbao.groupId}</groupId>
+			<artifactId>giotto</artifactId>
+			<version>${zufangbao.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${zufangbao.groupId}</groupId>
+			<artifactId>matryoshka</artifactId>
+			<version>${zufangbao.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-bus-amqp</artifactId>
+		</dependency>
+
+
+
+	</dependencies>
+
+	<build>
+		<finalName>recon-repayment-order-deduct-consumer</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

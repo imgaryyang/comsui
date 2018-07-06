@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.RsaKeyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.RsaKeyInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mer_code" jdbcType="VARCHAR" property="merCode" />
+    <result column="key_type" jdbcType="TINYINT" property="keyType" />
+    <result column="valid_status" jdbcType="BIT" property="validStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.suidifu.entity.dao.RsaKeyInfo">
+    <result column="key" jdbcType="LONGVARCHAR" property="key" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mer_code, key_type, valid_status
+  </sql>
+  <sql id="Blob_Column_List">
+    key
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rsa_key_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rsa_key_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.RsaKeyInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into rsa_key_info (mer_code, key_type, valid_status, 
+      key)
+    values (#{merCode,jdbcType=VARCHAR}, #{keyType,jdbcType=TINYINT}, #{validStatus,jdbcType=BIT}, 
+      #{key,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.entity.dao.RsaKeyInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into rsa_key_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="merCode != null">
+        mer_code,
+      </if>
+      <if test="keyType != null">
+        key_type,
+      </if>
+      <if test="validStatus != null">
+        valid_status,
+      </if>
+      <if test="key != null">
+        key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="merCode != null">
+        #{merCode,jdbcType=VARCHAR},
+      </if>
+      <if test="keyType != null">
+        #{keyType,jdbcType=TINYINT},
+      </if>
+      <if test="validStatus != null">
+        #{validStatus,jdbcType=BIT},
+      </if>
+      <if test="key != null">
+        #{key,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suidifu.entity.dao.RsaKeyInfo">
+    update rsa_key_info
+    <set>
+      <if test="merCode != null">
+        mer_code = #{merCode,jdbcType=VARCHAR},
+      </if>
+      <if test="keyType != null">
+        key_type = #{keyType,jdbcType=TINYINT},
+      </if>
+      <if test="validStatus != null">
+        valid_status = #{validStatus,jdbcType=BIT},
+      </if>
+      <if test="key != null">
+        key = #{key,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.suidifu.entity.dao.RsaKeyInfo">
+    update rsa_key_info
+    set mer_code = #{merCode,jdbcType=VARCHAR},
+      key_type = #{keyType,jdbcType=TINYINT},
+      valid_status = #{validStatus,jdbcType=BIT},
+      key = #{key,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suidifu.entity.dao.RsaKeyInfo">
+    update rsa_key_info
+    set mer_code = #{merCode,jdbcType=VARCHAR},
+      key_type = #{keyType,jdbcType=TINYINT},
+      valid_status = #{validStatus,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id = "selectByMerchantIdAndKeyType"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from rsa_key_info
+    where mer_code = #{merCode}
+    and key_type = #{rsaTypeEnum}
+    and valid_status = 1
+  </select>
+</mapper>

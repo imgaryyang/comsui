@@ -1,0 +1,25 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.server.hostname}:${eureka.server.port}/eureka/
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: suidifu-hystrix-turbine
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: suidifu-config-server
+
+management:
+  context-path: /admin
+
+security:
+  basic:
+    path: /admin

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.preloan.scheduler.mapper.ScheduleItemMapper">
+  <insert id="insert" parameterType="com.suidifu.preloan.scheduler.entity.ScheduleItem">
+    insert into schedule_item (id, schedule_item_uuid, schedule_plan_uuid, 
+      access_version, schedule_type, applicant_uuid, 
+      applicant_table_name, product_uuid, item_gateway, 
+      item_gateway_router_info, request_content, request_appendix, 
+      lifecycle, status, exe_start_time, 
+      exe_end_time, result_content, gmt_create, 
+      gmt_modified)
+    values (#{id,jdbcType=BIGINT}, #{scheduleItemUuid,jdbcType=VARCHAR}, #{schedulePlanUuid,jdbcType=VARCHAR}, 
+      #{accessVersion,jdbcType=VARCHAR}, #{scheduleType,jdbcType=INTEGER}, #{applicantUuid,jdbcType=VARCHAR}, 
+      #{applicantTableName,jdbcType=VARCHAR}, #{productUuid,jdbcType=VARCHAR}, #{itemGateway,jdbcType=INTEGER}, 
+      #{itemGatewayRouterInfo,jdbcType=CHAR}, #{requestContent,jdbcType=CHAR}, #{requestAppendix,jdbcType=CHAR}, 
+      #{lifecycle,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{exeStartTime,jdbcType=TIMESTAMP}, 
+      #{exeEndTime,jdbcType=TIMESTAMP}, #{resultContent,jdbcType=CHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.preloan.scheduler.entity.ScheduleItem">
+    insert into schedule_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="scheduleItemUuid != null">
+        schedule_item_uuid,
+      </if>
+      <if test="schedulePlanUuid != null">
+        schedule_plan_uuid,
+      </if>
+      <if test="accessVersion != null">
+        access_version,
+      </if>
+      <if test="scheduleType != null">
+        schedule_type,
+      </if>
+      <if test="applicantUuid != null">
+        applicant_uuid,
+      </if>
+      <if test="applicantTableName != null">
+        applicant_table_name,
+      </if>
+      <if test="productUuid != null">
+        product_uuid,
+      </if>
+      <if test="itemGateway != null">
+        item_gateway,
+      </if>
+      <if test="itemGatewayRouterInfo != null">
+        item_gateway_router_info,
+      </if>
+      <if test="requestContent != null">
+        request_content,
+      </if>
+      <if test="requestAppendix != null">
+        request_appendix,
+      </if>
+      <if test="lifecycle != null">
+        lifecycle,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="exeStartTime != null">
+        exe_start_time,
+      </if>
+      <if test="exeEndTime != null">
+        exe_end_time,
+      </if>
+      <if test="resultContent != null">
+        result_content,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="scheduleItemUuid != null">
+        #{scheduleItemUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulePlanUuid != null">
+        #{schedulePlanUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="accessVersion != null">
+        #{accessVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleType != null">
+        #{scheduleType,jdbcType=INTEGER},
+      </if>
+      <if test="applicantUuid != null">
+        #{applicantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantTableName != null">
+        #{applicantTableName,jdbcType=VARCHAR},
+      </if>
+      <if test="productUuid != null">
+        #{productUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="itemGateway != null">
+        #{itemGateway,jdbcType=INTEGER},
+      </if>
+      <if test="itemGatewayRouterInfo != null">
+        #{itemGatewayRouterInfo,jdbcType=CHAR},
+      </if>
+      <if test="requestContent != null">
+        #{requestContent,jdbcType=CHAR},
+      </if>
+      <if test="requestAppendix != null">
+        #{requestAppendix,jdbcType=CHAR},
+      </if>
+      <if test="lifecycle != null">
+        #{lifecycle,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="exeStartTime != null">
+        #{exeStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exeEndTime != null">
+        #{exeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="resultContent != null">
+        #{resultContent,jdbcType=CHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

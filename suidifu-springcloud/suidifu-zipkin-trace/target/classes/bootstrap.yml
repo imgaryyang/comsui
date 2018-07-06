@@ -1,0 +1,35 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.server.hostname}:${eureka.server.port}/eureka/
+  instance:
+      metadata-map:
+        user.name: ${security.user.name}
+        user.password: ${security.user.password}
+      prefer-ip-address: true
+spring:
+  application:
+    name: suidifu-zipkin-trace
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: suidifu-config-server
+zipkin:
+  storage:
+    StorageComponent: elasticsearch
+    type: elasticsearch
+    elasticsearch:
+      max-requests: 64
+      index: zipkin
+      index-shards: 5
+      index-replicas: 1
+management:
+  context-path: /admin
+
+security:
+  basic:
+    path: /admin
+
+logging:
+  file: ${logging.path}${spring.application.name}_info.log

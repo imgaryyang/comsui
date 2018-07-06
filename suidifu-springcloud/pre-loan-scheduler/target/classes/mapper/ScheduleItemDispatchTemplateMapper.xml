@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.preloan.scheduler.mapper.ScheduleItemDispatchTemplateMapper">
+  <insert id="insert" parameterType="com.suidifu.preloan.scheduler.entity.ScheduleItemDispatchTemplate">
+    insert into schedule_item_dispatch_template (id, dispatch_template_uuid, schedule_type, 
+      product_uuid, status, process_expression, 
+      gmt_create, gmt_modified)
+    values (#{id,jdbcType=BIGINT}, #{dispatchTemplateUuid,jdbcType=VARCHAR}, #{scheduleType,jdbcType=INTEGER}, 
+      #{productUuid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{processExpression,jdbcType=CHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.preloan.scheduler.entity.ScheduleItemDispatchTemplate">
+    insert into schedule_item_dispatch_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="dispatchTemplateUuid != null">
+        dispatch_template_uuid,
+      </if>
+      <if test="scheduleType != null">
+        schedule_type,
+      </if>
+      <if test="productUuid != null">
+        product_uuid,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="processExpression != null">
+        process_expression,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="dispatchTemplateUuid != null">
+        #{dispatchTemplateUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleType != null">
+        #{scheduleType,jdbcType=INTEGER},
+      </if>
+      <if test="productUuid != null">
+        #{productUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="processExpression != null">
+        #{processExpression,jdbcType=CHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

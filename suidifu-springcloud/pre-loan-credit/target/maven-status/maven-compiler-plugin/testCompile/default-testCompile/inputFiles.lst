@@ -1,0 +1,5 @@
+/data/repos/suidifu-springcloud/pre-loan-credit/src/test/java/com/suidifu/PreLoanCreditApplicationTests.java
+/data/repos/suidifu-springcloud/pre-loan-credit/src/test/java/com/suidifu/service/CreditServiceTest.java
+/data/repos/suidifu-springcloud/pre-loan-credit/src/test/java/com/suidifu/controller/CreditApplicationControllerTest.java
+/data/repos/suidifu-springcloud/pre-loan-credit/src/test/java/com/suidifu/mq/CreditSchedulerPlanProductorTest.java
+/data/repos/suidifu-springcloud/pre-loan-credit/src/test/java/com/suidifu/kryotest/KryoTest.java

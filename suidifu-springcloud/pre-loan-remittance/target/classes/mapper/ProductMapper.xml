@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.Product">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_uuid" jdbcType="VARCHAR" property="productUuid" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_short_name" jdbcType="VARCHAR" property="productShortName" />
+    <result column="product_type" jdbcType="TINYINT" property="productType" />
+    <result column="business_type" jdbcType="TINYINT" property="businessType" />
+    <result column="start_date" jdbcType="DATE" property="startDate" />
+    <result column="end_date" jdbcType="DATE" property="endDate" />
+    <result column="product_organization" jdbcType="VARCHAR" property="productOrganization" />
+    <result column="product_special_account_uuid" jdbcType="VARCHAR" property="productSpecialAccountUuid" />
+    <result column="cooperation_organization_uuid" jdbcType="VARCHAR" property="cooperationOrganizationUuid" />
+    <result column="string_field_one" jdbcType="VARCHAR" property="stringFieldOne" />
+    <result column="string_field_two" jdbcType="VARCHAR" property="stringFieldTwo" />
+    <result column="string_field_three" jdbcType="VARCHAR" property="stringFieldThree" />
+    <result column="long_field_one" jdbcType="BIGINT" property="longFieldOne" />
+    <result column="long_field_three" jdbcType="BIGINT" property="longFieldThree" />
+    <result column="long_field_two" jdbcType="BIGINT" property="longFieldTwo" />
+    <result column="double_field_one" jdbcType="DECIMAL" property="doubleFieldOne" />
+    <result column="double_field_two" jdbcType="DECIMAL" property="doubleFieldTwo" />
+    <result column="double_field_three" jdbcType="DECIMAL" property="doubleFieldThree" />
+    <result column="date_field_one" jdbcType="TIMESTAMP" property="dateFieldOne" />
+    <result column="date_field_two" jdbcType="TIMESTAMP" property="dateFieldTwo" />
+    <result column="date_field_three" jdbcType="TIMESTAMP" property="dateFieldThree" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, product_uuid, product_code, product_name, product_short_name, product_type, business_type, 
+    start_date, end_date, product_organization, product_special_account_uuid, cooperation_organization_uuid, 
+    string_field_one, string_field_two, string_field_three, long_field_one, long_field_three, 
+    long_field_two, double_field_one, double_field_two, double_field_three, date_field_one, 
+    date_field_two, date_field_three
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.Product">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into product (product_uuid, product_code, product_name, 
+      product_short_name, product_type, business_type, 
+      start_date, end_date, product_organization, 
+      product_special_account_uuid, cooperation_organization_uuid, 
+      string_field_one, string_field_two, string_field_three, 
+      long_field_one, long_field_three, long_field_two, 
+      double_field_one, double_field_two, double_field_three, 
+      date_field_one, date_field_two, date_field_three
+      )
+    values (#{productUuid,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{productShortName,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, #{businessType,jdbcType=TINYINT}, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{productOrganization,jdbcType=VARCHAR}, 
+      #{productSpecialAccountUuid,jdbcType=VARCHAR}, #{cooperationOrganizationUuid,jdbcType=VARCHAR}, 
+      #{stringFieldOne,jdbcType=VARCHAR}, #{stringFieldTwo,jdbcType=VARCHAR}, #{stringFieldThree,jdbcType=VARCHAR}, 
+      #{longFieldOne,jdbcType=BIGINT}, #{longFieldThree,jdbcType=BIGINT}, #{longFieldTwo,jdbcType=BIGINT}, 
+      #{doubleFieldOne,jdbcType=DECIMAL}, #{doubleFieldTwo,jdbcType=DECIMAL}, #{doubleFieldThree,jdbcType=DECIMAL}, 
+      #{dateFieldOne,jdbcType=TIMESTAMP}, #{dateFieldTwo,jdbcType=TIMESTAMP}, #{dateFieldThree,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.entity.dao.Product">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productUuid != null">
+        product_uuid,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productShortName != null">
+        product_short_name,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="productOrganization != null">
+        product_organization,
+      </if>
+      <if test="productSpecialAccountUuid != null">
+        product_special_account_uuid,
+      </if>
+      <if test="cooperationOrganizationUuid != null">
+        cooperation_organization_uuid,
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one,
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two,
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three,
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one,
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three,
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two,
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one,
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two,
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three,
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one,
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two,
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productUuid != null">
+        #{productUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productShortName != null">
+        #{productShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=TINYINT},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="productOrganization != null">
+        #{productOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecialAccountUuid != null">
+        #{productSpecialAccountUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperationOrganizationUuid != null">
+        #{cooperationOrganizationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suidifu.entity.dao.Product">
+    update product
+    <set>
+      <if test="productUuid != null">
+        product_uuid = #{productUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productShortName != null">
+        product_short_name = #{productShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType,jdbcType=TINYINT},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="productOrganization != null">
+        product_organization = #{productOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecialAccountUuid != null">
+        product_special_account_uuid = #{productSpecialAccountUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperationOrganizationUuid != null">
+        cooperation_organization_uuid = #{cooperationOrganizationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suidifu.entity.dao.Product">
+    update product
+    set product_uuid = #{productUuid,jdbcType=VARCHAR},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_short_name = #{productShortName,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=TINYINT},
+      business_type = #{businessType,jdbcType=TINYINT},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      product_organization = #{productOrganization,jdbcType=VARCHAR},
+      product_special_account_uuid = #{productSpecialAccountUuid,jdbcType=VARCHAR},
+      cooperation_organization_uuid = #{cooperationOrganizationUuid,jdbcType=VARCHAR},
+      string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getProductByRequest" parameterType="com.suidifu.entity.request.ProductRequest" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from product
+    <where>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
+</mapper>

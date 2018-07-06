@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: pre-loan-credit
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: suidifu-config-server
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${eureka.server.hostname}:${eureka.server.port}/eureka/
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+    prefer-ip-address: true
+
+feign:
+  hystrix:
+    enabled: true
+
+#熔断超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.suidifu.entity.dao
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+management:
+  context-path: /admin
+
+security:
+  basic:
+    path: /admin

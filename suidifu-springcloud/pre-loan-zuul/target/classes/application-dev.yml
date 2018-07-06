@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      label: pre-loan
+
+security:
+  user:
+    name: admin
+    password: admin

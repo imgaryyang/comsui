@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.LoanContractMapper">
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.LoanContract">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="contract_uuid" jdbcType="CHAR" property="contractUuid" />
+    <result column="request_no" jdbcType="VARCHAR" property="requestNo" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="merchant_credit_no" jdbcType="VARCHAR" property="merchantCreditNo" />
+    <result column="veda_credit_no" jdbcType="VARCHAR" property="vedaCreditNo" />
+    <result column="merchant_contract_no" jdbcType="VARCHAR" property="merchantContractNo" />
+    <result column="veda_contract_no" jdbcType="VARCHAR" property="vedaContractNo" />
+    <result column="version_no" jdbcType="INTEGER" property="versionNo" />
+    <result column="principal_sum" jdbcType="DECIMAL" property="principalSum" />
+    <result column="interest_sum" jdbcType="DECIMAL" property="interestSum" />
+    <result column="cost_sum" jdbcType="DECIMAL" property="costSum" />
+    <result column="sign_date" jdbcType="DATE" property="signDate" />
+    <result column="effective_date" jdbcType="TIMESTAMP" property="effectiveDate" />
+    <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate" />
+    <result column="value_date" jdbcType="TIMESTAMP" property="valueDate" />
+    <result column="due_date" jdbcType="TIMESTAMP" property="dueDate" />
+    <result column="interest_rate" jdbcType="DECIMAL" property="interestRate" />
+    <result column="interest_rate_cycle" jdbcType="TINYINT" property="interestRateCycle" typeHandler="com.suidifu.entity.mybatis.IntegerEnumHandler" />
+    <result column="pay_interest_cycle" jdbcType="TINYINT" property="payInterestCycle" />
+    <result column="repayment_method" jdbcType="TINYINT" property="repaymentMethod" />
+    <result column="repayment_periods_count" jdbcType="INTEGER" property="repaymentPeriodsCount" />
+    <result column="intended_use" jdbcType="TINYINT" property="intendedUse" />
+    <result column="cooperation_platform_product_name" jdbcType="VARCHAR" property="cooperationPlatformProductName" />
+    <result column="cooperation_platform_grade" jdbcType="INTEGER" property="cooperationPlatformGrade" />
+    <result column="borrower_uuid" jdbcType="VARCHAR" property="borrowerUuid" />
+    <result column="contract_status" jdbcType="INTEGER" property="contractStatus" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="loan_info_section" jdbcType="CHAR" property="loanInfoSection" />
+    <result column="external_no_section" jdbcType="CHAR" property="externalNoSection" />
+    <result column="callback_url" jdbcType="VARCHAR" property="callbackUrl" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="date_field_one" jdbcType="TIMESTAMP" property="dateFieldOne" />
+    <result column="date_field_two" jdbcType="TIMESTAMP" property="dateFieldTwo" />
+    <result column="date_field_three" jdbcType="TIMESTAMP" property="dateFieldThree" />
+    <result column="decimal_field_one" jdbcType="DECIMAL" property="decimalFieldOne" />
+    <result column="decimal_field_two" jdbcType="DECIMAL" property="decimalFieldTwo" />
+    <result column="decimal_field_three" jdbcType="DECIMAL" property="decimalFieldThree" />
+    <result column="long_field_one" jdbcType="INTEGER" property="longFieldOne" />
+    <result column="long_field_two" jdbcType="INTEGER" property="longFieldTwo" />
+    <result column="long_field_three" jdbcType="INTEGER" property="longFieldThree" />
+    <result column="string_field_one" jdbcType="VARCHAR" property="stringFieldOne" />
+    <result column="string_field_two" jdbcType="VARCHAR" property="stringFieldTwo" />
+    <result column="string_field_three" jdbcType="VARCHAR" property="stringFieldThree" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, contract_uuid, request_no, product_code, merchant_credit_no, veda_credit_no,
+    merchant_contract_no, veda_contract_no, version_no, principal_sum, interest_sum, cost_sum, sign_date,
+    effective_date, expiration_date, value_date, due_date, interest_rate, interest_rate_cycle, 
+    pay_interest_cycle, repayment_method, repayment_periods_count, intended_use, cooperation_platform_product_name, 
+    cooperation_platform_grade, borrower_uuid, contract_status, remark, loan_info_section, 
+    external_no_section, callback_url, gmt_create, gmt_modified, date_field_one, date_field_two, 
+    date_field_three, decimal_field_one, decimal_field_two, decimal_field_three, long_field_one, 
+    long_field_two, long_field_three, string_field_one, string_field_two, string_field_three
+  </sql>
+  <select id="selectByContractUuidOrderByCreateDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loan_contract
+    where merchant_contract_no = #{merchantContractNo,jdbcType=VARCHAR}
+    order by gmt_create desc
+    limit 1
+  </select>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.LoanContract">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into loan_contract (contract_uuid, request_no, product_code, 
+      merchant_credit_no, veda_credit_no, merchant_contract_no, veda_contract_no,
+      version_no, principal_sum, interest_sum, 
+      cost_sum, sign_date, effective_date, 
+      expiration_date, value_date, due_date, 
+      interest_rate, interest_rate_cycle, 
+      pay_interest_cycle, repayment_method, repayment_periods_count, 
+      intended_use, cooperation_platform_product_name, 
+      cooperation_platform_grade, borrower_uuid, 
+      contract_status, remark, loan_info_section, 
+      external_no_section, callback_url, gmt_create, 
+      gmt_modified, date_field_one, date_field_two, 
+      date_field_three, decimal_field_one, decimal_field_two, 
+      decimal_field_three, long_field_one, long_field_two, 
+      long_field_three, string_field_one, string_field_two, 
+      string_field_three)
+    values (#{contractUuid,jdbcType=CHAR}, #{requestNo,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+      #{merchantCreditNo,jdbcType=VARCHAR}, #{vedaCreditNo,jdbcType=VARCHAR}, #{merchantContractNo,jdbcType=VARCHAR},
+      #{vedaContractNo,jdbcType=VARCHAR},
+      #{versionNo,jdbcType=INTEGER}, #{principalSum,jdbcType=DECIMAL}, #{interestSum,jdbcType=DECIMAL}, 
+      #{costSum,jdbcType=DECIMAL}, #{signDate,jdbcType=DATE}, #{effectiveDate,jdbcType=TIMESTAMP}, 
+      #{expirationDate,jdbcType=TIMESTAMP}, #{valueDate,jdbcType=TIMESTAMP}, #{dueDate,jdbcType=TIMESTAMP}, 
+      #{interestRate,jdbcType=DECIMAL}, #{interestRateCycle,jdbcType=TINYINT,typeHandler=com.suidifu.entity.mybatis.IntegerEnumHandler},
+      #{payInterestCycle,jdbcType=TINYINT}, #{repaymentMethod,jdbcType=TINYINT}, #{repaymentPeriodsCount,jdbcType=INTEGER}, 
+      #{intendedUse,jdbcType=TINYINT}, #{cooperationPlatformProductName,jdbcType=VARCHAR}, 
+      #{cooperationPlatformGrade,jdbcType=INTEGER}, #{borrowerUuid,jdbcType=VARCHAR}, 
+      #{contractStatus,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{loanInfoSection,jdbcType=CHAR}, 
+      #{externalNoSection,jdbcType=CHAR}, #{callbackUrl,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP}, #{dateFieldOne,jdbcType=TIMESTAMP}, #{dateFieldTwo,jdbcType=TIMESTAMP}, 
+      #{dateFieldThree,jdbcType=TIMESTAMP}, #{decimalFieldOne,jdbcType=DECIMAL}, #{decimalFieldTwo,jdbcType=DECIMAL}, 
+      #{decimalFieldThree,jdbcType=DECIMAL}, #{longFieldOne,jdbcType=INTEGER}, #{longFieldTwo,jdbcType=INTEGER}, 
+      #{longFieldThree,jdbcType=INTEGER}, #{stringFieldOne,jdbcType=VARCHAR}, #{stringFieldTwo,jdbcType=VARCHAR}, 
+      #{stringFieldThree,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateStatusByContractUuid" parameterType="com.suidifu.entity.dao.LoanContract">
+    update loan_contract
+    set
+        contract_status = #{contractStatus,jdbcType=INTEGER},
+        version_no = #{versionNo, jdbcType=VARCHAR},
+        gmt_modified = #{gmtModified, jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByMerchantContractNoOrVedaContractCodeAndProductCode" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from loan_contract
+    where (merchant_contract_no = #{merchantContractNo,jdbcType=VARCHAR}
+    or veda_contract_no = #{vedaContractNo, jdbcType=VARCHAR} )
+    and
+    product_code = #{productCode, jdbcType=VARCHAR}
+  </select>
+</mapper>

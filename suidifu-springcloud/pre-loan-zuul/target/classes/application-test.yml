@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      label: test
+
+security:
+  user:
+    name: root
+    password: root

@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: pre-loan-credit
+  datasource:
+   type: com.zaxxer.hikari.HikariDataSource
+   driver-class-name: com.mysql.jdbc.Driver
+   url: jdbc:mysql://192.168.1.18:3306/preloan?useSSL=false&useUnicode=true&autoReconnect=true&characterEncoding=UTF-8
+   username: '{cipher}22992f6895976206f2d748f41a072972a7319cef99fd8767a6119862aa08fcde'
+   password: '{cipher}09f5e4fa7e105ef4cacfecd5678890e40bbe85285914245ad89cfcd83d2124df'
+
+  cloud:
+    config:
+      label: pre-loan
+      discovery:
+        enabled: true
+        service-id: suidifu-config-server
+
+
+rabbitmq:
+  connection:
+      credit:
+        host: 192.168.1.18
+        port: 5672
+        username: admin
+        password: '{cipher}5c96d052b563cc06a9717df0a944a4bf6d93bf0425b32370f7d2056ffd0e012a'
+        vhost: preloan
+        exchange: SchedulerPlanExchange
+        routingkey: topic.credit
+
+  profiles:
+    active: dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.1.18:8710/eureka/
+
+feign:
+  hystrix:
+    enabled: true
+
+encrypt:
+  key: suidifu@69fc
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.suidifu.entity.dao
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+
+logging:
+  logStash: 192.168.1.18:4560

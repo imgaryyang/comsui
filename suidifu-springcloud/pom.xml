@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.suidifu</groupId>
+    <artifactId>suidifu-springcloud</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>suidifu-springcloud</name>
+    <description>随地付SpringCloud</description>
+
+    <modules>
+        <module>./watchman</module>
+        <module>./watchman-message</module>
+        <!--<module>./zipkin-trace</module>-->
+        <module>./suidifu-config-server</module>
+        <module>./suidifu-discovery-eureka</module>
+        <module>./modify-overdue-fee-consumer</module>
+        <module>./owlman</module>
+        <module>./tmp-deposit-reconciliation-consumer</module>
+        <!--<module>./filter-opentracing</module>-->
+        <module>./clear-deduct-plan-consumer</module>
+        <module>./source-document-reconciliation-consumer</module>
+        <!--<module>./repayment-order-reconciliation-consumer</module>-->
+        <module>./recon-repayment-order-active-consumer</module>
+        <module>./recon-repayment-order-deduct-consumer</module>
+        <module>./repayment-order-consumer</module>
+        <module>./modify-repayment-plan-consumer</module>
+        <module>./refund-asset-consumer</module>
+  </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <skipTests>true</skipTests>
+        <!-- suidifu properties -->
+        <suidifu.version>1.0.0</suidifu.version>
+        <zufangbao.version>1.0.0-SNAPSHOT</zufangbao.version>
+        <rabbitmq-client.version>3.6.5</rabbitmq-client.version>
+        <spring-rabbit.version>1.6.2.RELEASE</spring-rabbit.version>
+        <kryo.version>2.24.0</kryo.version>
+        <kotlin.version>1.2.21</kotlin.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
+        <hibernate-commons.version>4.0.5.Final</hibernate-commons.version>
+    <dockerfile-maven-plugin.version>1.3.6</dockerfile-maven-plugin.version>
+    <docker.repository>120.26.102.180:5000</docker.repository>
+    <docker.image.prefix>suidifu</docker.image.prefix>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Edgware.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.suidifu</groupId>
+                <artifactId>watchman</artifactId>
+                <version>${suidifu.version}</version>
+            </dependency>
+
+            <!-- =============== jetbrains lib ================= -->
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>15.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.1.41</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>com.spotify</groupId>
+        <artifactId>dockerfile-maven-extension</artifactId>
+        <version>${dockerfile-maven-plugin.version}</version>
+      </extension>
+    </extensions>
+    <finalName>suidifu-springcloud</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+          <!--<artifactId>maven-surefire-plugin</artifactId>-->
+          <!--<version>2.18.1</version>-->
+                <!--<inherited>true</inherited>-->
+          <!--<configuration>-->
+            <!--<skipTests>false</skipTests>-->
+                <!--<junitArtifactName>junit:junit</junitArtifactName>-->
+                <!--<includes>-->
+                <!--<include>**/*Test.java</include>-->
+            <!--<include>**/*Tests.java</include>-->
+                <!--</includes>-->
+                <!--<forkMode>once</forkMode>-->
+                <!--<reportFormat>xml</reportFormat>-->
+            <!--<classesDirectory>${project.build.directory}/generated-classes/emma/classes</classesDirectory>-->
+          <!--</configuration>-->
+          <!--</plugin>-->
+            <!--<plugin>-->
+              <!--<groupId>org.jacoco</groupId>-->
+              <!--<artifactId>jacoco-maven-plugin</artifactId>-->
+              <!--<version>0.8.0</version>-->
+              <!--</plugin>-->
+                </plugins>
+              </pluginManagement>
+            </build>
+          <!--<reporting>-->
+        <!--<plugins>-->
+        <!--<plugin>-->
+          <!--<groupId>org.jacoco</groupId>-->
+          <!--<artifactId>jacoco-maven-plugin</artifactId>-->
+          <!--<reportSets>-->
+            <!--<reportSet>-->
+          <!--<reports>-->
+        <!--&lt;!&ndash; select non-aggregate reports &ndash;&gt;-->
+<!--<report>report</report>-->
+      <!--</reports>-->
+    <!--</reportSet>-->
+  <!--</reportSets>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</reporting>-->
+  <repositories>
+    <repository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>

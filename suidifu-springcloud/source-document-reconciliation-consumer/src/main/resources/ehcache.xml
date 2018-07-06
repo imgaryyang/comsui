@@ -1,0 +1,149 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+    <cacheManagerEventListenerFactory class="" properties=""/>
+    <defaultCache
+            eternal="false"
+            maxElementsInMemory="1"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            overflowToDisk="true"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+    />
+    <cache name="sr_obj"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="productCategoryCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="dictionaryCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           timeToIdleSeconds="86000"
+           timeToLiveSeconds="430000"
+           overflowToDisk="false"
+    />
+
+    <cache name="tableNameCacheKey"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="entryBookWithAccountNameKey"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="entryBookWithAccountCodeKey"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="tMerConfigCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="financialContractSnapshotCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="dataStatisticsCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="bankAccountVsFinancialContractCacheKey"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="financialContractVsPrincipleCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="financialContractVsBankAccountCacheKey"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="provinces"
+           maxElementsInMemory="40"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="citys"
+           maxElementsInMemory="350"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="banks"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="bankNames"
+           maxElementsInMemory="1"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="cardBins"
+           maxElementsInMemory="1"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="bankNamesForHeadQuarter"
+           maxElementsInMemory="1"
+           eternal="true"
+           overflowToDisk="false"
+    />
+    <cache name="paymentChannels"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="financialContractConfigurationCacheKey"
+           maxElementsInMemory="10"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="sqlCacheManager"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="delayTaskConfigCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="delayTaskCache"
+           maxElementsInMemory="100"
+           eternal="true"
+           overflowToDisk="false"
+    />
+
+    <cache name="supplierContracts"
+           maxElementsInMemory="300"
+           eternal="true"
+           overflowToDisk="false"
+    />
+</ehcache>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.MerchantMapper">
+
+  <cache size="100"/>
+
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.Merchant">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="merchant_code" jdbcType="VARCHAR" property="merchantCode" />
+    <result column="merchant_uuid" jdbcType="VARCHAR" property="merchantUuid" />
+    <result column="valid" jdbcType="BIT" property="valid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modify" jdbcType="TIMESTAMP" property="gmtModify" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, merchant_code, merchant_uuid, valid, name, gmt_create, gmt_modify
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merchant
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByMerchantCode" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from merchant
+    where merchant_code = #{merchantCode}
+    and valid = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from merchant
+    where merchant_code = #{merchantCode}
+  </delete>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.Merchant">
+    insert into merchant (id, merchant_code, merchant_uuid, 
+      valid, name, gmt_create, 
+      gmt_modify)
+    values (#{id,jdbcType=BIGINT}, #{merchantCode,jdbcType=VARCHAR}, #{merchantUuid,jdbcType=VARCHAR}, 
+      #{valid,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
+      #{gmtModify,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.entity.dao.Merchant">
+    insert into merchant
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="merchantCode != null">
+        merchant_code,
+      </if>
+      <if test="merchantUuid != null">
+        merchant_uuid,
+      </if>
+      <if test="valid != null">
+        valid,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="merchantCode != null">
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantUuid != null">
+        #{merchantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModify != null">
+        #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suidifu.entity.dao.Merchant">
+    update merchant
+    <set>
+      <if test="merchantCode != null">
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantUuid != null">
+        merchant_uuid = #{merchantUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=BIT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModify != null">
+        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suidifu.entity.dao.Merchant">
+    update merchant
+    set merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      merchant_uuid = #{merchantUuid,jdbcType=VARCHAR},
+      valid = #{valid,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modify = #{gmtModify,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

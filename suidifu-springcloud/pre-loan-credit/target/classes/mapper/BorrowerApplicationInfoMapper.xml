@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suidifu.mapper.BorrowerApplicationInfoMapper">
+
+  <cache size="100"/>
+
+  <resultMap id="BaseResultMap" type="com.suidifu.entity.dao.BorrowerApplicationInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="borrower_application_info_uuid" jdbcType="VARCHAR" property="borrowerApplicationInfoUuid" />
+    <result column="borrower_uuid" jdbcType="VARCHAR" property="borrowerUuid" />
+    <result column="credit_application_uuid" jdbcType="VARCHAR" property="creditApplicationUuid" />
+    <result column="base_info_section" jdbcType="CHAR" property="baseInfoSection" />
+    <result column="edu_info_section" jdbcType="CHAR" property="eduInfoSection" />
+    <result column="job_info_section" jdbcType="CHAR" property="jobInfoSection" />
+    <result column="marriage_info_section" jdbcType="CHAR" property="marriageInfoSection" />
+    <result column="residence_info_section" jdbcType="CHAR" property="residenceInfoSection" />
+    <result column="bankcard_info_section" jdbcType="CHAR" property="bankcardInfoSection" />
+    <result column="contack_info_section" jdbcType="CHAR" property="contackInfoSection" />
+    <result column="guarantee_info_section" jdbcType="CHAR" property="guaranteeInfoSection" />
+    <result column="policy_info_section" jdbcType="CHAR" property="policyInfoSection" />
+    <result column="provident_fund_info_section" jdbcType="CHAR" property="providentFundInfoSection" />
+    <result column="ext1_info_section" jdbcType="CHAR" property="ext1InfoSection" />
+    <result column="ext2_info_section" jdbcType="CHAR" property="ext2InfoSection" />
+    <result column="ext3_info_section" jdbcType="CHAR" property="ext3InfoSection" />
+    <result column="ext4_info_section" jdbcType="CHAR" property="ext4InfoSection" />
+    <result column="ext5_info_section" jdbcType="CHAR" property="ext5InfoSection" />
+    <result column="ext6_info_section" jdbcType="CHAR" property="ext6InfoSection" />
+    <result column="string_field_one" jdbcType="VARCHAR" property="stringFieldOne" />
+    <result column="string_field_two" jdbcType="VARCHAR" property="stringFieldTwo" />
+    <result column="string_field_three" jdbcType="VARCHAR" property="stringFieldThree" />
+    <result column="long_field_one" jdbcType="BIGINT" property="longFieldOne" />
+    <result column="long_field_three" jdbcType="BIGINT" property="longFieldThree" />
+    <result column="long_field_two" jdbcType="BIGINT" property="longFieldTwo" />
+    <result column="double_field_one" jdbcType="DECIMAL" property="doubleFieldOne" />
+    <result column="double_field_two" jdbcType="DECIMAL" property="doubleFieldTwo" />
+    <result column="double_field_three" jdbcType="DECIMAL" property="doubleFieldThree" />
+    <result column="date_field_one" jdbcType="TIMESTAMP" property="dateFieldOne" />
+    <result column="date_field_two" jdbcType="TIMESTAMP" property="dateFieldTwo" />
+    <result column="date_field_three" jdbcType="TIMESTAMP" property="dateFieldThree" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, borrower_application_info_uuid, borrower_uuid, credit_application_uuid, base_info_section, 
+    edu_info_section, job_info_section, marriage_info_section, residence_info_section, 
+    bankcard_info_section, contack_info_section, guarantee_info_section, policy_info_section, 
+    provident_fund_info_section, ext1_info_section, ext2_info_section, ext3_info_section, 
+    ext4_info_section, ext5_info_section, ext6_info_section, string_field_one, string_field_two, 
+    string_field_three, long_field_one, long_field_three, long_field_two, double_field_one, 
+    double_field_two, double_field_three, date_field_one, date_field_two, date_field_three, 
+    gmt_create, gmt_modified
+  </sql>
+
+  <select id="getBorrowerAppByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from borrower_application_info
+    where borrower_application_info_uuid = #{uuid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from borrower_application_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from borrower_application_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.suidifu.entity.dao.BorrowerApplicationInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into borrower_application_info (borrower_application_info_uuid, borrower_uuid, 
+      credit_application_uuid, base_info_section, edu_info_section, 
+      job_info_section, marriage_info_section, residence_info_section, 
+      bankcard_info_section, contack_info_section, guarantee_info_section, 
+      policy_info_section, provident_fund_info_section, 
+      ext1_info_section, ext2_info_section, ext3_info_section, 
+      ext4_info_section, ext5_info_section, ext6_info_section, 
+      string_field_one, string_field_two, string_field_three, 
+      long_field_one, long_field_three, long_field_two, 
+      double_field_one, double_field_two, double_field_three, 
+      date_field_one, date_field_two, date_field_three, 
+      gmt_create, gmt_modified)
+    values (#{borrowerApplicationInfoUuid,jdbcType=VARCHAR}, #{borrowerUuid,jdbcType=VARCHAR}, 
+      #{creditApplicationUuid,jdbcType=VARCHAR}, #{baseInfoSection,jdbcType=CHAR}, #{eduInfoSection,jdbcType=CHAR}, 
+      #{jobInfoSection,jdbcType=CHAR}, #{marriageInfoSection,jdbcType=CHAR}, #{residenceInfoSection,jdbcType=CHAR}, 
+      #{bankcardInfoSection,jdbcType=CHAR}, #{contackInfoSection,jdbcType=CHAR}, #{guaranteeInfoSection,jdbcType=CHAR}, 
+      #{policyInfoSection,jdbcType=CHAR}, #{providentFundInfoSection,jdbcType=CHAR}, 
+      #{ext1InfoSection,jdbcType=CHAR}, #{ext2InfoSection,jdbcType=CHAR}, #{ext3InfoSection,jdbcType=CHAR}, 
+      #{ext4InfoSection,jdbcType=CHAR}, #{ext5InfoSection,jdbcType=CHAR}, #{ext6InfoSection,jdbcType=CHAR}, 
+      #{stringFieldOne,jdbcType=VARCHAR}, #{stringFieldTwo,jdbcType=VARCHAR}, #{stringFieldThree,jdbcType=VARCHAR}, 
+      #{longFieldOne,jdbcType=BIGINT}, #{longFieldThree,jdbcType=BIGINT}, #{longFieldTwo,jdbcType=BIGINT}, 
+      #{doubleFieldOne,jdbcType=DECIMAL}, #{doubleFieldTwo,jdbcType=DECIMAL}, #{doubleFieldThree,jdbcType=DECIMAL}, 
+      #{dateFieldOne,jdbcType=TIMESTAMP}, #{dateFieldTwo,jdbcType=TIMESTAMP}, #{dateFieldThree,jdbcType=TIMESTAMP}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suidifu.entity.dao.BorrowerApplicationInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into borrower_application_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="borrowerApplicationInfoUuid != null">
+        borrower_application_info_uuid,
+      </if>
+      <if test="borrowerUuid != null">
+        borrower_uuid,
+      </if>
+      <if test="creditApplicationUuid != null">
+        credit_application_uuid,
+      </if>
+      <if test="baseInfoSection != null">
+        base_info_section,
+      </if>
+      <if test="eduInfoSection != null">
+        edu_info_section,
+      </if>
+      <if test="jobInfoSection != null">
+        job_info_section,
+      </if>
+      <if test="marriageInfoSection != null">
+        marriage_info_section,
+      </if>
+      <if test="residenceInfoSection != null">
+        residence_info_section,
+      </if>
+      <if test="bankcardInfoSection != null">
+        bankcard_info_section,
+      </if>
+      <if test="contackInfoSection != null">
+        contack_info_section,
+      </if>
+      <if test="guaranteeInfoSection != null">
+        guarantee_info_section,
+      </if>
+      <if test="policyInfoSection != null">
+        policy_info_section,
+      </if>
+      <if test="providentFundInfoSection != null">
+        provident_fund_info_section,
+      </if>
+      <if test="ext1InfoSection != null">
+        ext1_info_section,
+      </if>
+      <if test="ext2InfoSection != null">
+        ext2_info_section,
+      </if>
+      <if test="ext3InfoSection != null">
+        ext3_info_section,
+      </if>
+      <if test="ext4InfoSection != null">
+        ext4_info_section,
+      </if>
+      <if test="ext5InfoSection != null">
+        ext5_info_section,
+      </if>
+      <if test="ext6InfoSection != null">
+        ext6_info_section,
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one,
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two,
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three,
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one,
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three,
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two,
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one,
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two,
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three,
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one,
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two,
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="borrowerApplicationInfoUuid != null">
+        #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerUuid != null">
+        #{borrowerUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="creditApplicationUuid != null">
+        #{creditApplicationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="baseInfoSection != null">
+        #{baseInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="eduInfoSection != null">
+        #{eduInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="jobInfoSection != null">
+        #{jobInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="marriageInfoSection != null">
+        #{marriageInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="residenceInfoSection != null">
+        #{residenceInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="bankcardInfoSection != null">
+        #{bankcardInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="contackInfoSection != null">
+        #{contackInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="guaranteeInfoSection != null">
+        #{guaranteeInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="policyInfoSection != null">
+        #{policyInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="providentFundInfoSection != null">
+        #{providentFundInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext1InfoSection != null">
+        #{ext1InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext2InfoSection != null">
+        #{ext2InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext3InfoSection != null">
+        #{ext3InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext4InfoSection != null">
+        #{ext4InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext5InfoSection != null">
+        #{ext5InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext6InfoSection != null">
+        #{ext6InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suidifu.entity.dao.BorrowerApplicationInfo">
+    update borrower_application_info
+    <set>
+      <if test="borrowerApplicationInfoUuid != null">
+        borrower_application_info_uuid = #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowerUuid != null">
+        borrower_uuid = #{borrowerUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="creditApplicationUuid != null">
+        credit_application_uuid = #{creditApplicationUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="baseInfoSection != null">
+        base_info_section = #{baseInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="eduInfoSection != null">
+        edu_info_section = #{eduInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="jobInfoSection != null">
+        job_info_section = #{jobInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="marriageInfoSection != null">
+        marriage_info_section = #{marriageInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="residenceInfoSection != null">
+        residence_info_section = #{residenceInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="bankcardInfoSection != null">
+        bankcard_info_section = #{bankcardInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="contackInfoSection != null">
+        contack_info_section = #{contackInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="guaranteeInfoSection != null">
+        guarantee_info_section = #{guaranteeInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="policyInfoSection != null">
+        policy_info_section = #{policyInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="providentFundInfoSection != null">
+        provident_fund_info_section = #{providentFundInfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext1InfoSection != null">
+        ext1_info_section = #{ext1InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext2InfoSection != null">
+        ext2_info_section = #{ext2InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext3InfoSection != null">
+        ext3_info_section = #{ext3InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext4InfoSection != null">
+        ext4_info_section = #{ext4InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext5InfoSection != null">
+        ext5_info_section = #{ext5InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="ext6InfoSection != null">
+        ext6_info_section = #{ext6InfoSection,jdbcType=CHAR},
+      </if>
+      <if test="stringFieldOne != null">
+        string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldTwo != null">
+        string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="stringFieldThree != null">
+        string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      </if>
+      <if test="longFieldOne != null">
+        long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldThree != null">
+        long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      </if>
+      <if test="longFieldTwo != null">
+        long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      </if>
+      <if test="doubleFieldOne != null">
+        double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldTwo != null">
+        double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleFieldThree != null">
+        double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      </if>
+      <if test="dateFieldOne != null">
+        date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldTwo != null">
+        date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateFieldThree != null">
+        date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suidifu.entity.dao.BorrowerApplicationInfo">
+    update borrower_application_info
+    set borrower_application_info_uuid = #{borrowerApplicationInfoUuid,jdbcType=VARCHAR},
+      borrower_uuid = #{borrowerUuid,jdbcType=VARCHAR},
+      credit_application_uuid = #{creditApplicationUuid,jdbcType=VARCHAR},
+      base_info_section = #{baseInfoSection,jdbcType=CHAR},
+      edu_info_section = #{eduInfoSection,jdbcType=CHAR},
+      job_info_section = #{jobInfoSection,jdbcType=CHAR},
+      marriage_info_section = #{marriageInfoSection,jdbcType=CHAR},
+      residence_info_section = #{residenceInfoSection,jdbcType=CHAR},
+      bankcard_info_section = #{bankcardInfoSection,jdbcType=CHAR},
+      contack_info_section = #{contackInfoSection,jdbcType=CHAR},
+      guarantee_info_section = #{guaranteeInfoSection,jdbcType=CHAR},
+      policy_info_section = #{policyInfoSection,jdbcType=CHAR},
+      provident_fund_info_section = #{providentFundInfoSection,jdbcType=CHAR},
+      ext1_info_section = #{ext1InfoSection,jdbcType=CHAR},
+      ext2_info_section = #{ext2InfoSection,jdbcType=CHAR},
+      ext3_info_section = #{ext3InfoSection,jdbcType=CHAR},
+      ext4_info_section = #{ext4InfoSection,jdbcType=CHAR},
+      ext5_info_section = #{ext5InfoSection,jdbcType=CHAR},
+      ext6_info_section = #{ext6InfoSection,jdbcType=CHAR},
+      string_field_one = #{stringFieldOne,jdbcType=VARCHAR},
+      string_field_two = #{stringFieldTwo,jdbcType=VARCHAR},
+      string_field_three = #{stringFieldThree,jdbcType=VARCHAR},
+      long_field_one = #{longFieldOne,jdbcType=BIGINT},
+      long_field_three = #{longFieldThree,jdbcType=BIGINT},
+      long_field_two = #{longFieldTwo,jdbcType=BIGINT},
+      double_field_one = #{doubleFieldOne,jdbcType=DECIMAL},
+      double_field_two = #{doubleFieldTwo,jdbcType=DECIMAL},
+      double_field_three = #{doubleFieldThree,jdbcType=DECIMAL},
+      date_field_one = #{dateFieldOne,jdbcType=TIMESTAMP},
+      date_field_two = #{dateFieldTwo,jdbcType=TIMESTAMP},
+      date_field_three = #{dateFieldThree,jdbcType=TIMESTAMP},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

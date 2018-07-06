@@ -1,0 +1,17 @@
+com/suidifu/gluon/entity/dto/asset/enumeration/ContractStatusEnum.class
+com/suidifu/gluon/entity/dto/schedule/SchedulePlanDTO.class
+com/suidifu/gluon/entity/dto/product/MerchantDTO.class
+com/suidifu/gluon/consts/HttpRequestConst.class
+com/suidifu/gluon/entity/dto/credit/CreditApplicationDTO.class
+com/suidifu/gluon/entity/dto/asset/enumeration/IntendedUseOfLoanEnum.class
+com/suidifu/gluon/entity/dto/asset/enumeration/ReceiverTypeEnum.class
+com/suidifu/gluon/entity/enumeration/ScheduleTypeEnum.class
+com/suidifu/gluon/consts/GlobalConst.class
+com/suidifu/gluon/entity/dto/asset/enumeration/RepaymentMethodEnum.class
+com/suidifu/gluon/entity/dto/asset/enumeration/PayInterestCycleEnum.class
+com/suidifu/gluon/entity/dto/BaseEnum.class
+com/suidifu/gluon/entity/dto/Result.class
+com/suidifu/gluon/consts/HttpRequestConst$Header.class
+com/suidifu/gluon/entity/dto/asset/LoanContractDTO.class
+com/suidifu/gluon/entity/dto/asset/enumeration/InterestRateCycleEnum.class
+com/suidifu/gluon/entity/dto/product/ProductDTO.class
