@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <springProperty defaultValue="/logs" name="LOG_HOME" scope="context"
+                    source="logging.path"/>
+    <springProperty defaultValue="localhost.log" name="LOG_NAME" scope="context"
+                    source="spring.application.name"/>
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="fileLog">
+        <file>/${LOG_HOME}/logs/${LOG_NAME}.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>/${LOG_HOME}/logs/${LOG_NAME}-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level:%thread] [%logger:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <level>WARN</level>
+            <level>INFO</level>
+            <level>ERROR</level>
+        </filter>
+    </appender>
+    <!-- Console output -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%level:%thread] [%logger:%line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset> <!-- 此处设置字符集 -->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <level>WARN</level>
+            <level>INFO</level>
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="fileLog"/>
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.netflix" level="WARN"/>
+    <logger name="org" level="INFO"/>
+
+</configuration>
