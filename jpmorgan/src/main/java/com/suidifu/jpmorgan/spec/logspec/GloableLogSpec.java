@@ -1,0 +1,36 @@
+package com.suidifu.jpmorgan.spec.logspec;
+
+import java.util.Date;
+
+import com.demo2do.core.utils.DateUtils;
+
+
+
+public class GloableLogSpec {
+	
+	public static class JPMORGAN_FUNCTION_POINT{
+		public static String RECV_TRADE_REQUEST_FROM_OUTLIER_SYSTEM="JPMORGAN:RECV_TRADE_REQUEST_FROM_OUTLIER_SYSTEM#";
+		public static String SEND_TRADE_SCHEDULES_TO_PAYMENTORDER="JPMORGAN:SEND_TRADE_SCHEDULES_TO_PAYMENTORDER#";
+		public static String RECV_PAYMENTORDER_REQUEST_FROM_TRADESCHEDULE="JPMORGAN:RECV_PAYMENTORDER_REQUEST_FROM_TRADESCHEDULEM#";
+		public static String SEND_PAYMENTORDER_TO_BANK="JPMORGAN:SEND_PAYMENTORDER_TO_BANK#";
+		public static String TIMEOUT_SEND_PAYMENTORDER_TO_BANK="JPMORGAN:TIMEOUT_SEND_PAYMENTORDER_TO_BANK#";
+		public static String RECV_QUERY_PAYMENTORDER_FROM_BANK="JPMORGAN:RECV_QUERY_PAYMENTORDER_FROM_BANK#";
+		public static String RECV_STATUS_WRITE_BACK="JPMORGAN:RECV_STATUS_WRITE_BACK#";
+		public static String JPMORGAN_CALLBACK="JPMORGAN:JPMORGAN_CALLBACK#";
+		public static String EXTRAQUERY_RECV_QUERY_PAYMENTORDER_FROM_BANK="JPMORGAN:EXTRAQUERY_RECV_QUERY_PAYMENTORDER_FROM_BANK#";
+		public static String RECV_CALLBACK_FROM_OPPOSITE="JPMORGAN:RECV_CALLBACK_FROM_OPPOSITE#";
+		public static String INNER_CALLBACK_BIGIN_SEND = "JPMORGAN:INNER_CALLBACK_BIGIN_SEND#";
+		public static String INNER_CALLBACK_RECEIVE_CONTENT = "JPMORGAN:INNER_CALLBACK_RECEIVE_CONTENT#";
+		public static String INNER_CALLBACK_END = "JPMORGAN:INNER_CALLBACK_END#";
+	}
+	public static String AuditLogHeaderSpec()
+	{
+		return "[AuditLog]"+"[" + DateUtils.format(new Date(), "yyyyMMdd-HH:mm:ss:SSS]");
+	}
+	
+	public static String RawData(String rawData)
+	{
+		return "#RAW_DATA["+rawData+"]";
+	}
+
+}
