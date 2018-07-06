@@ -1,0 +1,9 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/.giotto.iml
+/.test/test.iml
+/.main/main.iml
+/.greenLight (1).iml
+*.iml
