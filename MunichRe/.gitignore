@@ -1,0 +1,9 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/logs/
+*.iml
+munichre.iml
+/business_logs/
+/munichre-logs/
