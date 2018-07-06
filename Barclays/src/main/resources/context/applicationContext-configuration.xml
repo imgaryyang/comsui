@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util.xsd" default-autowire="byName">
+    
+  <util:properties id="config" location="classpath:/config.properties"></util:properties> 
+  <util:properties id="redis" location="classpath:/redis.properties"></util:properties> 
+  
+  <!-- Enable annotation based container configuration  -->
+	<context:annotation-config />
+	
+	<task:annotation-driven/>
+	
+	<!-- Enable classpath scanning to find candidate managed beans -->
+	<context:component-scan base-package="com.suidifu,com.zufangbao">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan> 
+	
+	
+	<!-- Only needed because we install custom converters to support the examples in the org.springframewok.samples.mvc.convert package -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+	        <bean class="com.demo2do.core.web.format.PersistentAnnotationFormatterFactory" autowire="byName" />
+	    </property>
+	</bean> 
+	
+	<!-- Expression parser -->
+	<bean id="expressionParser" class="com.demo2do.core.expression.FormattingSpelExpressionParser" autowire="byName">
+		<constructor-arg index="0">
+			<bean class="org.springframework.expression.spel.SpelParserConfiguration">
+				<constructor-arg index="0" value="true"></constructor-arg>
+				<constructor-arg index="1" value="true"></constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<!-- Definition of Redis -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+		p:max-idle="#{redis['redis.pool.maxIdle']}"
+		p:max-total="#{redis['redis.pool.maxTotal']}"
+		p:test-on-borrow="#{redis['redis.pool.testOnBorrow']}"
+		p:max-wait-millis="#{redis['redis.pool.maxWaitMillis']}"
+	/>
+	
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="#{redis['redis.host']}" 
+		p:port="#{redis['redis.port']}" 
+		p:password="#{redis['redis.password']}"
+		p:use-pool="true" 
+		p:pool-config-ref="jedisPoolConfig"
+	/>
+	
+		
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory" p:enable-transaction-support="true"/>
+	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+	
+	 <!-- End Definition of Redis -->
+	
+</beans>

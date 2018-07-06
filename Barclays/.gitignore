@@ -1,0 +1,23 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+.classpath
+.project
+/target
+/webapp/upload
+lib
+.DS_Store
+/${env.ANT_HOME}/
+/build/
+/bin/
+/dist/
+node_modules/
+.settings/
+.externalToolBuilders/*
+.settings/*
+*.iml
+.iml/*
+.idea/

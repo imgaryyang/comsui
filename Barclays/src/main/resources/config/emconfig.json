@@ -1,0 +1,19 @@
+{
+  symbol="plzzjy",
+  servers = [
+	{
+	  host="36.32.160.170",
+	  port=21201
+	},
+	{
+	  host="36.32.160.171",
+	  port=21201
+	},
+	{
+	  host="36.32.160.124",
+	  port=21201
+	}
+  ],
+  connectTimeout=3,
+  rwTimeout=1
+}
