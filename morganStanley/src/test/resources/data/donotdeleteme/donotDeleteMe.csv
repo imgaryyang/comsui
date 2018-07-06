@@ -1,0 +1,3 @@
+repaymentOrderDetailUuid,contractNo,contractUniqueId,repaymentWay,repaymentBusinessNo,plannedDate,detailsTotalAmount,detailsAmountJsonList,currentPeriod,repayScheduleNo
+3f477af1-7603-47da-8a1b-15499a71cf7d,192992,,1000,123213,2017-06-06 01:02:03,500.00,[{"actualAmount":100;"feeType":"1000";"feeTypeEnum":"PRINCIPAL"};{"actualAmount":200;"feeType":"1001";"feeTypeEnum":"INTEREST"};{"actualAmount":300;"feeType":"1002";"feeTypeEnum":"LOAN_SERVICE_FEE"}],1,r01
+b8e2364d-edd3-4d79-939c-99346e60fde7,1212,,2001,1321321,2017-06-06 04:05:06,500.00,[{"actualAmount":100;"feeType":"1000";"feeTypeEnum":"PRINCIPAL"};{"actualAmount":200;"feeType":"1001";"feeTypeEnum":"INTEREST"};{"actualAmount":300;"feeType":"1002";"feeTypeEnum":"LOAN_SERVICE_FEE"}],2,r02
