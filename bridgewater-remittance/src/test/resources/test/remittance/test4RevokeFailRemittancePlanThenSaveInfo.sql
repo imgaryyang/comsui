@@ -1,0 +1,43 @@
+set foreign_key_checks=0;
+
+delete from `t_remittance_application`;
+delete from `t_remittance_plan`;
+DELETE FROM `financial_contract`;
+DELETE FROM bank;
+DELETE FROM payment_channel_information;
+DELETE FROM financial_contract_config;
+DELETE FROM t_remittance_application_detail;
+DELETE FROM t_remittance_plan_exec_log;
+
+INSERT INTO bank ( id, bank_code, bank_name) VALUES
+(1,'C10102', '测试银行1'),
+(2,'C10103', '测试银行2');
+
+INSERT INTO financial_contract_configuration (uuid, financial_contract_uuid, code, content) VALUES
+  (uuid(), 'd2812bc5-5057-4a91-b3fd-9019506f0499', '4', '1');
+
+INSERT INTO financial_contract_config (financial_contract_uuid, business_type, payment_channel_uuids_for_credit, payment_channel_uuids_for_debit, credit_payment_channel_mode, debit_payment_channel_mode, payment_channel_router_for_credit, payment_channel_router_for_debit, payment_channel_config_for_credit, payment_channel_config_for_debit) VALUES
+('d2812bc5-5057-4a91-b3fd-9019506f0499', 0, '["8ce3469e-9059-11e6-9aaf-00163e002839"]', '["8ce3469e-9059-11e6-9aaf-00163e002839","89aceaa7-9619-11e6-9aaf-00163e002839"]', 2, 1, '8ce3469e-9059-11e6-9aaf-00163e002839', '8ce3469e-9059-11e6-9aaf-00163e002839', null, '{"C10102":"89aceaa7-9619-11e6-9aaf-00163e002839","C10103":"89aceaa7-9619-11e6-9aaf-00163e002839","C10104":"89aceaa7-9619-11e6-9aaf-00163e002839","C10105":"89aceaa7-9619-11e6-9aaf-00163e002839","C10301":"89aceaa7-9619-11e6-9aaf-00163e002839","C10302":"89aceaa7-9619-11e6-9aaf-00163e002839","C10303":"89aceaa7-9619-11e6-9aaf-00163e002839","C10304":"16ea0d08-735f-11e6-bf08-00163e002839","C10305":"16ea0d08-735f-11e6-bf08-00163e002839","C10306":"16ea0d08-735f-11e6-bf08-00163e002839","C10308":"16ea0d08-735f-11e6-bf08-00163e002839","C10309":"16ea0d08-735f-11e6-bf08-00163e002839","C10310":"16ea0d08-735f-11e6-bf08-00163e002839","C10403":"89aceaa7-9619-11e6-9aaf-00163e002839","C10802":"16ea0d08-735f-11e6-bf08-00163e002839","C10828":"89aceaa7-9619-11e6-9aaf-00163e002839","C10868":"16ea0d08-735f-11e6-bf08-00163e002839","C10912":"16ea0d08-735f-11e6-bf08-00163e002839","C10920":"16ea0d08-735f-11e6-bf08-00163e002839","C10921":"16ea0d08-735f-11e6-bf08-00163e002839"}'),
+('d2812bc5-5057-4a91-b3fd-9019506f0499', 1, null, '["8818bc24-8e15-11e6-b7d3-00163e002839"]', null, 0, null, null, null, null);
+
+INSERT INTO financial_contract (asset_package_format, adva_matuterm, adva_start_date, contract_no, contract_name, app_id, company_id, adva_repo_term, thru_date, capital_account_id, financial_contract_type, loan_overdue_start_day, loan_overdue_end_day, payment_channel_id, ledger_book_no, financial_contract_uuid, sys_normal_deduct_flag, sys_overdue_deduct_flag, sys_create_penalty_flag, sys_create_guarantee_flag, unusual_modify_flag, sys_create_statement_flag, transaction_limit_per_transcation, transaction_limit_per_day, remittance_strategy_mode, app_account_uuids, allow_online_repayment, allow_offline_repayment, allow_advance_deduct_flag, adva_repayment_term, penalty, overdue_default_fee, overdue_service_fee, overdue_other_fee, create_time, last_modified_time, repurchase_approach, repurchase_rule, repurchase_algorithm, day_of_month, pay_for_go, repurchase_principal_algorithm, repurchase_interest_algorithm, repurchase_penalty_algorithm, repurchase_other_charges_algorithm, temporary_repurchases, repurchase_cycle, allow_freewheeling_repayment, days_of_cycle, repayment_check_days) VALUES
+(0, 0, '2016-09-01 00:00:00', 'G31700', '拍拍贷测试', 3, 1, 12, '2017-08-31 00:00:00', 102, 0, 1, 11, 1, '7dd4ee73-8dcf-4dbc-94ee-932ff9f48b58', 'd2812bc5-5057-4a91-b3fd-9019506f0499', 0, 0, 1, 1, 1, 0, null, null, null, null, 0, 1, 1, 0, '', null, null, null, null, '2017-05-18 15:49:54', 1, 1, 'outstandingPrincipal+outstandingInterest+outstandingPenaltyInterest', 6, 1, 'outstandingPrincipal', 'outstandingInterest', 'outstandingInterest', 'outstandingInterest*2', '[]', null, 1, '[]', 7);
+
+INSERT INTO `t_remittance_application` (`id`, `remittance_application_uuid`, `request_no`, `financial_contract_uuid`, `financial_contract_id`, `financial_product_code`, `contract_unique_id`, `contract_no`, `planned_total_amount`, `actual_total_amount`, `auditor_name`, `audit_time`, `notify_url`, `plan_notify_number`, `actual_notify_number`, `remittance_strategy`, `remark`, `transaction_recipient`, `execution_status`, `execution_remark`, `create_time`, `creator_name`, `ip`, `last_modified_time`, `opposite_receive_date`)
+  VALUES (255, 'f9da5a7f-05d0-415a-8b94-8d1d9651a3bc', '9cde18e1-b926-4816-81bc-62b3cc0458fb', 'd2812bc5-5057-4a91-b3fd-9019506f0499', 38, 'G31700', 'FANT078', 'FANT078', 4500.00, 3000.00, 'auditorName1', '2016-8-20 00:00:00', 'http://hello369.tunnel.qydev.com/loan/paidnotic', 1, 1, 0, '交易备注', 1, 2, NULL, '2017-3-23 15:18:58', 't_test_zfb', '192.168.0.33', '2017-3-23 15:19:46', '2017-1-1 00:00:00');
+
+INSERT INTO `t_remittance_plan` (`id`, `remittance_plan_uuid`, `remittance_application_uuid`, `remittance_application_detail_uuid`, `business_record_no`, `financial_contract_uuid`, `financial_contract_id`, `contract_unique_id`, `contract_no`, `payment_gateway`, `payment_channel_uuid`, `payment_channel_name`, `pg_account_name`, `pg_account_no`, `pg_clearing_account`, `transaction_type`, `transaction_remark`, `priority_level`, `cp_bank_code`, `cp_bank_card_no`, `cp_bank_account_holder`, `cp_id_type`, `cp_id_number`, `cp_bank_province`, `cp_bank_city`, `cp_bank_name`, `planned_payment_date`, `complete_payment_date`, `planned_total_amount`, `actual_total_amount`, `execution_precond`, `execution_status`, `execution_remark`, `transaction_serial_no`, `create_time`, `creator_name`, `last_modified_time`)
+  VALUES (98, '37c2c1dc-aaa9-41db-9295-342fe5767e1d', 'f9da5a7f-05d0-415a-8b94-8d1d9651a3bc', '66967f5c-eac8-4f42-bade-2426da45afd5', 'detailNo1', 'd2812bc5-5057-4a91-b3fd-9019506f0499', 38, 'FANT076', 'FANT076', 2, 'f8bb9956-1952-4893-98c8-66683d25d7ce', 'G31700平安银企直联', '', '', NULL, 0, NULL, 1, 'C10102', '6214855712106520', '测试用户1', 0, 'idNumber1', 'bankProvince1', 'bankCity1', 'bankName1', '2016-8-20 00:00:00', NULL, 1500.00, 1500.00, NULL, 2, '测试置成功', NULL, '2017-3-23 15:18:58', 't_test_zfb', '2017-3-23 15:19:46');
+
+INSERT INTO `t_remittance_plan` (`id`, `remittance_plan_uuid`, `remittance_application_uuid`, `remittance_application_detail_uuid`, `business_record_no`, `financial_contract_uuid`, `financial_contract_id`, `contract_unique_id`, `contract_no`, `payment_gateway`, `payment_channel_uuid`, `payment_channel_name`, `pg_account_name`, `pg_account_no`, `pg_clearing_account`, `transaction_type`, `transaction_remark`, `priority_level`, `cp_bank_code`, `cp_bank_card_no`, `cp_bank_account_holder`, `cp_id_type`, `cp_id_number`, `cp_bank_province`, `cp_bank_city`, `cp_bank_name`, `planned_payment_date`, `complete_payment_date`, `planned_total_amount`, `actual_total_amount`, `execution_precond`, `execution_status`, `execution_remark`, `transaction_serial_no`, `create_time`, `creator_name`, `last_modified_time`)
+  VALUES (99, '37c2c1dc-aaa9-41db-9295-342fe5767e2d', 'f9da5a7f-05d0-415a-8b94-8d1d9651a3bc', '66967f5c-eac8-4f42-bade-2426da45afd5', 'detailNo1', 'd2812bc5-5057-4a91-b3fd-9019506f0499', 38, 'FANT076', 'FANT076', 2, 'f8bb9956-1952-4893-98c8-66683d25d7ce', 'G31700平安银企直联', '', '', NULL, 0, NULL, 1, 'C10102', '6214855712106520', '测试用户1', 0, 'idNumber1', 'bankProvince1', 'bankCity1', 'bankName1', '2016-8-20 00:00:00', NULL, 1500.00, 1500.00, NULL, 2, '测试置成功', NULL, '2017-3-23 15:18:58', 't_test_zfb', '2017-3-23 15:19:46');
+
+
+INSERT INTO `payment_channel_information` (`id`, `related_financial_contract_uuid`, `related_financial_contract_name`, `payment_channel_uuid`, `payment_channel_name`, `payment_institution_name`, `outlier_channel_name`, `create_time`, `last_modify_time`, `credit_channel_working_status`, `debit_channel_working_status`, `credit_payment_channel_service_uuid`, `debit_payment_channel_service_uuid`, `configure_progress`, `payment_configure_data`, `clearing_no`, `business_type`)
+VALUES
+	(23, 'd2812bc5-5057-4a91-b3fd-9019506f0499', 'G31700', '8ce3469e-9059-11e6-9aaf-00163e002839', 'G40900招行银企直连', 2, '201600000040900', '2016-10-12 10:41:29', '2017-04-14 18:45:48', 1, 0, 'df49620c-5b21-4c07-82af-4b8079655a32', NULL, 0, '{\"complete\":true,\"creditChannelConfigure\":{\"channelStatus\":\"ON\",\"chargeExcutionMode\":\"FORWARD\",\"chargeRateMode\":\"SINGLEFIXED\",\"clearingInterval\":0,\"trasncationLimitPerTransactionMax\":0.16,\"trasncationLimitPerTransactionMin\":0.15,\"valid\":true},\"debitChannelConfigure\":{\"channelStatus\":\"NOTLINK\",\"clearingInterval\":0,\"valid\":true}}', NULL, 0);
+
+
+
+
+set foreign_key_checks=1;

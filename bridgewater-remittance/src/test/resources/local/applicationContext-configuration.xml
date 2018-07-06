@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+
+
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util.xsd" default-autowire="byName">
+
+    <util:properties id="config" location="file:src/test/resources/config.local.properties"></util:properties>
+    <util:properties id="task" location="file:src/test/resources/task.local.properties"></util:properties>
+    <util:properties id="redis" location="file:src/test/resources/redis.local.properties"></util:properties>
+
+
+    <!-- Definition of Redis -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+          p:max-idle="#{redis['redis.pool.maxIdle']}"
+          p:max-total="#{redis['redis.pool.maxTotal']}"
+          p:test-on-borrow="#{redis['redis.pool.testOnBorrow']}"
+          p:max-wait-millis="#{redis['redis.pool.maxWaitMillis']}"
+    />
+
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="#{redis['redis.host']}"
+          p:port="#{redis['redis.port']}"
+          p:password="#{redis['redis.password']}"
+          p:use-pool="true"
+          p:pool-config-ref="jedisPoolConfig"
+    />
+
+
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory"
+          p:enable-transaction-support="true"/>
+    <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+
+    <!-- End Definition of Redis -->
+	
+</beans>
