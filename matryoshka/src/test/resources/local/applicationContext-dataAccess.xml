@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:properties id="jdbc" location="classpath:/jdbc.local.properties"/>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+		<property name="driverClass" value="#{jdbc['connection.driver_class']}"/>
+		<property name="jdbcUrl" value="#{jdbc['connection.url']}"/>
+		<property name="idleConnectionTestPeriod" value="#{jdbc['pool.c3p0.idle_connection_test_period']}" />
+		<property name="preferredTestQuery" value="#{jdbc['pool.c3p0.preferred_test_query']}" />
+		<property name="maxIdleTime" value="#{jdbc['pool.c3p0.max_idle_time']}" />
+		<property name="properties">
+			<props>
+				<prop key="user">#{jdbc['connection.username']}</prop>
+				<prop key="password">#{jdbc['connection.password']}</prop>
+				<prop key="c3p0.acquire_increment">#{jdbc['pool.c3p0.acquire_increment']}</prop>
+				<prop key="c3p0.max_size">#{jdbc['pool.c3p0.max_size']}</prop>
+				<prop key="c3p0.min_size">#{jdbc['pool.c3p0.min_size']}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
+		<property name="dataSource" ref="dataSource" />
+		<property name="namingStrategy">
+			<bean class="com.demo2do.core.persistence.SmartNamingStrategy" />
+		</property>
+		<property name="packagesToScan" value="com.zufangbao.*,com.suidifu.*" />
+	</bean>
+
+
+	<bean id="genericDaoSupport" class="com.demo2do.core.persistence.GenericDaoSupport" autowire="byType" />
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" autowire="byType">
+		<constructor-arg name="dataSource" ref="dataSource">
+		</constructor-arg>
+	</bean>
+
+	<bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate" autowire="byType">
+		<constructor-arg index="0" ref="dataSource"/>
+	</bean>
+	<!-- Definition of TransactionManager -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager" autowire="byName" />
+
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="list*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="*_NoRollback">PROPAGATION_NOT_SUPPORTED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+				<value>*Handler</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+
+</beans>
