@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This build file default run jetty in the end of build -->
+<project basedir="." default="help" name="Renaissance" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- ======================================= -->
+	<!--           Property Settings             -->
+	<!-- ======================================= -->
+	
+	<!-- System Environment -->
+	<property environment="env" />
+
+	<!-- Property File -->
+	<property file="build.properties" />
+	
+	<!-- ======================================= -->
+	<!--        Compile Path Settings            -->
+	<!-- ======================================= -->
+	
+	<path id="ivy.lib.path">
+		<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+	</path>
+	
+	<!-- ======================================= -->
+	<!--          target: init-ivy               -->
+	<!-- ======================================= -->
+
+	<target name="init-ivy" depends="download-ivy">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	</target>
+
+	<target name="download-ivy" unless="offline">
+		<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" 
+			 dest="${ivy.jar.dir}/ivy.jar" usetimestamp="true" />
+		<get src="http://zufangbao.oss-cn-hangzhou.aliyuncs.com/xuanwu.jar" 
+			 dest="${ivy.jar.dir}/xuanwu.jar" usetimestamp="true" />
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: ivy-resolve            -->
+	<!-- ======================================= -->
+	
+    <target name="ivy-resolve" description="--> retreive dependencies with ivy">
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" type="jar" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]_[type]/[artifact]-[revision]-[type].[ext]" type="source" />
+		
+    	<ivy:cachepath pathid="provided.path.id" conf="provided" />
+    	<ivy:cachepath pathid="compile.path.id" conf="compile" />
+    	<ivy:cachepath pathid="test.path.id" conf="test" />
+    </target>
+
+	<!-- ======================================= -->
+	<!--          target: init-folder            -->
+	<!-- ======================================= -->
+	
+	<target name="init-folder" description="--> init eclipse files with ivy">
+		
+		<mkdir dir="${src.java.dir}" />
+		<mkdir dir="${src.resources.dir}" />
+		<mkdir dir="${test.java.dir}" />
+		<mkdir dir="${test.resources.dir}" />
+		<mkdir dir="${webapp.dir}/WEB-INF" />
+			
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: init-eclipse           -->
+	<!-- ======================================= -->
+	<target name="init-eclipse" depends="ivy-resolve" description="--> init eclipse files with ivy">
+		
+		<taskdef name="ivyeclipse" classname="com.demo2do.util.ant.IvyEclipse" classpathref="ivy.lib.path"/>
+		
+		<ivyeclipse projectName="${ant.project.name}">
+			<sourcefolder path="${src.java.dir}" />
+			<sourcefolder path="${src.resources.dir}" />
+			<sourcefolder path="${test.java.dir}" />
+			<sourcefolder path="${test.resources.dir}" />
+			<outputfolder path="${target.dir}/classes" />
+		</ivyeclipse>
+		
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: jar & source           -->
+	<!-- ======================================= -->
+	
+	
+	<!-- ======================================= -->
+	<!--          target: build                  -->
+	<!-- ======================================= -->
+	
+	<target name="pre-build">
+		<mkdir dir="${build.dir}/classes" />
+				
+		<copy includeemptydirs="false" todir="${build.dir}/classes">
+			<fileset dir="src/main/java" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+	</target>
+		
+	<target name="build" depends="clean, ivy-resolve, pre-build" description="--> compile and jar project">
+			
+		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" classpathref="compile.path.id" 
+	   		   debug="true" debuglevel="${javac.debuglevel}" encoding="utf-8" 
+			includeantruntime="false"
+		/>
+			
+	</target>
+		
+	<target name="dist" depends="build" description="--> compile and jar project">
+			
+		<copy includeemptydirs="false" todir="${dist.dir}">
+			<fileset dir="${build.dir}/classes" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+		       
+	</target>	
+	
+	<!-- ======================================= -->
+	<!--             target: test              -->
+	<!-- ======================================= -->
+	<target name="test-build" depends="build">
+
+		<copy includeemptydirs="false" todir="${build.dir}/classes">
+			<fileset dir="${test.java.dir}" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+	
+		<javac srcdir="${test.dir}" destdir="${build.dir}/classes" classpathref="test.path.id" 
+	   		   debug="true" debuglevel="${javac.debuglevel}" encoding="utf-8" 
+			
+		>
+			<classpath refid="provided.path.id"></classpath>
+		</javac>
+	</target>
+	
+	<target name="clean-junit-report">
+		<delete dir="doc" failonerror="false"/>
+	</target>
+	
+	<target name="run-tests" depends="test-build,clean-junit-report">
+ 		<mkdir dir="${reports.dir}"/>
+		<junit printsummary="on" failureProperty="fail">
+			<classpath>
+				<fileset dir="lib/test">
+				        <include name="**/*.jar"/>
+				</fileset>
+				<pathelement location="${ivy.home}/cache/org.javassist/javassist/bundles/javassist-3.18.2-GA.jar"/>
+				<pathelement location="${ivy.home}/cache/javax.servlet/javax.servlet-api/jars/javax.servlet-api-3.1.0.jar"/>
+				<pathelement location="${ivy.home}/cache/javax.servlet.jsp/javax.servlet.jsp-api/jars/javax.servlet.jsp-api-2.3.1.jar"/>
+				<pathelement path="${build.dir}/classes"/>
+    			<pathelement path="${java.class.path}/"/>	
+				<pathelement path="${test.resources.dir}/"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest fork="yes" todir="${reports.dir}">
+    				<fileset dir="${test.java.dir}">
+     					<include name="**/AllTestsOfGluon.*" />
+    				</fileset>
+  			 </batchtest>
+		</junit>
+		<junitreport todir="${reports.dir}">
+   			<fileset dir="${reports.dir}">
+    				<include name="TEST-*.xml"/>
+   			</fileset>
+   			<report format="frames" todir="${correctreports.dir}"/>
+  		</junitreport>
+	</target>
+	
+	<!-- ======================================= -->
+	<!--             target: clean               -->
+	<!-- ======================================= -->
+	
+	<target name="clean" description="--> clean the project">
+		<echo message="Cleaning the project..." />
+        <delete includeemptydirs="true">
+            <fileset dir="${basedir}">
+            	<exclude name="src/**" />
+            	<exclude name="etc/**" />
+            	<exclude name="webapp/**" />
+            	<exclude name="build.xml" />
+				<exclude name="build.properties" />
+            	<exclude name="ivy.xml" />
+                <exclude name="README.md" />
+            	<exclude name=".*" />
+				<exclude name=".settings/*" />
+            	<exclude name="doc/**"/>
+            	<exclude name="target/**"/>
+            	<exclude name="pom.xml"/>
+        	</fileset>
+    	</delete>
+    </target>
+	    
+	
+	<!-- ======================================= -->
+	<!--             target: help                -->
+	<!-- ======================================= -->
+
+	<target name="help">
+		<echo message="1.ant init-ivy"/>
+		<echo message="       -> install ivy environment"/>
+		<echo message="2.ant init-folder"/>
+		<echo message="       -> create project folder"/>
+		<echo message="3.ant init-eclipse"/>
+		<echo message="       -> create .classpath and .project for eclipse IDE"/>
+		<echo message="4.ant dist"/>
+		<echo message="       -> build project and made dist"/>
+	</target>
+	
+</project>
