@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util.xsd" default-autowire="byName">
+    
+    <util:properties id="config" location="classpath:/config.properties"></util:properties>
+	<util:properties id="task" location="classpath:/task.properties"></util:properties>
+	
+    <!-- Enable annotation based container configuration  -->
+	<context:annotation-config />
+	<!-- begin task -->
+  	
+	<task:scheduled-tasks scheduler="task-scheduler">
+	
+		<!-- 销账 -->
+		<task:scheduled ref="voucherTaskV2_0" method="voucher_and_auto_deposit" fixed-delay="#{task['voucher_and_auto_deposit_fixed_rate']}" initial-delay="#{task['voucher_and_auto_deposit_initial_delay']}" />
+		
+		<task:scheduled ref="voucherTaskV2_0" method="active_voucher_repayment_order_recover" fixed-delay="#{task['active_voucher_repayment_order_recover_fixed_rate']}" initial-delay="#{task['active_voucher_repayment_order_recover_initial_delay']}" />
+		
+		<!-- 单合同类型 核销补漏 -->
+		<task:scheduled ref="voucherTaskV2_0" method="repayment_order_for_single_contrct_recover_trap" fixed-delay="#{task['repayment_order_for_single_contrct_recover_trap_fixed_rate']}" initial-delay="#{task['repayment_order_for_single_contrct_recover_trap_initial_delay']}" />
+			
+		<!-- 资产评估 -->
+		<task:scheduled ref="assetTaskV2_0" method="endYesterdayWorkAndStartTodayWork" cron="#{task['asset_task_cron']}"/>
+		
+		<task:scheduled ref="systemDeductTaskV2_0" method="thirdPartyDeductionAssetRecoverV2" fixed-delay="#{task['sync_sys_deduct_status_fixed_rate']}" initial-delay="#{task['sync_sys_deduct_status_initial_delay']}" />
+	
+		<task:scheduled ref="institutionReconciliationHandleTask" method="handleMissedTranscationCommand"  fixed-delay="#{task['missed_handle_third_part_voucher_command_fixed_delay']}" initial-delay="#{task['missed_handle_third_part_voucher_command_initial_delay']}" />
+		
+		<!-- 支付单自动重试匹配流水-->
+		<task:scheduled ref="paymentOrderMatchCashFlowTask" method="retryMatchCashFlow" fixed-delay="#{task['payment_order_match_cash_flow_fixed_rate']}" initial-delay="#{task['payment_order_match_cash_flow_initial_delay']}" />
+
+		<!-- 支付单自动重试拉对应交易记录-->
+		<task:scheduled ref="paymentOrderMatchCashFlowTask" method="retryPullTransactionRecord" fixed-delay="#{task['retry_pull_transaction_record_fixed_rate']}" initial-delay="#{task['retry_pull_transaction_record_initial_delay']}" />
+
+    <!-- 专户账户Task-->
+    <task:scheduled ref="specialAccountTask" method="special_account_task_total_method" fixed-delay="#{task['special_account_task_total_method_fixed_rate']}" initial-delay="#{task['special_account_task_total_method_initial_delay']}" />
+
+	<!-- 资产退款Task-->
+    <!-- <task:scheduled ref="assetRefundTask" method="asset_refund_auto_system" fixed-delay="#{task['asset_refund_auto_system_fixed_rate']}" initial-delay="#{task['asset_refund_auto_system_initial_delay']}" /> -->
+	
+
+  </task:scheduled-tasks>
+	
+	
+	<task:scheduler id="task-scheduler" pool-size="10" />
+	
+	<!-- end task -->
+	
+</beans>
