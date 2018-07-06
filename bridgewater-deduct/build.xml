@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This build file default run jetty in the end of build -->
+<project basedir="." default="help" name="bridgewater-deduct" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- ======================================= -->
+	<!--           Property Settings             -->
+	<!-- ======================================= -->
+	
+	<!-- System Environment -->
+	<property environment="env" />
+
+	<!-- Property File -->
+	<property file="build.properties" />
+	
+	<!-- ======================================= -->
+	<!--        Compile Path Settings            -->
+	<!-- ======================================= -->
+	
+	<path id="ivy.lib.path">
+		<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+	</path>
+
+	<!-- ======================================= -->
+	<!--          target: init-ivy               -->
+	<!-- ======================================= -->
+
+	<target name="init-ivy" depends="download-ivy">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	</target>
+
+	<target name="download-ivy" unless="offline">
+		<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" 
+			 dest="${ivy.jar.dir}/ivy.jar" usetimestamp="true" />
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: ivy-resolve            -->
+	<!-- ======================================= -->
+	
+    <target name="ivy-resolve" description="--> retreive dependencies with ivy">
+		<ivy:retrieve pattern="${lib.dir}/[conf]/[artifact]-[revision].[ext]" type="jar,bundle" />
+		<ivy:retrieve pattern="${lib.dir}/[conf]_[type]/[artifact]-[revision]-[type].[ext]" type="source" />
+		
+    	<ivy:cachepath pathid="compile.path.id" conf="compile" />
+    	<ivy:cachepath pathid="provided.path.id" conf="provided" />
+    	<ivy:cachepath pathid="test.path.id" conf="test" />
+    	<ivy:cachepath pathid="sonar.path.id" conf="sonar" />
+    	
+    </target>
+
+	<!-- ======================================= -->
+	<!--          target: init-folder            -->
+	<!-- ======================================= -->
+	
+	<target name="init-folder" description="--> init eclipse files with ivy">
+		
+		<mkdir dir="${src.java.dir}" />
+		<mkdir dir="${src.resources.dir}" />
+		<mkdir dir="${test.java.dir}" />
+		<mkdir dir="${test.resources.dir}" />
+		<mkdir dir="${webapp.dir}/WEB-INF" />
+			
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: init-eclipse           -->
+	<!-- ======================================= -->
+	
+	<target name="init-eclipse" depends="ivy-resolve" description="--> init eclipse files with ivy">
+		
+		<taskdef name="ivyeclipse" classname="com.demo2do.util.ant.IvyEclipse" classpathref="ivy.lib.path"/>
+		
+		<ivyeclipse projectName="${ant.project.name}">
+			<sourcefolder path="${src.java.dir}" />
+			<sourcefolder path="${src.resources.dir}" />
+			<sourcefolder path="${test.java.dir}" />
+			<sourcefolder path="${test.resources.dir}" />
+			<outputfolder path="${target.dir}/classes" />
+			<dependencyproject path="${dependency.sun}" />
+			<dependencyproject path="${dependency.gluon}" />
+		</ivyeclipse>
+		
+	</target>
+	
+	<!-- ======================================= -->
+	<!--          target: build                  -->
+	<!-- ======================================= -->
+	
+	<target name="pre-build">
+				
+		<mkdir dir="${build.dir}/WEB-INF/classes" />
+				
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="src/main/java" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+		
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="src/main/resources" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+			
+	</target>
+	
+	<target name="build-dependency" description="-->  build dependency project and copy to dest dir.">
+		
+		<mkdir dir="${lib.dir}/build" />
+		
+		<ant antfile="build.xml" dir="${dependency.sun.dir}"
+					     inheritall="false" inheritrefs="false"
+					     target="build"
+			/>
+		<copy includeemptydirs="false" todir="${lib.dir}/build">
+			<fileset dir="${dependency.sun.dir}/build/classes" includes="**/*.*" />	
+		</copy>
+		
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${dependency.sun.dir}/build/classes" includes="**/*.*"  excludes="applicationContext-*.xml" />	
+		</copy>
+		
+		<ant antfile="build.xml" dir="${dependency.gluon.dir}"
+					     inheritall="false" inheritrefs="false"
+					     target="build"
+			/>
+		<copy includeemptydirs="false" todir="${lib.dir}/build">
+			<fileset dir="${dependency.gluon.dir}/build/classes" includes="**/*.*" />	
+		</copy>
+		
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${dependency.gluon.dir}/build/classes" includes="**/*.*"  excludes="applicationContext-*.xml" />	
+		</copy>
+		
+	</target>
+	
+	
+		
+	<target name="build" depends="clean, ivy-resolve, pre-build, build-dependency" description="--> compile and jar project">
+			
+	      <javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes" 
+	 		  	 debug="true" debuglevel="${javac.debuglevel}" encoding="utf-8" 
+			  	 includeantruntime="false">
+	       		
+	      	<classpath refid="compile.path.id" />
+	       	
+	      	<classpath refid="provided.path.id" />
+	      	
+	      	<classpath>
+	      		<fileset dir="${lib.dir}/build">
+	      		   <include name="**/*.class"/>
+	      		</fileset>
+	      	</classpath>
+	      	
+	      </javac>
+			
+	</target>
+	
+	
+	<!-- ======================================= -->
+	<!--             target: war                 -->
+	<!-- ======================================= -->
+	
+	<target name="init-war">
+		<mkdir dir="${dist.dir}" />
+	</target>
+	
+	<target name="copy-war-files" depends="clean, build, init-war" description="--> copy files to build war file">
+		<echo message="copy files before building war file" />
+		<copy includeemptydirs="false" todir="${build.dir}" >
+			<fileset dir="${webapp.dir}" />
+		</copy>
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/lib" flatten="true">
+			<fileset dir="${lib.dir}/compile" includes="**/*.jar" excludes="servlet-api*.jar" />
+		</copy>
+	</target>
+	
+	<!-- ======================================= -->
+	<!--            废弃使用ant打包()                 -->
+	<!-- ======================================= -->
+		
+	<target name="war" description="--> Build the WAR">
+		<echo message="废弃使用ant打包，请使用maven打包" />
+		<!-- <war destfile="${dist.dir}/${ant.project.name}-${build.revision}.war" basedir="${build.dir}" webxml="${webapp.dir}/WEB-INF/web.xml" /> -->
+		<!-- <echo message="Cleaning temporary files" /> -->
+	</target>
+	
+	<!-- ======================================= -->
+	<!--             target: test              -->
+	<!-- ======================================= -->
+
+	<target name="test-build-dependency" description="--> test build dependency project and copy to dest dir.">
+		
+		<mkdir dir="${lib.dir}/build" />
+		
+	</target>
+	<target name="test-build" depends="build,test-build-dependency">
+
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${test.java.dir}" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+		<copy includeemptydirs="false" todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="src/test/resources" excludes="**/*.launch, **/*.bak, **/*.java" />
+		</copy>
+	
+		<javac srcdir="${test.dir}" destdir="${build.dir}/WEB-INF/classes" 
+	   		   debug="true" debuglevel="${javac.debuglevel}" encoding="utf-8" >
+
+	   		   <classpath refid="provided.path.id" />
+	   		   <classpath refid="test.path.id" />
+	   		   <classpath refid="provided.path.id" />
+		</javac>
+	</target>
+		
+
+	
+	
+		<target name="junit-run" depends="test-build">
+
+
+		    
+		<mkdir dir="${reports.dir}"/>
+		
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpathref="sonar.path.id" />
+
+		<jacoco:coverage destfile="${reports.dir}/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+
+		<junit printsummary="on" failureProperty="fail" fork="true">
+			
+			<classpath>
+					
+				<fileset dir="lib/test">
+				        <include name="**/*.jar"/>
+				</fileset>
+				<pathelement location="${ivy.home}/cache/org.javassist/javassist/bundles/javassist-3.18.2-GA.jar"/>
+				<pathelement location="${ivy.home}/cache/com.google.guava/guava/bundles/guava-18.0.jar"/>
+				<pathelement location="${ivy.home}/cache/javax.servlet/javax.servlet-api/jars/javax.servlet-api-3.1.0.jar"/>
+				<pathelement location="${ivy.home}/cache/javax.servlet.jsp/javax.servlet.jsp-api/jars/javax.servlet.jsp-api-2.3.1.jar"/>
+				<pathelement path="${build.dir}/WEB-INF/classes"/>
+    			<pathelement path="${java.class.path}/"/>	
+				<pathelement path="${test.resources.dir}/"/>
+				<pathelement path="lib/provided/"/>
+
+			</classpath>
+			
+			<formatter type="xml"/>
+
+			<batchtest fork="yes" todir="${reports.dir}">
+
+    				<fileset dir="${test.java.dir}">
+    					
+     					<include name="**/AllTestsForBridgewaterDeduct.*" />
+    					
+    				</fileset>
+  			 </batchtest>
+		</junit>
+
+
+		</jacoco:coverage>
+
+		<junitreport todir="${reports.dir}">
+
+			<fileset dir="${reports.dir}">
+
+				<include name="TEST-*.xml" />
+
+			</fileset>
+
+
+
+			<report format="frames" todir="${correctreports.dir}" />
+
+		</junitreport>
+
+	</target>
+
+
+
+
+	<target name="run-tests" depends="junit-run">
+
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml"
+			classpathref="sonar.path.id" />
+
+		<jacoco:report xmlns:jacoco="antlib:org.jacoco.ant">
+
+			<executiondata>
+
+				<file file="${reports.dir}/jacoco.exec" />
+
+			</executiondata>
+
+
+			<html destdir="${reports.dir}/coverage" />
+
+		</jacoco:report>
+
+	</target>
+	
+	
+	<!-- ======================================= -->
+	<!--             target: clean               -->
+	<!-- ======================================= -->
+	
+	<target name="clean" description="--> clean the project">
+		<echo message="Cleaning the project..." />
+        <delete includeemptydirs="true">
+            <fileset dir="${basedir}">
+            	<exclude name="src/**" />
+            	<exclude name="etc/**" />
+            	<exclude name="webapp/**" />
+            	<exclude name="build.xml" />
+				<exclude name="build.properties" />
+            	<exclude name="ivy.xml" />
+                <exclude name="README.md" />
+            	<exclude name=".*" />
+				<exclude name=".settings/*" />
+            	<exclude name="pom.xml"/>
+        	</fileset>
+    	</delete>
+    </target>
+	    
+	
+	<!-- ======================================= -->
+	<!--             target: help                -->
+	<!-- ======================================= -->
+
+	<target name="help">
+		<echo message="1.ant init-ivy"/>
+		<echo message="       -> install ivy environment"/>
+		<echo message="2.ant init-folder"/>
+		<echo message="       -> create project folder"/>
+		<echo message="3.ant init-eclipse"/>
+		<echo message="       -> create .classpath and .project for eclipse IDE"/>
+		<echo message="4.ant war"/>
+		<echo message="       -> build project as a war"/>
+	</target>
+	
+</project>

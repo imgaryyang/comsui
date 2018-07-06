@@ -1,0 +1,17 @@
+build
+build-dependency
+clean
+copy-war-files
+download-ivy
+help
+init-eclipse
+init-folder
+init-ivy
+init-war
+ivy-resolve
+junit-run
+pre-build
+run-tests
+test-build
+test-build-dependency
+war

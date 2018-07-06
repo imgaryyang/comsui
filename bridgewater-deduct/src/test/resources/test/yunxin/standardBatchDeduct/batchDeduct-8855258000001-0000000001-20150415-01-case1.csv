@@ -1,0 +1,2 @@
+deductId(扣款唯一编号),financialProductCode(信托产品代码),uniqueId(贷款合同唯一编号),contractNo(贷款合同编号),transType(交易类型),amount(扣款金额),repaymentType(还款类型),mobile(手机号),accountName(账户名),accountNo(账户号),gateway(网关),repaymentPlanNo(还款计划编号)
+33175be0-8a7d-4aef-89e0-3c32834d6661,11111111,702f0dd5-ebca-4073-a201-03be75775e27,TEST-CONTRACT-001,0,10,1,13732255400,范腾1111111,6214855712106564,2,

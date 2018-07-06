@@ -1,0 +1,210 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.zufangbao</groupId>
+		<artifactId>zufangbao-springboot-center</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../zufangbao-springboot-center</relativePath>
+	</parent>
+	<artifactId>bridgewater-deduct</artifactId>
+	<packaging>war</packaging>
+	<version>${zufangbao.version}</version>
+	
+	<properties>
+		<sonar-ant-task.version>2.2</sonar-ant-task.version>
+		<rabbitmq-client.version>3.6.5</rabbitmq-client.version>
+		<spring-rabbit.version>1.6.2.RELEASE</spring-rabbit.version>
+		<start-class>com.suidifu.pricewaterhouse.Pricewaterhouse</start-class>
+	</properties>
+	
+	<dependencies>
+		<!-- rabbitmq -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>${spring-rabbit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+			<version>${spring-rabbit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+			<version>${rabbitmq-client.version}</version>
+		</dependency>
+		
+		
+		
+		<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>demo2do-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>sun</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>gluon</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>wellsfargo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>greenLight</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Renaissance</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>matryoshka</artifactId>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>matryoshka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<!-- hibernate4 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.common</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+		</dependency>
+		<!-- commons jar -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+	
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		
+		<!-- hibernate4 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.common</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+		</dependency>
+		
+		<!-- jetty -->
+		<dependency>
+			<groupId>org.eclipse.jetty.orbit</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		 <!-- log4j slf4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency> 
+		
+		<!-- cpdetector -->
+		<dependency>
+		    <groupId>cpdetector</groupId>
+		    <artifactId>cpdetector</artifactId>
+		    <version>1.0.10</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.mozilla.intl</groupId>
+		    <artifactId>chardet</artifactId>
+		    <version>1.0</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<!-- maven war plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>webapp</warSourceDirectory>
+					<webappDirectory>target/${project.artifactId}</webappDirectory>
+					<packagingExcludes>WEB-INF/lib/maven-*.jar,WEB-INF/lib/jetty-*.jar,WEB-INF/lib/servlet-api-*.jar,WEB-INF/lib/*servlet-api-*.jar,WEB-INF/lib/junit-*.jar</packagingExcludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				  <groupId>org.eclipse.jetty</groupId>
+				  <artifactId>jetty-maven-plugin</artifactId>
+				  <configuration>
+				  	 
+				   <webAppSourceDirectory>./webapp</webAppSourceDirectory>
+				  	<httpConnector>
+				  		<port>9091</port>
+				  	</httpConnector>
+				  	<!-- 自动热部署 -->
+				  	 <scanIntervalSeconds>2</scanIntervalSeconds>
+				  	<webApp>
+				  		<defaultsDescriptor>./src/test/resources/runtime/webdefault.xml</defaultsDescriptor>
+				  		 <descriptor>./src/test/resources/runtime/web.local.xml</descriptor>
+				  	</webApp>
+				  
+				  </configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

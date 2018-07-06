@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd"
+     default-autowire="byName">
+    
+  <util:properties id="config" location="classpath:/config.properties"></util:properties>  
+  <util:properties id="task" location="classpath:/task.properties"></util:properties>
+  <util:properties id="redis" location="classpath:/redis.properties"/>
+  <util:properties id="rabbit" location="classpath:/rabbit.properties"></util:properties>
+  
+  <!-- Enable annotation based container configuration  -->
+	<context:annotation-config />
+	
+	<aop:aspectj-autoproxy/>
+	
+	<!-- begin task -->
+	<!--
+	<task:scheduled-tasks scheduler="task-scheduler">
+	</task:scheduled-tasks>
+
+	<task:scheduler id="task-scheduler" pool-size="2" />
+	-->
+	<!-- begin 支持异步方法执行 批处理扣款处理 -->
+    <task:annotation-driven executor="batchDeductAsyncExecutor"/>
+    
+    <task:executor id="batchDeductAsyncExecutor" pool-size="100-100" queue-capacity="500"/>
+    
+    <!-- end  支持异步方法执行  -->
+	
+	<!-- Enable classpath scanning to find candidate managed beans -->
+	<context:component-scan base-package="com.suidifu,com.zufangbao">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan> 
+	
+	<!-- Only needed because we install custom converters to support the examples in the org.springframewok.samples.mvc.convert package -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+	        <bean class="com.demo2do.core.web.format.PersistentAnnotationFormatterFactory" autowire="byName" />
+	    </property>
+	</bean> 
+	
+	<!-- Expression parser -->
+	<bean id="expressionParser" class="com.demo2do.core.expression.FormattingSpelExpressionParser" autowire="byName">
+		<constructor-arg index="0">
+			<bean class="org.springframework.expression.spel.SpelParserConfiguration">
+				<constructor-arg index="0" value="true"></constructor-arg>
+				<constructor-arg index="1" value="true"></constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+		  p:max-idle="#{redis['redis.pool.maxIdle']}"
+		  p:max-total="#{redis['redis.pool.maxTotal']}"
+		  p:test-on-borrow="#{redis['redis.pool.testOnBorrow']}"
+		  p:max-wait-millis="#{redis['redis.pool.maxWaitMillis']}"
+		  p:test-on-return="#{redis['redis.pool.testOnReturn']}"
+		  p:test-while-idle="#{redis['redis.pool.testWhileIdle']}"
+		  p:time-between-eviction-runs-millis="#{redis['redis.pool.timeBetweenEvictionRunsMillis']}"
+		  p:num-tests-per-eviction-run="#{redis['redis.pool.numTestsPerEvictionRun']}"
+		  p:min-evictable-idle-time-millis="#{redis['redis.pool.minEvictableIdleTimeMillis']}"
+		  p:block-when-exhausted="#{redis['redis.pool.blockWhenExhausted']}"
+		
+	/>
+		<!-- Definition of rabbitMQ -->
+	<bean id="cfg_rabbitmq_producer" class="com.suidifu.mq.config.RabbitMqConfig">
+        <property name="host" value="#{rabbit['rabbitmq.producer.host']}" />
+        <property name="port" value="#{rabbit['rabbitmq.producer.port']}" />
+        <property name="userName" value="#{rabbit['rabbitmq.producer.userName']}" />
+        <property name="password" value="#{rabbit['rabbitmq.producer.password']}" />
+        <property name="serviceName" value="#{rabbit['rabbitmq.producer.serviceName']}" />
+        <property name="start" value="#{rabbit['rabbitmq.producer.start']}" />
+        <property name="end" value="#{rabbit['rabbitmq.producer.end']}" />
+    </bean>
+	
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="#{redis['redis.host']}" 
+		p:port="#{redis['redis.port']}" 
+		p:password="#{redis['redis.password']}"
+		p:use-pool="true" 
+		p:pool-config-ref="jedisPoolConfig"
+		p:timeout="#{redis['redis.pool.timeout']}"
+	/>
+	<bean id="messageSender" class="com.zufangbao.wellsfargo.mq.sender.MqMessageSender"></bean>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory" p:enable-transaction-support="true"/>
+	<bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
+	
+	<bean id="mqRpcHandler" class="com.suidifu.hathaway.mq.handler.MqRpcHandler">
+		<property name="messageSender" ref="messageSender"></property>
+	</bean>
+	
+</beans>
